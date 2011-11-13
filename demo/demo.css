@@ -1,0 +1,25 @@
+/**
+	Demo Page CSS
+	For Overlay related stylesheet please look at source of the demo page
+*/
+
+body {
+	color: #333;
+	font: 13px/18px Arial,Helvetica,FreeSans,"Liberation Sans","Nimbus Sans L",sans-serif;
+}
+
+a {
+	color: #0063dc;
+}
+
+.clr:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.clr {
+	zoom: 1;
+}
