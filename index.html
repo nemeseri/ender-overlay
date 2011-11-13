@@ -1,0 +1,255 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Docs: ender-overlay</title>
+		<link href='http://fonts.googleapis.com/css?family=Paytone+One' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="demo/main.css" type="text/css">
+	</head>
+	<body>
+		<div id="container" class="docs">
+			<h1>ender-overlay</h1>
+			<p>
+				A simple overlay plugin for <a href="http://ender.no.de/">Ender</a>. Soon you will be able to build this as an Ender module. It requires <a href="https://github.com/ender-js/jeesh">Jeesh</a> and <a href="https://github.com/ded/morpheus">Morpheus</a> for animations. Even though, you can leave Morpheus out if you are fine without animations.
+			</p>
+			<p>
+				It's a very simple overlay solution. You can easily build your own gallery or other overlay based logic on the top of this plugin. 
+				I got some inspiration from <a href="http://flowplayer.org/tools/">jQuery Tools</a>, thanks for that.
+			</p>
+			
+			<h2>Download</h2>
+			
+			<p>You can get the source from <a href="https://github.com/nemeseri/ender-overlay">Github</a>.</p>
+			<a href="https://raw.github.com/nemeseri/ender-overlay/master/ender.overlay.js" class="button">Download</a>
+			
+			<h2>Demos</h2>
+			
+			<ul>
+				<li><a href="demo/demo.html">Basic configuration</a></li>
+			</ul>
+			
+			<h2>Configuration</h2>
+			
+			<h3>Overlay configuration</h3>
+
+			<table>
+				<thead>
+					<tr>
+						<th>Property</th>
+						<th>Default Value</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>top</td>
+						<td>"100px"</td>
+						<td>The distance from the top edge of the screen.</td>
+					</tr>
+					<tr>
+						<td>position</td>
+						<td>"absolute"</td>
+						<td>You can use <samp>absolute</samp> or <samp>fixed</samp> as a value. With <samp>absolute</samp>, the overlay will stay at the given position. With <samp>fixed</samp> it will stay in place even when you scroll. If you choose <samp>fixed</samp>, make sure to your overlay fit in the viewport, because at lower resolutions it can be a problem.</td>
+					</tr>
+					<tr>
+						<td>cssClass</td>
+						<td>"ender-overlay"</td>
+						<td>The common CSS style for your overlays. You can use this to style your overlays.</td>
+					</tr>
+					<tr>
+						<td>closeSelector</td>
+						<td>".close"</td>
+						<td>Every matched elements inside the overlay will close the overlay on a click event.</td>
+					</tr>
+					<tr>
+						<td>zIndex</td>
+						<td>9999</td>
+						<td>Must be higher than the z-index of any direct child elements of the body element.</td>
+					</tr>
+					<tr>
+						<td>showMask</td>
+						<td>true</td>
+						<td>Whether the mask should be visible or not.</td>
+					</tr>
+					<tr>
+						<td>closeOnEsc</td>
+						<td>true</td>
+						<td>Whether the overlay closes if the user hits ESC.</td>
+					</tr>
+					<tr>
+						<td>closeOnMaskClick</td>
+						<td>true</td>
+						<td>Whether the overlay closes if the user clicks the cover mask.</td>
+					</tr>
+					<tr>
+						<td>autoOpen</td>
+						<td>false</td>
+						<td>Whether the overlay opens after creation.</td>
+					</tr>
+					<tr>
+						<td>allowMultipleDisplay</td>
+						<td>false</td>
+						<td>If it's <samp>false</samp>, then all overlays are closed automaticaly when a new overlay opens. If you set this to <samp>true</samp> you can manage multiple open overlays.</td>
+					</tr>
+					<tr>
+						<td>animation</td>
+						<td>true</td>
+						<td>You can turn off the animation with this property. Please note that you have to include <a href="https://github.com/ded/morpheus">Morpheus</a> to have animations.</td>
+					</tr>
+					<tr>
+						<td>startAnimationCss</td>
+						<td>{ opacity: 0 }</td>
+						<td>This is the starting point of the opening animation.</td>
+					</tr>
+					<tr>
+						<td>animationIn</td>
+						<td>{ opacity: 1, duration: 200 }</td>
+						<td>Opening animation params. Passed directly to <a href="https://github.com/ded/morpheus">Morpheus</a>. Please refer the docs of Morpheus for more information or check out the animation tutorials. If the mask is enabled it will inherit the animation duration automatically.</td>
+					</tr>
+					<tr>
+						<td>animationOut</td>
+						<td>{ opacity: 0, duration: 200 }</td>
+						<td>Closing animation params. Passed directly to <a href="https://github.com/ded/morpheus">Morpheus</a>. Please refer the docs of Morpheus for more information or check out the animation tutorials. If the mask is enabled it will inherit the animation duration automatically.</td>
+					</tr>
+					<tr>
+						<td>mask</td>
+						<td><a href="#maskConf">Default mask configuration</a></td>
+						<td>Mask configuration object. Please refer to the table <a href="#maskConf">below</a>.</td>
+					</tr>
+					<tr>
+						<td>onBeforeOpen</td>
+						<td></td>
+						<td>You can set a callback function here. It's called just before opening the overlay. It will get the overlay object as a parameter. Please refer to the <a href="#methods">methods</a> section how to use this. If you return with <samp>false</samp> the overlay won't open.</td>
+					</tr>
+					<tr>
+						<td>onBeforeClose</td>
+						<td></td>
+						<td>You can set a callback function here. It's called just before closing the overlay. It will get the overlay object as a parameter. Please refer to the <a href="#methods">methods</a> section how to use this. If you return with <samp>false</samp> the overlay won't close.</td>
+					</tr>
+					<tr>
+						<td>onOpen</td>
+						<td></td>
+						<td>You can set a callback function here. It's called after the overlay opened. It will get the overlay object as a parameter. Please refer to the <a href="#methods">methods</a> section how to use this.</td>
+					</tr>
+					<tr>
+						<td>onClose</td>
+						<td></td>
+						<td>You can set a callback function here. It's called after the overlay closed. It will get the overlay object as a parameter. Please refer to the <a href="#methods">methods</a> section how to use this.</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<h3 id="maskConf">Mask configuration</h3>
+			
+			<table>
+				<thead>
+					<tr>
+						<th>Property</th>
+						<th>Default Value</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>id</td>
+						<td>"ender-overlay-mask"</td>
+						<td>The <samp>id</samp> of the mask element. Only one mask element is created, no matter how much overlay you create.</td>
+					</tr>
+					<tr>
+						<td>zIndex</td>
+						<td>9998</td>
+						<td>Must be higher than the z-index of any direct child elements of the body element. Must be lower than the z-index of the overlays.</td>
+					</tr>
+					<tr>
+						<td>opacity</td>
+						<td>0.6</td>
+						<td>The opacity of the mask.</td>
+					</tr>
+					<tr>
+						<td>color</td>
+						<td>"#777"</td>
+						<td>The <samp>background-color</samp> of the mask.</td>
+					</tr>
+					<tr>
+						<td>animation</td>
+						<td>Inherited</td>
+						<td>You can turn off the animation with this property. If you don't set it explicitly, it will inherited from the overlay settings.</td>
+					</tr>
+					<tr>
+						<td>durationIn</td>
+						<td>Inherited</td>
+						<td>Fade in animation duration. If you don't set it explicitly, it will inherited from the overlay settings.</td>
+					</tr>
+					<tr>
+						<td>durationOut</td>
+						<td>Inherited</td>
+						<td>Fade out animation duration. If you don't set it explicitly, it will inherited from the overlay settings.</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<h2>Event listeners</h2>
+
+			<p>The following events are supported. The event-listeners are binded to the <samp>document</samp> object. You can trigger the events this way: <samp>$(document).trigger("ender-overlay.close");</samp></p>
+
+			<table>
+				<thead>
+					<tr>
+						<th>Event name</th>
+						<th>What happens if it's triggered?</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>ender-overlay.close</td>
+						<td>Closes all the cover mask and all the overlays.</td>
+					</tr>
+					<tr>
+						<td>ender-overlay.closeOverlay</td>
+						<td>Closes only the overlays. The mask will stay visible.</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<h2>Methods</h2>
+			
+			<p>The $.overlay method will return the Overlay object. And you can call the following methods on it.</p>
+			
+			<table>
+				<thead>
+					<tr>
+						<th>Method</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>open()</td>
+						<td>Opens the overlay.</td>
+					</tr>
+					<tr>
+						<td>close()</td>
+						<td>Closes the overlay.</td>
+					</tr>
+					<tr>
+						<td>getOverlay()</td>
+						<td>Returns the overlay element.</td>
+					</tr>
+					<tr>
+						<td>getOptions()</td>
+						<td>Returns the current overlay options.</td>
+					</tr>
+					<tr>
+						<td>setOptions(options)</td>
+						<td>You can update the options any time with this method.</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h2>Author</h2>
+			
+			<p>I'm <a href="http://nemeseri.com">Andras Nemeseri</a> a Hungarian front-end developer. You can follow me on <a href="http://twitter.com/nemeseri">Twitter</a>. <br>Thanks to Dustin Diaz &amp; Jacob Thornton for Ender.</p>
+			
+		</div> <!-- #container -->
+	</body>
+</html>

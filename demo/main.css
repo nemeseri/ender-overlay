@@ -1,0 +1,147 @@
+/**
+	Demo Page CSS
+	For Overlay related stylesheet please look at source of the demo page
+*/
+
+/* @group reset */
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+img,
+fieldset {
+	border: 0;
+}
+
+q:before,
+q:after {
+	content: "";
+}
+
+object {
+	outline: none;
+}
+
+/* @end reset */
+
+/* @group common-style */
+
+body {
+	background: #fff;
+}
+
+body, table td, table th {
+	color: #333;
+	font: 13px/18px Arial,Helvetica,FreeSans,"Liberation Sans","Nimbus Sans L",sans-serif;
+}
+
+input, button, textarea, select {
+	font-size: 13px;
+	color: #333;
+	font-family: Arial,Helvetica,FreeSans,"Liberation Sans","Nimbus Sans L",sans-serif;
+}
+
+a {
+	color: #0063dc;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+iframe {
+	border: none;
+	display: block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-size: 15px;
+	line-height: 19px;
+}
+
+/* @end common-style */
+
+.clr:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.clr {
+	zoom: 1;
+}
+
+#container {
+	width: 900px;
+	margin: 30px auto;
+	padding: 30px;
+	border: 3px solid rgba(0,0,0,.4);
+	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	
+	-moz-box-shadow: 0 0 10px 0 rgba(0,0,0,.4);
+	-webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.4);
+	box-shadow: 0 0 10px 0 rgba(0,0,0,.4);
+	
+	background: #efefef;
+}
+
+.docs {
+	font-size: 14px;
+	line-height: 18px;
+}
+
+.docs h1 {
+	font-size: 48px;
+	line-height: 56px;
+	font-family: 'Paytone One', sans-serif;
+	text-transform: uppercase;
+	margin: 0 0 26px;
+	text-align: center;
+}
+
+.docs h2 {
+	font-size: 20px;
+	line-height: 26px;
+	margin: 40px 0 5px;
+	font-weight: normal;
+}
+
+.docs h3 {
+	font-size: 16px;
+	line-height: 20px;
+	margin: 20px 0 5px;
+	font-weight: normal;
+}
+
+.docs p {
+	margin: 0 0 15px;
+}
+
+.docs ul {
+	margin: 0 0 0 20px;
+}
+
+
+
+
