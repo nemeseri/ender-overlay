@@ -31,8 +31,8 @@
 			
 			.ender-overlay .close {
 				position: absolute;
-				width: 24px;
-				height: 24px;
+				width: 23px;
+				height: 23px;
 				top: -10px;
 				right: -10px;
 				
@@ -48,12 +48,12 @@
 				-moz-border-radius: 13px;
 				border-radius: 13px;
 				
-				-webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,.4);
-				-moz-box-shadow: 0 0 5px 0 rgba(0,0,0,.4);
-				box-shadow: 0 0 5px 0 rgba(0,0,0,.4);
+				-webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,.5);
+				-moz-box-shadow: 0 0 5px 0 rgba(0,0,0,.5);
+				box-shadow: 0 0 5px 0 rgba(0,0,0,.5);
 				cursor: pointer;
 				
-				border: 1px solid #fff;
+				border: 2px solid #fff;
 			}
 			
 			.ender-overlay img {
@@ -101,90 +101,113 @@
 		</style>
 	</head>
 	<body>
-		<a href="#" id="trigger-one">Open first overlay</a>
-		
-		<a href="#" id="trigger-two">Open second overlay</a>
+		<div id="container" class="demo">
 
-		<div id="overlay-one" class="ender-overlay clr">
-			<a class="close" title="Close">&#9747;</a>
-			<img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32.jpg" alt="Undercover" width="500" height="500">
-			<div>
-				<h2>Undercover</h2>
-				<p>by <a href="http://www.flickr.com/people/necccc/">Szabolcs Toth</a></p>
+			<h1>Basic configuration</h1>
 
-				<p>This photo was taken on November 29, 2010 in Russian Hill, San Francisco, CA, US, using a Canon EOS 40D.</p>
-				<p>Strobist info: one bare Yongnuo YN560 @1/4 on the low left, triggered by optical slave</p>
+			<p>Below you can see the overlay triggers. You can open up the overlays by clicking on them.</p>
+
+			<div class="clr">
+				<a id="trigger-one" class="thumbs"><img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32_t.jpg" alt="Undercover" width="100" height="100"></a>
+				<a id="trigger-two" class="thumbs"><img src="http://farm6.static.flickr.com/5123/5329325629_ba31d93a48_t.jpg" alt="The Raid" width="100" height="100"></a>
+			</div>
+			
+			<h2>Include Jeesh and Morpheus</h2>
+			<p>
+				You can download Jeesh and Morpheus (with ender bridge) easily from here:
+				<a href="http://ender-js.s3.amazonaws.com/jeesh.min.js">Jeesh</a>, 
+				<a href="https://raw.github.com/ded/morpheus/master/morpheus.min.js">Morpheus</a>. 
+				Or if you are familiar with NPN you can build all the pre-requirements and <strong>ender-overlay</strong> into one file.
+			</p>
+			
+			<h2>Creating HTML and CSS for the overlays and triggers</h2>
+			
+			<p>
+				You need to create all the HTML and CSS codes for your overlays and triggers. 
+				This way you can design every kind of overlays and won't hit stupid built-in walls. 
+				You can check the source of this page if you need some idea.
+			</p>
+			
+			<p>Because of this, you can put picture, pure HTML content, iframe into your overlay. You can even load the content with AJAX.</p>
+			
+
+			<div id="overlay-one" class="ender-overlay clr">
+				<a class="close" title="Close">&#9747;</a>
+				<img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32.jpg" alt="Undercover" width="500" height="500">
+				<div>
+					<h2>Undercover</h2>
+					<p>by <a href="http://www.flickr.com/people/necccc/">Szabolcs Toth</a></p>
+
+					<p>This photo was taken on November 29, 2010 in Russian Hill, San Francisco, CA, US, using a Canon EOS 40D.</p>
+					<p>Strobist info: one bare Yongnuo YN560 @1/4 on the low left, triggered by optical slave</p>
 				
-				<h3>Tags</h3>
-				<ul>
-					<li>San Francisco</li>
-					<li>CA</li>
-					<li>sf</li>
-					<li>fun</li>
-					<li>parody</li>
-					<li>crime</li>
-					<li>sunglasses</li>
-					<li>retro</li>
-					<li>strobist</li>
-				</ul>
+					<h3>Tags</h3>
+					<ul>
+						<li>San Francisco</li>
+						<li>CA</li>
+						<li>sf</li>
+						<li>fun</li>
+						<li>parody</li>
+						<li>crime</li>
+						<li>sunglasses</li>
+						<li>retro</li>
+						<li>strobist</li>
+					</ul>
 				
-				<h3>View all sizes on Flickr</h3>
-				<ul>
-					<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/s/in/set-72157625490624866/">Small</a></li>
-					<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/m/in/set-72157625490624866/">Medium</a></li>
-					<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/l/in/set-72157625490624866/">Large</a></li>
-					<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/o/in/set-72157625490624866/">Original</a></li>
-				</ul>
+					<h3>View all sizes on Flickr</h3>
+					<ul>
+						<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/s/in/set-72157625490624866/">Small</a></li>
+						<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/m/in/set-72157625490624866/">Medium</a></li>
+						<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/l/in/set-72157625490624866/">Large</a></li>
+						<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/o/in/set-72157625490624866/">Original</a></li>
+					</ul>
 				
-				<h3>Licence</h3>
-				<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5248981729/request/">here</a></p>
-				<p>&copy; All Rights Reserved</p>
+					<h3>Licence</h3>
+					<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5248981729/request/">here</a></p>
+					<p>&copy; All Rights Reserved</p>
+				</div>
+			</div>
+
+			<div id="overlay-two" class="ender-overlay clr">
+				<a class="close" title="Close">&#9747;</a>
+				<img src="http://farm6.static.flickr.com/5123/5329325629_ba31d93a48.jpg" alt="The Raid" width="500" height="500">
+				<div>
+					<h2>The Raid</h2>
+					<p>by <a href="http://www.flickr.com/people/necccc/">Szabolcs Toth</a></p>
+				
+					<p>This photo was taken on November 29, 2010 in Telegraph Hill, San Francisco, CA, US, using a Canon EOS 40D.</p>
+					<p>Strobist info: bare YN560 @ 1/2 from the left<br> Triggered with optical slaves</p>
+				
+					<h3>Tags</h3>
+					<ul>
+						<li>San Francisco</li>
+						<li>CA</li>
+						<li>sf</li>
+						<li>fun</li>
+						<li>parody</li>
+						<li>crime</li>
+						<li>sunglasses</li>
+						<li>retro</li>
+						<li>strobist</li>
+						<li>banana</li>
+						<li>gun</li>
+					</ul>
+				
+					<h3>View all sizes on Flickr</h3>
+					<ul>
+						<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/s/in/set-72157625490624866/">Small</a></li>
+						<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/m/in/set-72157625490624866/">Medium</a></li>
+						<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/l/in/set-72157625490624866/">Large</a></li>
+						<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/o/in/set-72157625490624866/">Original</a></li>
+					</ul>
+				
+					<h3>Licence</h3>
+					<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5329325629/request/">here</a></p>
+					<p>&copy; All Rights Reserved</p>
+				</div>
 			</div>
 		</div>
 
-		<div id="overlay-two" class="ender-overlay clr">
-			<a class="close" title="Close">&#9747;</a>
-			<img src="http://farm6.static.flickr.com/5123/5329325629_ba31d93a48.jpg" alt="The Raid" width="500" height="500">
-			<div>
-				<h2>The Raid</h2>
-				<p>by <a href="http://www.flickr.com/people/necccc/">Szabolcs Toth</a></p>
-				
-				<p>This photo was taken on November 29, 2010 in Telegraph Hill, San Francisco, CA, US, using a Canon EOS 40D.</p>
-				<p>Strobist info: bare YN560 @ 1/2 from the left<br> Triggered with optical slaves</p>
-				
-				<h3>Tags</h3>
-				<ul>
-					<li>San Francisco</li>
-					<li>CA</li>
-					<li>sf</li>
-					<li>fun</li>
-					<li>parody</li>
-					<li>crime</li>
-					<li>sunglasses</li>
-					<li>retro</li>
-					<li>strobist</li>
-					<li>banana</li>
-					<li>gun</li>
-				</ul>
-				
-				<h3>View all sizes on Flickr</h3>
-				<ul>
-					<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/s/in/set-72157625490624866/">Small</a></li>
-					<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/m/in/set-72157625490624866/">Medium</a></li>
-					<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/l/in/set-72157625490624866/">Large</a></li>
-					<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/o/in/set-72157625490624866/">Original</a></li>
-				</ul>
-				
-				<h3>Licence</h3>
-				<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5329325629/request/">here</a></p>
-				<p>&copy; All Rights Reserved</p>
-			</div>
-		</div>
-
-		<!-- 
-			dependencies: Jeesh
-			optional: Morpheus
-		-->
 		<script src="../ender.min.js"></script>
 		<script src="../ender.overlay.js"></script>
 		<script>
@@ -201,6 +224,16 @@
 					ovrTwo.open();
 				});
 			});
+		</script>
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-25617420-1']);
+		  _gaq.push(['_trackPageview']);
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
 		</script>
 	</body>
 </html>
