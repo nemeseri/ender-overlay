@@ -10,6 +10,10 @@
 				font: 13px/18px Arial,Helvetica,FreeSans,"Liberation Sans","Nimbus Sans L",sans-serif;
 			}
 			
+			a {
+				color: #0063dc;
+			}
+			
 			.clr:after {
 				content: ".";
 				display: block;
@@ -83,25 +87,119 @@
 				padding: 10px;
 			}
 
-			.ender-overlay h3 {
+			.ender-overlay h2 {
 				margin: 0;
 			}
+			
+			.ender-overlay h3 {
+				font-size: 13px;
+				margin: 18px 0 0;
+			}
+			
+			.ender-overlay p,
+			.ender-overlay ul {
+				margin: 5px 0 15px;
+			}
+			
+			.ender-overlay ul {
+				padding: 0;
+			}
+			
+			.ender-overlay li {
+				display: inline;
+			}
+			
+			.ender-overlay li::after {
+				content: ",";
+			}
+			
+			.ender-overlay li:last-child::after {
+				content: "";
+			}
+			
 		</style>
 	</head>
 	<body>
-		<a href="#" id="trigger">Open up overlay</a>
+		<a href="#" id="trigger-one">Open first overlay</a>
+		
+		<a href="#" id="trigger-two">Open second overlay</a>
 
-		<div id="overlay" class="ender-overlay clr">
+		<div id="overlay-one" class="ender-overlay clr">
 			<a class="close" title="Close">&#9747;</a>
-			<img src="http://farm7.static.flickr.com/6033/6333626753_4f52b250c3.jpg" alt="The Geek Joy" width="500" height="500">
+			<img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32.jpg" alt="Undercover" width="500" height="500">
 			<div>
-				<h3>Consectetur Adipisicing Elit</h3>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-				<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-				<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<h2>Undercover</h2>
+				<p>by <a href="http://www.flickr.com/people/necccc/">Szabolcs Toth</a></p>
+
+				<p>This photo was taken on November 29, 2010 in Russian Hill, San Francisco, CA, US, using a Canon EOS 40D.</p>
+				<p>Strobist info: one bare Yongnuo YN560 @1/4 on the low left, triggered by optical slave</p>
+				
+				<h3>Tags</h3>
+				<ul>
+					<li>San Francisco</li>
+					<li>CA</li>
+					<li>sf</li>
+					<li>fun</li>
+					<li>parody</li>
+					<li>crime</li>
+					<li>sunglasses</li>
+					<li>retro</li>
+					<li>strobist</li>
+				</ul>
+				
+				<h3>View all sizes on Flickr</h3>
+				<ul>
+					<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/s/in/set-72157625490624866/">Small</a></li>
+					<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/m/in/set-72157625490624866/">Medium</a></li>
+					<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/l/in/set-72157625490624866/">Large</a></li>
+					<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/o/in/set-72157625490624866/">Original</a></li>
+				</ul>
+				
+				<h3>Licence</h3>
+				<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5248981729/request/">here</a></p>
+				<p>&copy; All Rights Reserved</p>
 			</div>
 		</div>
+
+		<div id="overlay-two" class="ender-overlay clr">
+			<a class="close" title="Close">&#9747;</a>
+			<img src="http://farm6.static.flickr.com/5123/5329325629_ba31d93a48.jpg" alt="The Raid" width="500" height="500">
+			<div>
+				<h2>The Raid</h2>
+				<p>by <a href="http://www.flickr.com/people/necccc/">Szabolcs Toth</a></p>
+				
+				<p>This photo was taken on November 29, 2010 in Telegraph Hill, San Francisco, CA, US, using a Canon EOS 40D.</p>
+				<p>Strobist info: bare YN560 @ 1/2 from the left<br> Triggered with optical slaves</p>
+				
+				<h3>Tags</h3>
+				<ul>
+					<li>San Francisco</li>
+					<li>CA</li>
+					<li>sf</li>
+					<li>fun</li>
+					<li>parody</li>
+					<li>crime</li>
+					<li>sunglasses</li>
+					<li>retro</li>
+					<li>strobist</li>
+					<li>banana</li>
+					<li>gun</li>
+				</ul>
+				
+				<h3>View all sizes on Flickr</h3>
+				<ul>
+					<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/s/in/set-72157625490624866/">Small</a></li>
+					<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/m/in/set-72157625490624866/">Medium</a></li>
+					<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/l/in/set-72157625490624866/">Large</a></li>
+					<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/o/in/set-72157625490624866/">Original</a></li>
+				</ul>
+				
+				<h3>Licence</h3>
+				<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5329325629/request/">here</a></p>
+				<p>&copy; All Rights Reserved</p>
+			</div>
+		</div>
+
 		<!-- 
 			dependencies: Jeesh
 			optional: Morpheus
@@ -110,11 +208,16 @@
 		<script src="ender.overlay.js"></script>
 		<script>
 			$(document).ready(function () {
-				var ovr = $("#overlay").overlay();
+				var ovrOne = $("#overlay-one").overlay();
+				var ovrTwo = $("#overlay-two").overlay();
 
-				$("#trigger").click(function (e) {
+				$("#trigger-one").click(function (e) {
 					e.preventDefault();
-					ovr.open();
+					ovrOne.open();
+				});
+				$("#trigger-two").click(function (e) {
+					e.preventDefault();
+					ovrTwo.open();
 				});
 			});
 		</script>

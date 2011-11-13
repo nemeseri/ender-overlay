@@ -136,6 +136,15 @@
 					self.close();
 				});
 
+			// attach event listeners
+			$(document).bind("ender-overlay.close", function () {
+				self.close();
+			});
+			
+			$(document).bind("ender-overlay.closeOverlay", function () {
+				self.close(true);
+			});
+
 			if (this.options.closeOnEsc) {
 				$(document).keyup(function (e) {
 					self.onKeyUp(e);
@@ -164,7 +173,7 @@
 			this.mask = new OverlayMask(this.options.mask);
 		},
 		
-		open: function () {
+		open: function (dontOpenMask) {
 			if (this.options.onBeforeOpen(this.$overlay) === false) {
 				return;
 			}
@@ -191,12 +200,13 @@
 				this.options.onOpen(this.$overlay);
 			}
 
-			if (this.mask) {
+			if (this.mask && 
+				typeof dontOpenMask === "undefined") {
 				this.mask.show();
 			}
 		},
 
-		close: function () {
+		close: function (dontHideMask) {
 			if (this.options.onBeforeClose(this.$overlay) === false) {
 				return;
 			}
@@ -220,7 +230,8 @@
 				this.options.onClose(this.$overlay);
 			}
 
-			if (this.mask) {
+			if (this.mask && 
+				typeof dontHideMask === "undefined") {
 				this.mask.hide();
 			}
 		},
