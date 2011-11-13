@@ -10,5 +10,9 @@
 		"morpheus" : "*" //optional
 	},
 	"main": "./ender.overlay.js",
-	"ender": "noop"
+	"ender": "noop",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/nemeseri/ender-overlay.git"
+	}
 }
