@@ -53,74 +53,88 @@
 	}
 	
 	function Overlay (el, settings) {
-		var self = this,
-			overlayWidth;
-			
-		this.options = {
+		this.init(el, settings);
+	}
+
+	Overlay.prototype = {
+		options: {
 			top: "100px",
 			position: "absolute",
 			cssClass: "ender-overlay",
+			closeSelector: ".close",
 			zIndex: 9999,
 			showMask: true,
 			closeOnEsc: true,
 			closeOnMaskClick: true,
 			autoOpen: false,
-			
+
+			// morpheus required
+			animation: true,
 			// start values before animation
 			startAnimationCss: {
 				opacity: 0
 			},
-			
+
 			// morpheus animation options
 			animationIn: {
 				opacity: 1,
 				duration: 200
 			},
-			
+
 			animationOut: {
 				opacity: 0,
 				duration: 200
 			},
-			
+
 			mask: {},
-			
+
 			onBeforeOpen: function () {},
 			onBeforeClose: function () {},
 			onOpen: function () {},
 			onClose: function () {}
-		};
-		extend(this.options, settings || {});
+		},
+		
+		init: function ($el, options) {
+			extend(this.options, options || {});
 
-		this.$overlay = el.addClass(this.options.cssClass)
-							.appendTo("body");
+			// setup overlay
+			this.$overlay = $el.addClass(this.options.cssClass)
+								.appendTo("body");
 
-		overlayWidth = this.$overlay.width();
-
-		this.$overlay.css({
-			position: this.options.position,
-			top: this.options.top,
-			left: "50%",
-			zIndex: this.options.zIndex,
-			marginLeft: overlayWidth / 2 * -1
-		});
-
-		if (this.options.showMask) {
-			// If there is no explicit duration set for OverlayCover
-			// set it from overlay animation
-			if (! this.options.mask.durationIn) 
-				this.options.mask.durationIn = this.options.animationIn.duration;
-			
-			if (! this.options.mask.durationOut) 
-				this.options.mask.durationOut = this.options.animationOut.duration;
-
-			this.cover = new OverlayMask(this.options.mask);
-		}
-
-		// prevent multiple event binding
-		if (! this.$overlay.attr("data-overlayloaded")) {
-			this.$overlay.find(".close").click(function () {
-				self.close();
+			this.$overlay.css({
+				position: this.options.position,
+				top: this.options.top,
+				left: "50%",
+				zIndex: this.options.zIndex,
+				marginLeft: this.$overlay.width() / 2 * -1
 			});
+
+			if (this.options.showMask) {
+				this.initMask();
+			}
+
+			// prevent multiple event binding
+			if (! this.$overlay.attr("data-overlayloaded")) {
+				this.attachEvents();
+				this.$overlay.attr("data-overlayloaded", 1);
+			}
+
+			if (this.options.animation && ! $el.animate)
+				this.options.animation = false;
+
+			if (this.options.autoOpen) {
+				this.open();
+			}
+		},
+		
+		attachEvents: function () {
+			var self = this;
+
+			this.$overlay
+				.find(this.options.closeSelector)
+				.click(function () {
+					self.close();
+				});
 
 			if (this.options.closeOnEsc) {
 				$(document).keyup(function (e) {
@@ -128,161 +142,182 @@
 				});
 			}
 
-			if (this.cover && this.options.closeOnMaskClick) {
-				this.cover.getMask().click(function () {
+			if (this.mask && this.options.closeOnMaskClick) {
+				this.mask.getMask().click(function () {
 					self.close();
 				});
 			}
-			this.$overlay.attr("data-overlayloaded", 1);
-		}
+		},
+		
+		initMask: function () {
+			// If there is no explicit duration set for OverlayMask
+			// set it from overlay animation
+			if (! this.options.mask.durationIn) 
+				this.options.mask.durationIn = this.options.animationIn.duration;
 
-		if (this.options.autoOpen) {
-			this.open();
-		}
-	}
+			if (! this.options.mask.durationOut) 
+				this.options.mask.durationOut = this.options.animationOut.duration;
 
-	Overlay.prototype.open = function () {
-		if (this.options.onBeforeOpen(this.$overlay) === false) {
-			return;
-		}
+			if (typeof this.options.mask.animation !== "boolean")
+				this.options.mask.animation = this.options.animation;
 
-		if (this.$overlay.animate) {
-			var self = this,
-				animationIn = clone(this.options.animationIn);
+			this.mask = new OverlayMask(this.options.mask);
+		},
+		
+		open: function () {
+			if (this.options.onBeforeOpen(this.$overlay) === false) {
+				return;
+			}
 
-			this.$overlay.css(
-				extend({display: "block"}, this.options.startAnimationCss)
-			);
+			if (this.options.animation) {
+				var self = this,
+					animationIn = clone(this.options.animationIn);
 
-			this.$overlay.animate(
-				extend(animationIn, {
-					complete: function () {
-						self.options.onOpen(self.$overlay);
-					}
-				})
-			);
-		} else {
-			this.$overlay.css({
-				display: "block"
-			});
-			this.options.onOpen(this.$overlay);
-		}
+				this.$overlay.css(
+					extend({display: "block"}, this.options.startAnimationCss)
+				);
 
-		if (this.cover) {
-			this.cover.show();
+				this.$overlay.animate(
+					extend(animationIn, {
+						complete: function () {
+							self.options.onOpen(self.$overlay);
+						}
+					})
+				);
+			} else {
+				this.$overlay.css({
+					display: "block"
+				});
+				this.options.onOpen(this.$overlay);
+			}
+
+			if (this.mask) {
+				this.mask.show();
+			}
+		},
+
+		close: function () {
+			if (this.options.onBeforeClose(this.$overlay) === false) {
+				return;
+			}
+
+			if (this.options.animation) {
+				var self = this,
+					animationOut = clone(this.options.animationOut);
+
+				this.$overlay.animate(
+					extend(animationOut, {
+						complete: function () {
+							self.$overlay.css({display: "none"});
+							self.options.onClose(self.$overlay);
+						}
+					})
+				);
+			} else {
+				this.$overlay.css({
+					display: "none"
+				});
+				this.options.onClose(this.$overlay);
+			}
+
+			if (this.mask) {
+				this.mask.hide();
+			}
+		},
+
+		onKeyUp: function (e) {
+			if (e.keyCode === 27
+				&& this.$overlay.css("display") !== "none") {
+				this.close();
+			}
 		}
 	};
-	
-	Overlay.prototype.close = function () {
-		if (this.options.onBeforeClose(this.$overlay) === false) {
-			return;
-		}
 
-		if (this.$overlay.animate) {
-			var self = this,
-				animationOut = clone(this.options.animationOut);
-
-			this.$overlay.animate(
-				extend(animationOut, {
-					complete: function () {
-						self.$overlay.css({display: "none"});
-						self.options.onClose(self.$overlay);
-					}
-				})
-			);
-		} else {
-			this.$overlay.css({
-				display: "none"
-			});
-			this.options.onClose(this.$overlay);
-		}
-
-		if (this.cover) {
-			this.cover.hide();
-		}
-	};
-	
-	Overlay.prototype.onKeyUp = function (e) {
-		if (e.keyCode === 27
-			&& this.$overlay.css("display") !== "none") {
-			this.close();
-		}
-	};
-	
 	function OverlayMask (settings) {
-		this.options = {
+		this.init(settings);
+	}
+	
+	OverlayMask.prototype = {
+		options: {
 			id: "ender-overlay-mask",
 			zIndex: 9998,
 			opacity: 0.6,
-			color: "#777"
-		};
-		extend(this.options, settings || {});
-
-		var $cover = $("#" + this.options.id);
+			color: "#777",
+			animation: true // morpheus required
+		},
 		
-		if (! $cover.length) {
-			$cover = $("<div></div>")
-				.attr("id", this.options.id)
-				.css({
-					display: "none",
-					position: "absolute",
-					top: 0,
-					left: 0
-				})
-				.appendTo("body");
-		}
+		init: function (options) {
+			extend(this.options, options || {});
 
-		this.$cover = $cover;
-	}
-	
-	OverlayMask.prototype.show = function () {
-		// apply instance mask options
-		var opt = this.options;
+			var $mask = $("#" + this.options.id);
 
-		this.$cover.css({
-			zIndex: opt.zIndex,
-			backgroundColor: opt.color,
-			width: $(document).width(),
-			height: $(document).height()
-		});
+			if (! $mask.length) {
+				$mask = $("<div></div>")
+					.attr("id", this.options.id)
+					.css({
+						display: "none",
+						position: "absolute",
+						top: 0,
+						left: 0
+					})
+					.appendTo("body");
+			}
 
-		if (this.$cover.animate) {
-			this.$cover.css({
-				opacity: 0,
-				display: "block"
-			}).animate({
-				opacity: opt.opacity,
-				duration: opt.durationIn
+			if (this.options.animation && ! $mask.animate)
+				this.options.animation = false;
+
+			this.$mask = $mask;
+		},
+		
+		show: function () {
+			// apply instance mask options
+			var opt = this.options;
+
+			this.$mask.css({
+				zIndex: opt.zIndex,
+				backgroundColor: opt.color,
+				width: $(document).width(),
+				height: $(document).height()
 			});
-		} else {
-			this.$cover.css({
-				display: "block",
-				opacity: opt.opacity
-			});
+
+			if (this.options.animation) {
+				this.$mask.css({
+					opacity: 0,
+					display: "block"
+				}).animate({
+					opacity: opt.opacity,
+					duration: opt.durationIn
+				});
+			} else {
+				this.$mask.css({
+					display: "block",
+					opacity: opt.opacity
+				});
+			}
+		},
+
+		hide: function () {
+			if (this.options.animation) {
+				var self = this;
+				this.$mask.animate({
+					opacity: 0,
+					duration: this.options.durationOut,
+					complete: function () {
+						self.$mask.css({
+							display: "none"
+						});
+					}
+				});
+			} else {
+				this.$mask.css({
+					display: "none"
+				});
+			}
+		},
+
+		getMask: function () {
+			return this.$mask;
 		}
-	};
-	
-	OverlayMask.prototype.hide = function () {
-		if (this.$cover.animate) {
-			var self = this;
-			this.$cover.animate({
-				opacity: 0,
-				duration: this.options.durationOut,
-				complete: function () {
-					self.$cover.css({
-						display: "none"
-					});
-				}
-			});
-		} else {
-			this.$cover.css({
-				display: "none"
-			});
-		}
-	};
-	
-	OverlayMask.prototype.getMask = function () {
-		return this.$cover;
 	};
 	
 	$.ender({

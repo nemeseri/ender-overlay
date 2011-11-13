@@ -110,7 +110,9 @@
 		<script src="ender.overlay.js"></script>
 		<script>
 			$(document).ready(function () {
-				var ovr = $("#overlay").overlay();
+				var ovr = $("#overlay").overlay({
+					animation: false
+				});
 
 				$("#trigger").click(function (e) {
 					e.preventDefault();
