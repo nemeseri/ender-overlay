@@ -1,0 +1,14 @@
+{
+	"name": "ender-overlay",
+	"description": "Simple Overlays for Ender",
+	"version": "0.0.1",
+	"authors": ["Andras Nemeseri <@nemeseri>"],
+	"keywords": ["ender", "overlay", "ui", "lightbox", "fancybox"],
+	"homepage": "https://github.com/nemeseri/ender-overlay",
+	"dependencies": {
+		"jeesh" : "*",
+		"morpheus" : "*" //optional
+	},
+	"main": "./ender.overlay.js",
+	"ender": "noop"
+}
