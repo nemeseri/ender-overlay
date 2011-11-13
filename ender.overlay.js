@@ -67,6 +67,7 @@
 			closeOnEsc: true,
 			closeOnMaskClick: true,
 			autoOpen: false,
+			allowMultipleDisplay: false,
 
 			// morpheus required
 			animation: true,
@@ -96,18 +97,7 @@
 		
 		init: function ($el, options) {
 			extend(this.options, options || {});
-
-			// setup overlay
-			this.$overlay = $el.addClass(this.options.cssClass)
-								.appendTo("body");
-
-			this.$overlay.css({
-				position: this.options.position,
-				top: this.options.top,
-				left: "50%",
-				zIndex: this.options.zIndex,
-				marginLeft: this.$overlay.width() / 2 * -1
-			});
+			this.$overlay = $el;
 
 			if (this.options.showMask) {
 				this.initMask();
@@ -173,10 +163,30 @@
 			this.mask = new OverlayMask(this.options.mask);
 		},
 		
+		setupOverlay: function () {
+			// setup overlay
+			this.$overlay
+				.addClass(this.options.cssClass)
+				.appendTo("body");
+
+			this.$overlay.css({
+				position: this.options.position,
+				top: this.options.top,
+				left: "50%",
+				zIndex: this.options.zIndex,
+				marginLeft: this.$overlay.width() / 2 * -1
+			});
+		},
+		
 		open: function (dontOpenMask) {
 			if (this.options.onBeforeOpen(this.$overlay) === false) {
 				return;
 			}
+
+			this.setupOverlay();
+
+			if (! this.options.allowMultipleDisplay)
+				$(document).trigger("ender-overlay.close");
 
 			if (this.options.animation) {
 				var self = this,
@@ -207,10 +217,11 @@
 		},
 
 		close: function (dontHideMask) {
-			if (this.options.onBeforeClose(this.$overlay) === false) {
+			if (this.options.onBeforeClose(this.$overlay) === false
+				|| this.$overlay.css("display") === "none") {
 				return;
 			}
-
+			
 			if (this.options.animation) {
 				var self = this,
 					animationOut = clone(this.options.animationOut);
