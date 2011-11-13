@@ -4,35 +4,40 @@
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>Docs: ender-overlay</title>
 		<link href='http://fonts.googleapis.com/css?family=Paytone+One' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" href="demo/main.css" type="text/css">
+		<link rel="stylesheet" href="demos/main.css" type="text/css">
 	</head>
 	<body>
 		<div id="container" class="docs">
 			<h1>ender-overlay</h1>
 			<p>
-				A simple overlay plugin for <a href="http://ender.no.de/">Ender</a>. Soon you will be able to build this as an Ender module. It requires <a href="https://github.com/ender-js/jeesh">Jeesh</a> and <a href="https://github.com/ded/morpheus">Morpheus</a> for animations. Even though, you can leave Morpheus out if you are fine without animations.
+				Ender-overlay is a highly configurable overlay plugin for <a href="http://ender.no.de/">Ender</a>. 
+				It requires <a href="https://github.com/ender-js/jeesh">Jeesh</a> and <a href="https://github.com/ded/morpheus">Morpheus</a> for animations.
+				Even though, you can leave Morpheus out if you are fine without animations. You can easily build your 
+				own gallery or other overlay based logic on the top of this plugin. 
 			</p>
 			<p>
-				It's a very simple overlay solution. You can easily build your own gallery or other overlay based logic on the top of this plugin. 
+				<strong>Currently it's in a pre-alpha state, please do not use it in a production environment!</strong>
+				Check back for stable builds. Currently it's tested in Chrome, Firefox, Safari and Opera. 
+				I'm going to add IE7+ support soon.
+			</p>
+			<p>
 				I got some inspiration from <a href="http://flowplayer.org/tools/">jQuery Tools</a>, thanks for that.
 			</p>
 			
 			<h2>Download</h2>
 			
-			<p>You can get the source from <a href="https://github.com/nemeseri/ender-overlay">Github</a>.</p>
-			<a href="https://raw.github.com/nemeseri/ender-overlay/master/ender.overlay.js" class="button">Download</a>
+			<p>The source is hosted at <a href="https://github.com/nemeseri/ender-overlay">Github</a>.</p>
+			<a href="https://raw.github.com/nemeseri/ender-overlay/master/ender.overlay.js" class="button">Download v0.0.1</a>
 			
 			<h2>Demos</h2>
 			
 			<ul>
-				<li><a href="demo/demo.html">Basic configuration</a></li>
+				<li><a href="demos/demo.html">Basic configuration</a></li>
 			</ul>
 			
-			<h2>Configuration</h2>
-			
-			<h3>Overlay configuration</h3>
+			<h2>Overlay configuration</h2>
 
-			<table>
+			<table class="config">
 				<thead>
 					<tr>
 						<th>Property</th>
@@ -103,12 +108,26 @@
 					</tr>
 					<tr>
 						<td>animationIn</td>
-						<td>{ opacity: 1, duration: 200 }</td>
+						<td>
+<pre>
+{
+    opacity: 1,
+    duration: 200
+}
+</pre>
+						</td>
 						<td>Opening animation params. Passed directly to <a href="https://github.com/ded/morpheus">Morpheus</a>. Please refer the docs of Morpheus for more information or check out the animation tutorials. If the mask is enabled it will inherit the animation duration automatically.</td>
 					</tr>
 					<tr>
 						<td>animationOut</td>
-						<td>{ opacity: 0, duration: 200 }</td>
+						<td>
+<pre>
+{
+    opacity: 0,
+    duration: 200
+}
+</pre>
+						</td>
 						<td>Closing animation params. Passed directly to <a href="https://github.com/ded/morpheus">Morpheus</a>. Please refer the docs of Morpheus for more information or check out the animation tutorials. If the mask is enabled it will inherit the animation duration automatically.</td>
 					</tr>
 					<tr>
@@ -139,9 +158,9 @@
 				</tbody>
 			</table>
 			
-			<h3 id="maskConf">Mask configuration</h3>
+			<h2 id="maskConf">Mask configuration</h2>
 			
-			<table>
+			<table class="config">
 				<thead>
 					<tr>
 						<th>Property</th>
@@ -192,7 +211,7 @@
 
 			<p>The following events are supported. The event-listeners are binded to the <samp>document</samp> object. You can trigger the events this way: <samp>$(document).trigger("ender-overlay.close");</samp></p>
 
-			<table>
+			<table class="events">
 				<thead>
 					<tr>
 						<th>Event name</th>
@@ -215,7 +234,7 @@
 			
 			<p>The $.overlay method will return the Overlay object. And you can call the following methods on it.</p>
 			
-			<table>
+			<table class="methods">
 				<thead>
 					<tr>
 						<th>Method</th>

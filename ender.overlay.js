@@ -96,7 +96,7 @@
 		},
 		
 		init: function ($el, options) {
-			extend(this.options, options || {});
+			this.setOptions(options);
 			this.$overlay = $el;
 
 			if (this.options.showMask) {
@@ -179,7 +179,7 @@
 		},
 		
 		open: function (dontOpenMask) {
-			if (this.options.onBeforeOpen(this.$overlay) === false) {
+			if (this.options.onBeforeOpen(this) === false) {
 				return;
 			}
 
@@ -199,7 +199,7 @@
 				this.$overlay.animate(
 					extend(animationIn, {
 						complete: function () {
-							self.options.onOpen(self.$overlay);
+							self.options.onOpen(self);
 						}
 					})
 				);
@@ -207,7 +207,7 @@
 				this.$overlay.css({
 					display: "block"
 				});
-				this.options.onOpen(this.$overlay);
+				this.options.onOpen(this);
 			}
 
 			if (this.mask && 
@@ -217,7 +217,7 @@
 		},
 
 		close: function (dontHideMask) {
-			if (this.options.onBeforeClose(this.$overlay) === false
+			if (this.options.onBeforeClose(this) === false
 				|| this.$overlay.css("display") === "none") {
 				return;
 			}
@@ -230,7 +230,7 @@
 					extend(animationOut, {
 						complete: function () {
 							self.$overlay.css({display: "none"});
-							self.options.onClose(self.$overlay);
+							self.options.onClose(self);
 						}
 					})
 				);
@@ -238,7 +238,7 @@
 				this.$overlay.css({
 					display: "none"
 				});
-				this.options.onClose(this.$overlay);
+				this.options.onClose(this);
 			}
 
 			if (this.mask && 
@@ -252,6 +252,18 @@
 				&& this.$overlay.css("display") !== "none") {
 				this.close();
 			}
+		},
+		
+		getOverlay: function () {
+			return this.$overlay;
+		},
+
+		getOptions: function () {
+			return this.options;
+		},
+		
+		setOptions: function (options) {
+			extend(this.options, options || {});
 		}
 	};
 
@@ -264,8 +276,7 @@
 			id: "ender-overlay-mask",
 			zIndex: 9998,
 			opacity: 0.6,
-			color: "#777",
-			animation: true // morpheus required
+			color: "#777"
 		},
 		
 		init: function (options) {
