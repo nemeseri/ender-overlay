@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Overlay Demo</title>
+		<style>
+			
+			body {
+				color: #333;
+				font: 13px/18px Arial,Helvetica,FreeSans,"Liberation Sans","Nimbus Sans L",sans-serif;
+			}
+			
+			.clr:after {
+				content: ".";
+				display: block;
+				height: 0;
+				clear: both;
+				visibility: hidden;
+			}
+			
+			.clr {
+				zoom: 1;
+			}
+		
+			.ender-overlay {
+				display: none;
+				width: 800px;
+				position: relative;
+				border: 1px solid #bbb;
+				background: #efefef;
+				background: -moz-linear-gradient(top, #efefef 0%, #bbb 100%);
+				background: -webkit-gradient(
+					linear, 
+					left top, 
+					left bottom, 
+					color-stop(0%,#efefef), 
+					color-stop(100%,#bbb)
+				);
+				background: -webkit-linear-gradient(top, #efefef 0%,#bbb 100%);
+				background: -o-linear-gradient(top, #efefef 0%,#bbb 100%);
+				background: -ms-linear-gradient(top, #efefef 0%,#bbb 100%);
+				background: linear-gradient(top, #efefef 0%,#bbb 100%);
+				
+				-webkit-box-shadow: 0 0 15px 0 rgba(0,0,0,.4);
+				-moz-box-shadow: 0 0 15px 0 rgba(0,0,0,.4);
+				box-shadow: 0 0 15px 0 rgba(0,0,0,.4);
+			}
+			
+			.ender-overlay .close {
+				position: absolute;
+				width: 24px;
+				height: 24px;
+				top: -10px;
+				right: -10px;
+				
+				text-align: center;
+				color: #fff;
+				font-weight: bold;
+				font-size: 15px;
+				line-height: 24px;
+				
+				background: #333;
+				-webkit-border-radius: 13px;
+				-moz-border-radius: 13px;
+				border-radius: 13px;
+				
+				-webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,.4);
+				-moz-box-shadow: 0 0 5px 0 rgba(0,0,0,.4);
+				box-shadow: 0 0 5px 0 rgba(0,0,0,.4);
+				cursor: pointer;
+				
+				border: 1px solid #fff;
+			}
+			
+			.ender-overlay img {
+				float: left;
+				border-right: 2px solid #bbb;
+			}
+			
+			.ender-overlay div {
+				float: left;
+				width: 278px;
+				padding: 10px;
+			}
+
+			.ender-overlay h3 {
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<a href="#" id="trigger">Open up overlay</a>
+
+		<div id="overlay" class="ender-overlay clr">
+			<a class="close" title="Close">&#9747;</a>
+			<img src="http://farm7.static.flickr.com/6033/6333626753_4f52b250c3.jpg" alt="The Geek Joy" width="500" height="500">
+			<div>
+				<h3>Consectetur Adipisicing Elit</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+				<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+				<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			</div>
+		</div>
+		<script src="lib/jeesh.min.js"></script>
+		<script src="lib/morpheus.js"></script> <!-- optional -->
+		<script src="lib/morpheus.ender.js"></script> <!-- optional -->
+
+		<script src="src/ender-overlay.js"></script>
+		<script>
+			$(document).ready(function () {
+				var ovr = $("#overlay").overlay();
+
+				$("#trigger").click(function (e) {
+					e.preventDefault();
+					ovr.open();
+				});
+			});
+		</script>
+	</body>
+</html>
