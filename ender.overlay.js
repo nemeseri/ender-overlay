@@ -58,7 +58,7 @@
 
 	Overlay.prototype = {
 		options: {
-			top: "100px",
+			top: 80,
 			position: "absolute",
 			cssClass: "ender-overlay",
 			closeSelector: ".close",
@@ -122,7 +122,8 @@
 
 			this.$overlay
 				.find(this.options.closeSelector)
-				.click(function () {
+				.click(function (e) {
+					e.preventDefault();
 					self.close();
 				});
 
@@ -164,14 +165,19 @@
 		},
 		
 		setupOverlay: function () {
+			var topPos = this.options.top;
+
 			// setup overlay
 			this.$overlay
 				.addClass(this.options.cssClass)
 				.appendTo("body");
 
+			if (this.options.position === "absolute") 
+				topPos += $(window).scrollTop();
+
 			this.$overlay.css({
 				position: this.options.position,
-				top: this.options.top,
+				top: topPos,
 				left: "50%",
 				zIndex: this.options.zIndex,
 				marginLeft: this.$overlay.width() / 2 * -1

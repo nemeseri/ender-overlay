@@ -7,12 +7,18 @@
 		<link rel="stylesheet" href="ender-overlay.css" type="text/css">
 
 		<!-- syntax highlights -->
-		<link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/default.min.css">
+		<link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/github.min.css">
+		<style>
+			pre code {
+				border: 1px solid #dbeafd;
+				background: #f3f8fd;
+			}
+		</style>
 	</head>
 	<body>
 		<div id="container" class="demo">
 
-			<h1>Basic configuration</h1>
+			<h1>Basic configuration tutorial</h1>
 
 			<p>Below you can see the overlay triggers. You can open up the overlays by clicking on them.</p>
 
@@ -60,10 +66,12 @@
 			<pre><code>&lt;div id=&quot;overlay-one&quot; class=&quot;ender-overlay clr&quot;&gt;
     &lt;a class=&quot;close&quot;&gt;Close&lt;/a&gt;
     &lt;h1&gt;First Overlay&lt;/h1&gt;
+    ...
 &lt;/div&gt;
 &lt;div id=&quot;overlay-two&quot; class=&quot;ender-overlay clr&quot;&gt;
     &lt;a class=&quot;close&quot;&gt;Close&lt;/a&gt;
     &lt;h1&gt;Second Overlay&lt;/h1&gt;
+    ...
 &lt;/div&gt;</code></pre>
 			
 			<h3>Style your overlays</h3>
@@ -73,7 +81,8 @@
     display: none;
     width: 600px;
     background: #c8e1ff;
-}</code></pre>
+}
+...</code></pre>
 
 
 			<h2>Control your overlays</h2>
@@ -209,7 +218,9 @@
 			});
 		</script>
 		
+
 		<script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
 		<script type="text/javascript">
 		  var _gaq = _gaq || [];
 		  _gaq.push(['_setAccount', 'UA-25617420-1']);

@@ -215,7 +215,7 @@ h1, h2, h3, h4, h5, h6 {
 	background: #dbeafd;
 }
 
-.docs tr:nth-child(even) {
+.docs tr:nth-child(even) td {
 	background: #f3f8fd;
 }
 
