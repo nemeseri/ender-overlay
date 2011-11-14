@@ -122,6 +122,8 @@
 				</div>
 			</div> <!-- .clr -->
 
+			<p><a href="../index.html">Go back to the documentation</a></p>
+
 		</div> <!-- #container -->
 		
 		
@@ -130,33 +132,11 @@
 		<script>
 			$(document).ready(function () {
 				// init overlays
-				var ovrImage = $("#overlay-image").overlay();
-				var ovrHtml = $("#overlay-html").overlay();
-				var ovrIFrame = $("#overlay-iframe").overlay();
-				var ovrFlash = $("#overlay-flash").overlay();
-				var ovrVimeo = $("#overlay-vimeo").overlay();
-
-				// open overlays on clicks
-				$("#trigger-image").click(function (e) {
-					e.preventDefault();
-					ovrImage.open();
-				});
-				$("#trigger-html").click(function (e) {
-					e.preventDefault();
-					ovrHtml.open();
-				});
-				$("#trigger-iframe").click(function (e) {
-					e.preventDefault();
-					ovrIFrame.open();
-				});
-				$("#trigger-flash").click(function (e) {
-					e.preventDefault();
-					ovrFlash.open();
-				});
-				$("#trigger-vimeo").click(function (e) {
-					e.preventDefault();
-					ovrVimeo.open();
-				});
+				$("#overlay-image").overlay({ trigger: "#trigger-image" });
+				$("#overlay-html").overlay({ trigger: "#trigger-html" });
+				$("#overlay-iframe").overlay({ trigger: "#trigger-iframe" });
+				$("#overlay-flash").overlay({ trigger: "#trigger-flash" });
+				$("#overlay-vimeo").overlay({ trigger: "#trigger-vimeo" });
 			});
 		</script>
 

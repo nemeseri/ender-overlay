@@ -57,9 +57,6 @@
 &lt;/a&gt;
 &lt;a id=&quot;trigger-two&quot; class=&quot;thumbs&quot;&gt;
     &lt;img src=&quot;http://path.to.your.image&quot; alt=&quot;The Raid&quot; width=&quot;100&quot; height=&quot;100&quot;&gt;
-&lt;/a&gt;
-&lt;a id=&quot;trigger-three&quot; class=&quot;thumbs&quot;&gt;
-    &lt;img src=&quot;http://path.to.your.image&quot; alt=&quot;The Price of Information&quot; width=&quot;100&quot; height=&quot;100&quot;&gt;
 &lt;/a&gt;</code></pre>
 
 
@@ -75,11 +72,6 @@
 &lt;div id=&quot;overlay-two&quot; class=&quot;ender-overlay clr&quot;&gt;
     &lt;a class=&quot;close&quot;&gt;Close&lt;/a&gt;
     &lt;h1&gt;Second Overlay&lt;/h1&gt;
-    ...
-&lt;/div&gt;
-&lt;div id=&quot;overlay-three&quot; class=&quot;ender-overlay clr&quot;&gt;
-    &lt;a class=&quot;close&quot;&gt;Close&lt;/a&gt;
-    &lt;h1&gt;Third Overlay&lt;/h1&gt;
     ...
 &lt;/div&gt;</code></pre>
 			
@@ -103,30 +95,27 @@
 			
 			<pre><code>$(document).ready(function () {
     // init overlays
-    var ovrOne = $(&quot;#overlay-one&quot;).overlay();
-    var ovrTwo = $(&quot;#overlay-two&quot;).overlay();
-    var ovrThree = $(&quot;#overlay-three&quot;).overlay();
 
-    // open overlays on clicks
-    $(&quot;#trigger-one&quot;).click(function (e) {
-        e.preventDefault();
-        ovrOne.open();
+    // init with trigger selector
+    $("#overlay-one").overlay({
+        trigger: "#trigger-one"
     });
+
+    // Overlay objects are returned
+    // check out the documentation for supported methods
+    var ovrTwo = $(&quot;#overlay-two&quot;).overlay();
+
+    // you have to assign events manually
     $(&quot;#trigger-two&quot;).click(function (e) {
         e.preventDefault();
         ovrTwo.open();
-    });
-    $(&quot;#trigger-three&quot;).click(function (e) {
-        e.preventDefault();
-        ovrThree.open();
     });
 });</code></pre>
 
 			<h2>Further information</h2>
 			
 			<p>
-				Please read the documentation on configuration <a href="../index.html">here</a>. 
-				I'm going to add new examples soon.
+				Please read the documentation on configuration <a href="../index.html">here</a>.
 			</p>
 
 
@@ -262,15 +251,17 @@
 		<script>
 			$(document).ready(function () {
 				// init overlays
-				var ovrOne = $("#overlay-one").overlay();
-				var ovrTwo = $("#overlay-two").overlay();
+				
+				// init with trigger selector
+				$("#overlay-one").overlay({
+					trigger: "#trigger-one"
+				});
+				
+				// you have to assign events manually
+				var ovrTwo = $("#overlay-two").overlay(); // Overlay objects are returned
 				var ovrThree = $("#overlay-three").overlay();
 
 				// open overlays on clicks
-				$("#trigger-one").click(function (e) {
-					e.preventDefault();
-					ovrOne.open();
-				});
 				$("#trigger-two").click(function (e) {
 					e.preventDefault();
 					ovrTwo.open();

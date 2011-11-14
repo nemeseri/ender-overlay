@@ -276,7 +276,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .grid {
 	float: left;
-	margin: 0 20px 0 0;
+	margin: 0 20px 20px 0;
 }
 
 .grid h2 {

@@ -68,9 +68,14 @@
 						<td>The common CSS style for your overlays. You can use this to style your overlays.</td>
 					</tr>
 					<tr>
-						<td>closeSelector</td>
+						<td>close</td>
 						<td>".close"</td>
-						<td>Every matched elements inside the overlay will close the overlay on a click event.</td>
+						<td>Selector or Ender DOM object. Every matched elements inside the overlay will close the overlay on a click event.</td>
+					</tr>
+					<tr>
+						<td>trigger</td>
+						<td>null</td>
+						<td>Selector or Ender DOM object. Every matched elements will be assigned with a click event handler wich opens the overlay. If you don't set this, you need to open the overlay manually with a <a href="#methods">method</a> call.</td>
 					</tr>
 					<tr>
 						<td>zIndex</td>
@@ -236,7 +241,7 @@
 				</tbody>
 			</table>
 			
-			<h2>Methods</h2>
+			<h2 id="methods">Methods</h2>
 			
 			<p>The $.overlay method will return the Overlay object. And you can call the following methods on it.</p>
 			

@@ -57,45 +57,46 @@
 	}
 
 	Overlay.prototype = {
-		options: {
-			top: 80,
-			position: "absolute",
-			cssClass: "ender-overlay",
-			closeSelector: ".close",
-			zIndex: 9999,
-			showMask: true,
-			closeOnEsc: true,
-			closeOnMaskClick: true,
-			autoOpen: false,
-			allowMultipleDisplay: false,
-
-			// morpheus required
-			animation: true,
-			// start values before animation
-			startAnimationCss: {
-				opacity: 0
-			},
-
-			// morpheus animation options
-			animationIn: {
-				opacity: 1,
-				duration: 200
-			},
-
-			animationOut: {
-				opacity: 0,
-				duration: 200
-			},
-
-			mask: {},
-
-			onBeforeOpen: function () {},
-			onBeforeClose: function () {},
-			onOpen: function () {},
-			onClose: function () {}
-		},
-		
 		init: function ($el, options) {
+			this.options = {
+				top: 80,
+				position: "absolute",
+				cssClass: "ender-overlay",
+				close: ".close",
+				trigger: null,
+				zIndex: 9999,
+				showMask: true,
+				closeOnEsc: true,
+				closeOnMaskClick: true,
+				autoOpen: false,
+				allowMultipleDisplay: false,
+
+				// morpheus required
+				animation: true,
+				// start values before animation
+				startAnimationCss: {
+					opacity: 0
+				},
+
+				// morpheus animation options
+				animationIn: {
+					opacity: 1,
+					duration: 200
+				},
+
+				animationOut: {
+					opacity: 0,
+					duration: 200
+				},
+
+				mask: {},
+
+				onBeforeOpen: function () {},
+				onBeforeClose: function () {},
+				onOpen: function () {},
+				onClose: function () {}
+			};
+			
 			this.setOptions(options);
 			this.$overlay = $el;
 
@@ -118,10 +119,19 @@
 		},
 		
 		attachEvents: function () {
-			var self = this;
+			var self = this,
+				opt  = this.options;
+
+			// Bind open method to trigger's click event
+			if (opt.trigger && $(opt.trigger).length) {
+				$(opt.trigger).click(function (e) {
+					e.preventDefault();
+					self.open();
+				});
+			}
 
 			this.$overlay
-				.find(this.options.closeSelector)
+				.find(opt.close)
 				.click(function (e) {
 					e.preventDefault();
 					self.close();
@@ -136,13 +146,13 @@
 				self.close(true);
 			});
 
-			if (this.options.closeOnEsc) {
+			if (opt.closeOnEsc) {
 				$(document).keyup(function (e) {
 					self.onKeyUp(e);
 				});
 			}
 
-			if (this.mask && this.options.closeOnMaskClick) {
+			if (this.mask && opt.closeOnMaskClick) {
 				this.mask.getMask().click(function () {
 					self.close();
 				});
