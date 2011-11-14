@@ -2,7 +2,7 @@
 <html lang="en-us">
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-		<title>Overlay Demo</title>
+		<title>Ender-overlay: Basic Configuration Tutorial</title>
 		<link rel="stylesheet" href="main.css" type="text/css">
 		<link rel="stylesheet" href="ender-overlay.css" type="text/css">
 
@@ -18,13 +18,14 @@
 	<body>
 		<div id="container" class="demo">
 
-			<h1>Basic configuration tutorial</h1>
+			<h1>Basic Configuration Tutorial</h1>
 
 			<p>Below you can see the overlay triggers. You can open up the overlays by clicking on them.</p>
 
 			<div class="clr">
 				<a id="trigger-one" class="thumbs"><img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32_t.jpg" alt="Undercover" width="100" height="100"></a>
 				<a id="trigger-two" class="thumbs"><img src="http://farm6.static.flickr.com/5123/5329325629_ba31d93a48_t.jpg" alt="The Raid" width="100" height="100"></a>
+				<a id="trigger-three" class="thumbs"><img src="http://farm6.static.flickr.com/5250/5348822142_9c1e7e8bdd_t.jpg" alt="The Price of Information" width="100" height="100"></a>
 			</div>
 			
 			<h2>Include Jeesh and Morpheus</h2>
@@ -56,12 +57,15 @@
 &lt;/a&gt;
 &lt;a id=&quot;trigger-two&quot; class=&quot;thumbs&quot;&gt;
     &lt;img src=&quot;http://path.to.your.image&quot; alt=&quot;The Raid&quot; width=&quot;100&quot; height=&quot;100&quot;&gt;
+&lt;/a&gt;
+&lt;a id=&quot;trigger-three&quot; class=&quot;thumbs&quot;&gt;
+    &lt;img src=&quot;http://path.to.your.image&quot; alt=&quot;The Price of Information&quot; width=&quot;100&quot; height=&quot;100&quot;&gt;
 &lt;/a&gt;</code></pre>
 
 
 			<h3>Build your overlays</h3>
 			
-			<p>Keep in mind that you need to add "close" button manually (if you want).</p>
+			<p>Keep in mind that you need to add "close" button manually (if you want). You can place the hidden overlays anywhere you want.</p>
 			
 			<pre><code>&lt;div id=&quot;overlay-one&quot; class=&quot;ender-overlay clr&quot;&gt;
     &lt;a class=&quot;close&quot;&gt;Close&lt;/a&gt;
@@ -71,6 +75,11 @@
 &lt;div id=&quot;overlay-two&quot; class=&quot;ender-overlay clr&quot;&gt;
     &lt;a class=&quot;close&quot;&gt;Close&lt;/a&gt;
     &lt;h1&gt;Second Overlay&lt;/h1&gt;
+    ...
+&lt;/div&gt;
+&lt;div id=&quot;overlay-three&quot; class=&quot;ender-overlay clr&quot;&gt;
+    &lt;a class=&quot;close&quot;&gt;Close&lt;/a&gt;
+    &lt;h1&gt;Third Overlay&lt;/h1&gt;
     ...
 &lt;/div&gt;</code></pre>
 			
@@ -96,6 +105,7 @@
     // init overlays
     var ovrOne = $(&quot;#overlay-one&quot;).overlay();
     var ovrTwo = $(&quot;#overlay-two&quot;).overlay();
+    var ovrThree = $(&quot;#overlay-three&quot;).overlay();
 
     // open overlays on clicks
     $(&quot;#trigger-one&quot;).click(function (e) {
@@ -105,6 +115,10 @@
     $(&quot;#trigger-two&quot;).click(function (e) {
         e.preventDefault();
         ovrTwo.open();
+    });
+    $(&quot;#trigger-three&quot;).click(function (e) {
+        e.preventDefault();
+        ovrThree.open();
     });
 });</code></pre>
 
@@ -119,7 +133,7 @@
 
 <!-- ========= OVERLAY HTML START ========== -->
 
-			<div id="overlay-one" class="ender-overlay clr">
+			<div id="overlay-one" class="ender-overlay overlay-html clr">
 				<a class="close" title="Close">&#9747;</a>
 				<img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32.jpg" alt="Undercover" width="500" height="500">
 				<div>
@@ -154,9 +168,9 @@
 					<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5248981729/request/">here</a></p>
 					<p>&copy; All Rights Reserved</p>
 				</div>
-			</div>
+			</div> <!-- #overlay-one -->
 
-			<div id="overlay-two" class="ender-overlay clr">
+			<div id="overlay-two" class="ender-overlay overlay-html clr">
 				<a class="close" title="Close">&#9747;</a>
 				<img src="http://farm6.static.flickr.com/5123/5329325629_ba31d93a48.jpg" alt="The Raid" width="500" height="500">
 				<div>
@@ -193,10 +207,55 @@
 					<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5329325629/request/">here</a></p>
 					<p>&copy; All Rights Reserved</p>
 				</div>
-			</div>
-		</div>
+			</div> <!-- #overlay-two -->
+
+			<div id="overlay-three" class="ender-overlay overlay-html clr">
+				<a class="close" title="Close">&#9747;</a>
+				<img src="http://farm6.static.flickr.com/5250/5348822142_9c1e7e8bdd.jpg" alt="The Price of Information" width="500" height="500">
+				<div>
+					<h2>The Price of Information</h2>
+					<p>by <a href="http://www.flickr.com/people/necccc/">Szabolcs Toth</a></p>
+			
+					<p>This photo was taken on December 12, 2010 in Financial District South, San Francisco, CA, US, using a Canon EOS 40D.</p>
+					<p>
+						Strobist info: YN560 bare @ 1/8 from the left, <br>
+						YN560 through white umbrella from the right @ 1/4
+						Triggered with optical slaves
+					</p>
+			
+					<h3>Tags</h3>
+					<ul>
+						<li>San Francisco</li>
+						<li>CA</li>
+						<li>sf</li>
+						<li>fun</li>
+						<li>parody</li>
+						<li>crime</li>
+						<li>sunglasses</li>
+						<li>retro</li>
+						<li>strobist</li>
+						<li>murder</li>
+						<li>scene</li>
+						<li>CSI</li>
+					</ul>
+			
+					<h3>View all sizes on Flickr</h3>
+					<ul>
+						<li><a href="http://www.flickr.com/photos/necccc/5348822142/sizes/s/in/set-72157625490624866/">Small</a></li>
+						<li><a href="http://www.flickr.com/photos/necccc/5348822142/sizes/m/in/set-72157625490624866/">Medium</a></li>
+						<li><a href="http://www.flickr.com/photos/necccc/5348822142/sizes/l/in/set-72157625490624866/">Large</a></li>
+						<li><a href="http://www.flickr.com/photos/necccc/5348822142/sizes/o/in/set-72157625490624866/">Original</a></li>
+					</ul>
+			
+					<h3>Licence</h3>
+					<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5329325629/request/">here</a></p>
+					<p>&copy; All Rights Reserved</p>
+				</div>
+			</div> <!-- #overlay-three -->
 
 <!-- ========= OVERLAY HTML END ========== -->
+
+		</div> <!-- #container -->
 
 		<script src="../ender.min.js"></script>
 		<script src="../ender.overlay.js"></script>
@@ -205,6 +264,7 @@
 				// init overlays
 				var ovrOne = $("#overlay-one").overlay();
 				var ovrTwo = $("#overlay-two").overlay();
+				var ovrThree = $("#overlay-three").overlay();
 
 				// open overlays on clicks
 				$("#trigger-one").click(function (e) {
@@ -214,6 +274,10 @@
 				$("#trigger-two").click(function (e) {
 					e.preventDefault();
 					ovrTwo.open();
+				});
+				$("#trigger-three").click(function (e) {
+					e.preventDefault();
+					ovrThree.open();
 				});
 			});
 		</script>

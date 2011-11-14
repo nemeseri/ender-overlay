@@ -1,7 +1,5 @@
 .ender-overlay {
 	display: none;
-	width: 800px;
-	position: relative;
 	border: 1px solid #bbb;
 	background: #efefef;
 	background: -moz-linear-gradient(top, #efefef 0%, #bbb 100%);
@@ -49,44 +47,75 @@
 	border: 2px solid #fff;
 }
 
-.ender-overlay img {
+.ender-overlay img,
+.ender-overlay iframe,
+.ender-overlay object,
+.ender-overlay embed {
+	display: block;
+}
+
+/* =============== HTML ============== */
+
+.overlay-html {
+	width: 800px;
+	position: relative;
+}
+
+.overlay-html img {
 	float: left;
 	border-right: 2px solid #bbb;
 }
 
-.ender-overlay div {
+.overlay-html div {
 	float: left;
 	width: 278px;
 	padding: 10px;
 }
 
-.ender-overlay h2 {
+.overlay-html h2 {
 	font-size: 20px;
 	line-height: 24px;
 }
 
-.ender-overlay h3 {
+.overlay-html h3 {
 	font-size: 13px;
 	margin: 18px 0 0;
 }
 
-.ender-overlay p,
-.ender-overlay ul {
+.overlay-html p,
+.overlay-html ul {
 	margin: 5px 0 15px;
 }
 
-.ender-overlay ul {
+.overlay-html ul {
 	padding: 0;
 }
 
-.ender-overlay li {
+.overlay-html li {
 	display: inline;
 }
 
-.ender-overlay li::after {
+.overlay-html li::after {
 	content: ",";
 }
 
-.ender-overlay li:last-child::after {
+.overlay-html li:last-child::after {
 	content: "";
 }
+
+/* =============== Image / iFrame / flash ============== */
+
+.overlay-image,
+.overlay-iframe {
+	width: 500px;
+}
+
+.overlay-flash {
+	width: 420px;
+}
+
+.overlay-vimeo {
+	width: 601px;
+}
+
+

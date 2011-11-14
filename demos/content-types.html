@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Ender-overlay: Examples with different content types</title>
+		<link rel="stylesheet" href="main.css" type="text/css">
+		<link rel="stylesheet" href="ender-overlay.css" type="text/css">
+
+		<!-- syntax highlights -->
+		<link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/github.min.css">
+		<style>
+			pre code {
+				border: 1px solid #dbeafd;
+				background: #f3f8fd;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container" class="demo">
+
+			<h1>Examples with different content types</h1>
+			
+			<p>
+				You can freely use any content in your overlays. Here you can see a couple of examples.<br> Open the source of this page to see the code. Currently you have to specify explicitly the width of the overlays.
+			</p>
+			
+			<div class="clr">
+				<div class="grid">
+					<h2>Image</h2>
+			
+					<a id="trigger-image" class="thumbs"><img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32_t.jpg" alt="Undercover" width="100" height="100"></a>
+
+					<div id="overlay-image" class="ender-overlay overlay-image">
+						<a class="close" title="Close">&#9747;</a>
+						<img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32.jpg" alt="Undercover" width="500" height="500">
+					</div> <!-- #overlay-image -->
+				</div>
+				
+				
+				<div class="grid">
+					<h2>HTML</h2>
+			
+					<a id="trigger-html" class="thumbs"><img src="http://farm6.static.flickr.com/5250/5348822142_9c1e7e8bdd_t.jpg" alt="The Price of Information" width="100" height="100"></a>
+
+					<div id="overlay-html" class="ender-overlay overlay-html">
+						<a class="close" title="Close">&#9747;</a>
+						<img src="http://farm6.static.flickr.com/5250/5348822142_9c1e7e8bdd.jpg" alt="The Price of Information" width="500" height="500">
+						<div>
+							<h2>The Price of Information</h2>
+							<p>by <a href="http://www.flickr.com/people/necccc/">Szabolcs Toth</a></p>
+
+							<p>This photo was taken on December 12, 2010 in Financial District South, San Francisco, CA, US, using a Canon EOS 40D.</p>
+							<p>
+								Strobist info: YN560 bare @ 1/8 from the left,
+								YN560 through white umbrella from the right @ 1/4,
+								Triggered with optical slaves
+							</p>
+
+							<h3>Tags</h3>
+							<ul>
+								<li>San Francisco</li>
+								<li>CA</li>
+								<li>sf</li>
+								<li>fun</li>
+								<li>parody</li>
+								<li>crime</li>
+								<li>sunglasses</li>
+								<li>retro</li>
+								<li>strobist</li>
+								<li>murder</li>
+								<li>scene</li>
+								<li>CSI</li>
+							</ul>
+
+							<h3>View all sizes on Flickr</h3>
+							<ul>
+								<li><a href="http://www.flickr.com/photos/necccc/5348822142/sizes/s/in/set-72157625490624866/">Small</a></li>
+								<li><a href="http://www.flickr.com/photos/necccc/5348822142/sizes/m/in/set-72157625490624866/">Medium</a></li>
+								<li><a href="http://www.flickr.com/photos/necccc/5348822142/sizes/l/in/set-72157625490624866/">Large</a></li>
+								<li><a href="http://www.flickr.com/photos/necccc/5348822142/sizes/o/in/set-72157625490624866/">Original</a></li>
+							</ul>
+
+							<h3>Licence</h3>
+							<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5329325629/request/">here</a></p>
+							<p>&copy; All Rights Reserved</p>
+						</div>
+					</div> <!-- #overlay-html -->
+				</div>
+				
+				<div class="grid">
+					<h2>iFrame</h2>
+			
+					<a id="trigger-iframe" class="thumbs"><img src="http://www.throughthesamedoor.com/assets/images/cnn-logo.gif" alt="CNN" width="100" height="100"></a>
+
+					<div id="overlay-iframe" class="ender-overlay overlay-iframe">
+						<a class="close" title="Close">&#9747;</a>
+						<iframe src="http://edition.cnn.com/" width="500" height="500" scrolling="no" frameborder="0" style="border:none;"></iframe>
+					</div> <!-- #overlay-iframe -->
+				</div>
+				
+				<div class="grid">
+					<h2>Flash</h2>
+			
+					<a id="trigger-flash" class="thumbs"><img src="http://www.bradfordbulls.co.uk/Media/jpg/youtube%20logo.jpg" alt="Flash object" width="100" height="100"></a>
+
+					<div id="overlay-flash" class="ender-overlay overlay-flash">
+						<a class="close" title="Close">&#9747;</a>
+						<object width="420" height="315"><param name="movie" value="http://www.youtube.com/v/_OBlgSz8sSM?version=3&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/_OBlgSz8sSM?version=3&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+					</div> <!-- #overlay-flash -->
+				</div>
+				
+				
+				<div class="grid">
+					<h2>Vimeo HTML5</h2>
+			
+					<a id="trigger-vimeo" class="thumbs"><img src="http://www.samholdren.com/vimeo-Logo2.png" alt="Vimeo HTML5 Embed" width="100" height="100"></a>
+
+					<div id="overlay-vimeo" class="ender-overlay overlay-vimeo">
+						<a class="close" title="Close">&#9747;</a>
+						<iframe src="http://player.vimeo.com/video/12132621?title=0&amp;byline=0&amp;portrait=0" width="601" height="338" frameborder="0" webkitAllowFullScreen allowFullScreen></iframe>
+					</div> <!-- #overlay-vimeo -->
+				</div>
+			</div> <!-- .clr -->
+
+		</div> <!-- #container -->
+		
+		
+		<script src="../ender.min.js"></script>
+		<script src="../ender.overlay.js"></script>
+		<script>
+			$(document).ready(function () {
+				// init overlays
+				var ovrImage = $("#overlay-image").overlay();
+				var ovrHtml = $("#overlay-html").overlay();
+				var ovrIFrame = $("#overlay-iframe").overlay();
+				var ovrFlash = $("#overlay-flash").overlay();
+				var ovrVimeo = $("#overlay-vimeo").overlay();
+
+				// open overlays on clicks
+				$("#trigger-image").click(function (e) {
+					e.preventDefault();
+					ovrImage.open();
+				});
+				$("#trigger-html").click(function (e) {
+					e.preventDefault();
+					ovrHtml.open();
+				});
+				$("#trigger-iframe").click(function (e) {
+					e.preventDefault();
+					ovrIFrame.open();
+				});
+				$("#trigger-flash").click(function (e) {
+					e.preventDefault();
+					ovrFlash.open();
+				});
+				$("#trigger-vimeo").click(function (e) {
+					e.preventDefault();
+					ovrVimeo.open();
+				});
+			});
+		</script>
+
+		<script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-25617420-1']);
+		  _gaq.push(['_trackPageview']);
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
+	</body>
+</html>
