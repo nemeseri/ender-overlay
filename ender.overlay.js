@@ -1,4 +1,4 @@
-/**
+/*!
   * Ender-Overlay: Simple Overlay for Ender
   * copyright Andras Nemeseri @nemeseri 2011 | License MIT
   * https://github.com/nemeseri/ender-overlay
