@@ -1,15 +1,15 @@
 {
 	"name": "ender-overlay",
-	"description": "Simple Overlays for Ender",
+	"description": "Highly customizable overlay for Ender",
 	"version": "0.0.1",
-	"authors": ["Andras Nemeseri <@nemeseri>"],
-	"keywords": ["ender", "overlay", "ui", "lightbox", "fancybox"],
-	"homepage": "https://github.com/nemeseri/ender-overlay",
+	"homepage": "http://nemeseri.com/ender-overlay/",
+	"author": "Andras Nemeseri <andras@nemeseri.com> (http://nemeseri.com)",
+	"keywords": ["ender", "overlay", "ui", "lightbox", "fancybox", "modal"],
+	"main": "./ender.overlay.js",
 	"dependencies": {
 		"jeesh" : "*",
 		"morpheus" : "*"
 	},
-	"main": "./ender.overlay.js",
 	"ender": "noop",
 	"repository": {
 		"type": "git",
