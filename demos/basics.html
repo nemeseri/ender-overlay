@@ -8,12 +8,6 @@
 
 		<!-- syntax highlights -->
 		<link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/github.min.css">
-		<style>
-			pre code {
-				border: 1px solid #dbeafd;
-				background: #f3f8fd;
-			}
-		</style>
 	</head>
 	<body>
 		<div id="container" class="demo">
@@ -52,7 +46,7 @@
 			<p>Because of this, you can put picture, pure HTML content, iframe into your overlay. You can even load the content with AJAX.</p>
 			
 			<h3>Add your triggers</h3>
-			<pre><code>&lt;a id=&quot;trigger-one&quot; class=&quot;thumbs&quot;&gt;
+<pre><code>&lt;a id=&quot;trigger-one&quot; class=&quot;thumbs&quot;&gt;
     &lt;img src=&quot;http://path.to.your.image&quot; alt=&quot;Undercover&quot; width=&quot;100&quot; height=&quot;100&quot;&gt;
 &lt;/a&gt;
 &lt;a id=&quot;trigger-two&quot; class=&quot;thumbs&quot;&gt;
@@ -64,7 +58,7 @@
 			
 			<p>Keep in mind that you need to add "close" button manually (if you want). You can place the hidden overlays anywhere you want.</p>
 			
-			<pre><code>&lt;div id=&quot;overlay-one&quot; class=&quot;ender-overlay clr&quot;&gt;
+<pre><code>&lt;div id=&quot;overlay-one&quot; class=&quot;ender-overlay clr&quot;&gt;
     &lt;a class=&quot;close&quot;&gt;Close&lt;/a&gt;
     &lt;h1&gt;First Overlay&lt;/h1&gt;
     ...
@@ -78,7 +72,7 @@
 			<h3>Style your overlays</h3>
 			<p>You can use any CSS and HTML you want, but you should hide your overlay initially and define the width of the overlay.</p>
 			
-			<pre><code>.ender-overlay {
+<pre><code>.ender-overlay {
     display: none;
     width: 600px;
     background: #c8e1ff;
@@ -93,7 +87,7 @@
 				This will give you flexiblity and it's preaty easy to do.
 			</p>
 			
-			<pre><code>$(document).ready(function () {
+<pre><code>$(document).ready(function () {
     // init overlays
 
     // init with trigger selector
@@ -123,7 +117,7 @@
 <!-- ========= OVERLAY HTML START ========== -->
 
 			<div id="overlay-one" class="ender-overlay overlay-html clr">
-				<a class="close" title="Close">&#9747;</a>
+				<a class="close close-button" title="Close">&#9747;</a>
 				<img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32.jpg" alt="Undercover" width="500" height="500">
 				<div>
 					<h2>Undercover</h2>
@@ -160,7 +154,7 @@
 			</div> <!-- #overlay-one -->
 
 			<div id="overlay-two" class="ender-overlay overlay-html clr">
-				<a class="close" title="Close">&#9747;</a>
+				<a class="close close-button" title="Close">&#9747;</a>
 				<img src="http://farm6.static.flickr.com/5123/5329325629_ba31d93a48.jpg" alt="The Raid" width="500" height="500">
 				<div>
 					<h2>The Raid</h2>
@@ -199,7 +193,7 @@
 			</div> <!-- #overlay-two -->
 
 			<div id="overlay-three" class="ender-overlay overlay-html clr">
-				<a class="close" title="Close">&#9747;</a>
+				<a class="close close-button" title="Close">&#9747;</a>
 				<img src="http://farm6.static.flickr.com/5250/5348822142_9c1e7e8bdd.jpg" alt="The Price of Information" width="500" height="500">
 				<div>
 					<h2>The Price of Information</h2>

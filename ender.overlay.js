@@ -175,7 +175,8 @@
 		},
 		
 		setupOverlay: function () {
-			var topPos = this.options.top;
+			var topPos = this.options.top,
+				scrollTop = $(window).scrollTop();
 
 			// setup overlay
 			this.$overlay
@@ -183,7 +184,7 @@
 				.appendTo("body");
 
 			if (this.options.position === "absolute") 
-				topPos += $(window).scrollTop();
+				topPos += scrollTop;
 
 			this.$overlay.css({
 				position: this.options.position,
@@ -288,14 +289,14 @@
 	}
 	
 	OverlayMask.prototype = {
-		options: {
-			id: "ender-overlay-mask",
-			zIndex: 9998,
-			opacity: 0.6,
-			color: "#777"
-		},
-		
 		init: function (options) {
+			this.options = {
+				id: "ender-overlay-mask",
+				zIndex: 9998,
+				opacity: 0.6,
+				color: "#777"
+			};
+			
 			extend(this.options, options || {});
 
 			var $mask = $("#" + this.options.id);

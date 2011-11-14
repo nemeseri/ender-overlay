@@ -20,7 +20,7 @@
 	box-shadow: 0 0 15px 0 rgba(0,0,0,.4);
 }
 
-.ender-overlay .close {
+.ender-overlay .close-button {
 	position: absolute;
 	width: 23px;
 	height: 23px;
@@ -118,4 +118,14 @@
 	width: 601px;
 }
 
+/* =============== Modal ============== */
+
+.overlay-modal {
+	width: 450px;
+	padding: 15px 25px;
+}
+
+.overlay-modal p {
+	margin: 10px 0;
+}
 

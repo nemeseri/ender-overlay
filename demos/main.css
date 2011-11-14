@@ -75,6 +75,11 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 19px;
 }
 
+pre code {
+	border: 1px solid #dbeafd;
+	background: #f3f8fd;
+}
+
 /* @end common-style */
 
 .clr:after {
@@ -283,4 +288,18 @@ h1, h2, h3, h4, h5, h6 {
 	margin-top: 0;
 }
 
+.example-row {
+	margin: 0 0 40px;
+}
 
+.example-row > a {
+	float: left;
+	width: 104px;
+	margin: 0 20px 0 0;
+}
+
+.example-row > pre {
+	float: left;
+	width: 776px;
+	margin: 0;
+}
