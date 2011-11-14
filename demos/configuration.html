@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Ender-overlay: Configuration Examples</title>
+		<link rel="stylesheet" href="main.css" type="text/css">
+		<link rel="stylesheet" href="ender-overlay.css" type="text/css">
+
+		<!-- syntax highlights -->
+		<link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/github.min.css">
+	</head>
+	<body>
+		<div id="container" class="demo">
+
+			<h1>Configuration Examples</h1>
+			
+			<p>Please check out the <a href="basics.html">configuration tutorial</a> and <a href="../index.html">documentation</a> too.</p>
+			
+			<h2>Do Not Show Mask</h2>
+
+			<div class="clr example-row">
+				<a id="trigger-maskoff" class="thumbs"><img src="http://farm6.static.flickr.com/5123/5329325629_ba31d93a48_t.jpg" alt="The Raid" width="100" height="100"></a>
+
+				<div id="overlay-maskoff" class="ender-overlay overlay-image">
+					<a class="close close-button" title="Close">&#9747;</a>
+					<img src="http://farm6.static.flickr.com/5123/5329325629_ba31d93a48.jpg" alt="The Raid" width="500" height="500">
+				</div> <!-- #overlay-mask -->
+
+<pre><code class="javascript">$(&quot;#overlay-maskoff&quot;).overlay({
+    trigger: "#trigger-maskoff",
+    showMask: false
+});</code></pre>
+
+			</div> <!-- .example-row -->
+
+			<h2>Customize Mask</h2>
+
+			<div class="clr example-row">
+				<a id="trigger-mask" class="thumbs"><img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32_t.jpg" alt="Undercover" width="100" height="100"></a>
+
+				<div id="overlay-mask" class="ender-overlay overlay-image">
+					<a class="close close-button" title="Close">&#9747;</a>
+					<img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32.jpg" alt="Undercover" width="500" height="500">
+				</div> <!-- #overlay-mask -->
+
+<pre><code class="javascript">$(&quot;#overlay-mask&quot;).overlay({
+    trigger: "#trigger-mask",
+    mask: {
+        opacity: 0.3,
+        color: "magenta"
+    }
+});</code></pre>
+
+			</div> <!-- .example-row -->
+			
+			<h2>Create Modal Window</h2>
+
+			<div class="clr example-row">
+				<a id="trigger-modal">Open modal overlay</a>
+
+				<div id="overlay-modal" class="ender-overlay overlay-modal">
+					<h1>Are you sure?</h1>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+					<a class="close">Yes</a> <a class="close">No</a>
+				</div> <!-- #overlay-mask -->
+
+<pre><code class="javascript">$(&quot;#overlay-modal&quot;).overlay({
+    trigger: "#trigger-modal",
+    closeOnEsc: false,
+    closeOnMaskClick: false
+});</code></pre>
+
+			</div> <!-- .example-row -->
+
+
+			<h2>Custom Animations</h2>
+
+			<p>Please check out the documentation of <a href="https://github.com/ded/morpheus">Morpheus</a> for animation information. The <samp>animationIn</samp> and <samp>animationOut</samp> objects are passed directly into Morpheus.</p>
+
+			<div class="clr example-row">
+				<a id="trigger-animation" class="thumbs"><img src="http://farm6.static.flickr.com/5250/5348822142_9c1e7e8bdd_t.jpg" alt="The Price of Information" width="100" height="100"></a>
+
+				<div id="overlay-animation" class="ender-overlay overlay-image">
+					<a class="close close-button" title="Close">&#9747;</a>
+					<img src="http://farm6.static.flickr.com/5250/5348822142_9c1e7e8bdd.jpg" alt="The Price of Information" width="500" height="500">
+				</div> <!-- #overlay-mask -->
+
+<pre><code class="javascript">$(&quot;#overlay-animation&quot;).overlay({
+    trigger: "#trigger-animation",
+    position: "fixed",
+
+    startAnimationCss: {
+        opacity: 0,
+        top: 0
+    },
+    animationIn: {
+        opacity: 1,
+        top: 80,
+        duration: 300
+    },
+    animationOut: {
+        opacity: 0,
+        top: -200,
+        duration: 300
+    }
+});</code></pre>
+
+			</div> <!-- .example-row -->
+
+			<p><a href="../index.html">Go back to the documentation</a></p>
+
+		</div> <!-- #container -->
+
+		<script src="../ender.min.js"></script>
+		<script src="../ender.overlay.js"></script>
+		<script>
+			$(document).ready(function () {
+				// custom mask
+				$("#overlay-mask").overlay({
+					trigger: "#trigger-mask",
+					mask: {
+						opacity: 0.3,
+						color: "magenta"
+					}
+				});
+				
+				// do not show mask
+				$("#overlay-maskoff").overlay({
+					trigger: "#trigger-maskoff",
+					showMask: false
+				});
+				
+				// modal window
+				$("#overlay-modal").overlay({
+					trigger: "#trigger-modal",
+					closeOnEsc: false,
+					closeOnMaskClick: false
+				});
+				
+				// custom animation
+				$("#overlay-animation").overlay({
+					trigger: "#trigger-animation",
+					position: "fixed",
+
+					startAnimationCss: {
+						opacity: 0,
+						top: 0
+					},
+					animationIn: {
+						opacity: 1,
+						top: 80,
+						duration: 300
+					},
+					animationOut: {
+						opacity: 0,
+						top: -200,
+						duration: 300
+					}
+				});
+			});
+		</script>
+		
+		
+		<script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-25617420-1']);
+		  _gaq.push(['_trackPageview']);
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
+	</body>
+</html>
