@@ -4,101 +4,10 @@
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>Overlay Demo</title>
 		<link rel="stylesheet" href="main.css" type="text/css">
-		<style>
-			.ender-overlay {
-				display: none;
-				width: 800px;
-				position: relative;
-				border: 1px solid #bbb;
-				background: #efefef;
-				background: -moz-linear-gradient(top, #efefef 0%, #bbb 100%);
-				background: -webkit-gradient(
-					linear, 
-					left top, 
-					left bottom, 
-					color-stop(0%,#efefef), 
-					color-stop(100%,#bbb)
-				);
-				background: -webkit-linear-gradient(top, #efefef 0%,#bbb 100%);
-				background: -o-linear-gradient(top, #efefef 0%,#bbb 100%);
-				background: -ms-linear-gradient(top, #efefef 0%,#bbb 100%);
-				background: linear-gradient(top, #efefef 0%,#bbb 100%);
-				
-				-webkit-box-shadow: 0 0 15px 0 rgba(0,0,0,.4);
-				-moz-box-shadow: 0 0 15px 0 rgba(0,0,0,.4);
-				box-shadow: 0 0 15px 0 rgba(0,0,0,.4);
-			}
-			
-			.ender-overlay .close {
-				position: absolute;
-				width: 23px;
-				height: 23px;
-				top: -10px;
-				right: -10px;
-				
-				text-align: center;
-				color: #fff;
-				font-weight: bold;
-				font-size: 15px;
-				line-height: 24px;
-				text-decoration: none;
-				
-				background: #333;
-				-webkit-border-radius: 13px;
-				-moz-border-radius: 13px;
-				border-radius: 13px;
-				
-				-webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,.5);
-				-moz-box-shadow: 0 0 5px 0 rgba(0,0,0,.5);
-				box-shadow: 0 0 5px 0 rgba(0,0,0,.5);
-				cursor: pointer;
-				
-				border: 2px solid #fff;
-			}
-			
-			.ender-overlay img {
-				float: left;
-				border-right: 2px solid #bbb;
-			}
-			
-			.ender-overlay div {
-				float: left;
-				width: 278px;
-				padding: 10px;
-			}
+		<link rel="stylesheet" href="ender-overlay.css" type="text/css">
 
-			.ender-overlay h2 {
-				font-size: 20px;
-				line-height: 24px;
-			}
-			
-			.ender-overlay h3 {
-				font-size: 13px;
-				margin: 18px 0 0;
-			}
-			
-			.ender-overlay p,
-			.ender-overlay ul {
-				margin: 5px 0 15px;
-			}
-			
-			.ender-overlay ul {
-				padding: 0;
-			}
-			
-			.ender-overlay li {
-				display: inline;
-			}
-			
-			.ender-overlay li::after {
-				content: ",";
-			}
-			
-			.ender-overlay li:last-child::after {
-				content: "";
-			}
-			
-		</style>
+		<!-- syntax highlights -->
+		<link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/default.min.css">
 	</head>
 	<body>
 		<div id="container" class="demo">
@@ -114,11 +23,16 @@
 			
 			<h2>Include Jeesh and Morpheus</h2>
 			<p>
-				You can download Jeesh and Morpheus (with ender bridge) easily from here:
+				The following Ender packages are the requirements:
 				<a href="http://ender-js.s3.amazonaws.com/jeesh.min.js">Jeesh</a>, 
-				<a href="https://raw.github.com/ded/morpheus/master/morpheus.min.js">Morpheus</a>. 
-				Or if you are familiar with NPN you can build all the pre-requirements and <strong>ender-overlay</strong> into one file.
+				<a href="https://raw.github.com/ded/morpheus/master/morpheus.min.js">Morpheus</a> and 
+				<a href="https://raw.github.com/ded/morpheus/master/src/ender.js">Ender bridge</a> for Morpheus.
+				You can download and include them simply.<br>
+				Or if you are familiar with NPN you can build all the pre-requirements and <strong>ender-overlay</strong> into one file:
 			</p>
+			<pre><code>npm build ender-overlay</code></pre>
+
+			<p class="note">To use npm, you will need to install <a href="http://nodejs.org/#download">node.js</a> and <a href="http://npmjs.org/">npm</a>.</p>
 			
 			<h2>Creating HTML and CSS for the overlays and triggers</h2>
 			
@@ -130,6 +44,71 @@
 			
 			<p>Because of this, you can put picture, pure HTML content, iframe into your overlay. You can even load the content with AJAX.</p>
 			
+			<h3>Add your triggers</h3>
+			<pre><code>&lt;a id=&quot;trigger-one&quot; class=&quot;thumbs&quot;&gt;
+    &lt;img src=&quot;http://path.to.your.image&quot; alt=&quot;Undercover&quot; width=&quot;100&quot; height=&quot;100&quot;&gt;
+&lt;/a&gt;
+&lt;a id=&quot;trigger-two&quot; class=&quot;thumbs&quot;&gt;
+    &lt;img src=&quot;http://path.to.your.image&quot; alt=&quot;The Raid&quot; width=&quot;100&quot; height=&quot;100&quot;&gt;
+&lt;/a&gt;</code></pre>
+
+
+			<h3>Build your overlays</h3>
+			
+			<p>Keep in mind that you need to add "close" button manually (if you want).</p>
+			
+			<pre><code>&lt;div id=&quot;overlay-one&quot; class=&quot;ender-overlay clr&quot;&gt;
+    &lt;a class=&quot;close&quot;&gt;Close&lt;/a&gt;
+    &lt;h1&gt;First Overlay&lt;/h1&gt;
+&lt;/div&gt;
+&lt;div id=&quot;overlay-two&quot; class=&quot;ender-overlay clr&quot;&gt;
+    &lt;a class=&quot;close&quot;&gt;Close&lt;/a&gt;
+    &lt;h1&gt;Second Overlay&lt;/h1&gt;
+&lt;/div&gt;</code></pre>
+			
+			<h3>Style your overlays</h3>
+			<p>You can use any CSS and HTML you want, but you should hide your overlay initially and define the width of the overlay.</p>
+			
+			<pre><code>.ender-overlay {
+    display: none;
+    width: 600px;
+    background: #c8e1ff;
+}</code></pre>
+
+
+			<h2>Control your overlays</h2>
+			
+			<p>
+				There is no automatic trigger to overlay assignment, so you need to control your overlays manually. 
+				This will give you flexiblity and it's preaty easy to do.
+			</p>
+			
+			<pre><code>$(document).ready(function () {
+    // init overlays
+    var ovrOne = $(&quot;#overlay-one&quot;).overlay();
+    var ovrTwo = $(&quot;#overlay-two&quot;).overlay();
+
+    // open overlays on clicks
+    $(&quot;#trigger-one&quot;).click(function (e) {
+        e.preventDefault();
+        ovrOne.open();
+    });
+    $(&quot;#trigger-two&quot;).click(function (e) {
+        e.preventDefault();
+        ovrTwo.open();
+    });
+});</code></pre>
+
+			<h2>Further information</h2>
+			
+			<p>
+				Please read the documentation on configuration <a href="../index.html">here</a>. 
+				I'm going to add new examples soon.
+			</p>
+
+
+
+<!-- ========= OVERLAY HTML START ========== -->
 
 			<div id="overlay-one" class="ender-overlay clr">
 				<a class="close" title="Close">&#9747;</a>
@@ -208,13 +187,17 @@
 			</div>
 		</div>
 
+<!-- ========= OVERLAY HTML END ========== -->
+
 		<script src="../ender.min.js"></script>
 		<script src="../ender.overlay.js"></script>
 		<script>
 			$(document).ready(function () {
+				// init overlays
 				var ovrOne = $("#overlay-one").overlay();
 				var ovrTwo = $("#overlay-two").overlay();
 
+				// open overlays on clicks
 				$("#trigger-one").click(function (e) {
 					e.preventDefault();
 					ovrOne.open();
@@ -225,6 +208,8 @@
 				});
 			});
 		</script>
+		
+		<script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
 		<script type="text/javascript">
 		  var _gaq = _gaq || [];
 		  _gaq.push(['_setAccount', 'UA-25617420-1']);

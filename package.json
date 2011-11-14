@@ -7,7 +7,7 @@
 	"homepage": "https://github.com/nemeseri/ender-overlay",
 	"dependencies": {
 		"jeesh" : "*",
-		"morpheus" : "*" //optional
+		"morpheus" : "*"
 	},
 	"main": "./ender.overlay.js",
 	"ender": "noop",

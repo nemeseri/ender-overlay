@@ -9,4 +9,4 @@ own gallery or other overlay based logic on the top of this plugin.
 Check back for stable builds. Currently it's tested in Chrome, Firefox, Safari and Opera. 
 I'm going to add IE7+ support soon.
 
-More information: [http://nemeseri.com/ender-overlay/](http://nemeseri.com/ender-overlay/)
+More information, documentation, demos: [http://nemeseri.com/ender-overlay/](http://nemeseri.com/ender-overlay/)

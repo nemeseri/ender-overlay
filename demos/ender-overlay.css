@@ -1,0 +1,92 @@
+.ender-overlay {
+	display: none;
+	width: 800px;
+	position: relative;
+	border: 1px solid #bbb;
+	background: #efefef;
+	background: -moz-linear-gradient(top, #efefef 0%, #bbb 100%);
+	background: -webkit-gradient(
+		linear, 
+		left top, 
+		left bottom, 
+		color-stop(0%,#efefef), 
+		color-stop(100%,#bbb)
+	);
+	background: -webkit-linear-gradient(top, #efefef 0%,#bbb 100%);
+	background: -o-linear-gradient(top, #efefef 0%,#bbb 100%);
+	background: -ms-linear-gradient(top, #efefef 0%,#bbb 100%);
+	background: linear-gradient(top, #efefef 0%,#bbb 100%);
+	
+	-webkit-box-shadow: 0 0 15px 0 rgba(0,0,0,.4);
+	-moz-box-shadow: 0 0 15px 0 rgba(0,0,0,.4);
+	box-shadow: 0 0 15px 0 rgba(0,0,0,.4);
+}
+
+.ender-overlay .close {
+	position: absolute;
+	width: 23px;
+	height: 23px;
+	top: -10px;
+	right: -10px;
+	
+	text-align: center;
+	color: #fff;
+	font-weight: bold;
+	font-size: 15px;
+	line-height: 24px;
+	text-decoration: none;
+	
+	background: #333;
+	-webkit-border-radius: 13px;
+	-moz-border-radius: 13px;
+	border-radius: 13px;
+	
+	-webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,.5);
+	-moz-box-shadow: 0 0 5px 0 rgba(0,0,0,.5);
+	box-shadow: 0 0 5px 0 rgba(0,0,0,.5);
+	cursor: pointer;
+	
+	border: 2px solid #fff;
+}
+
+.ender-overlay img {
+	float: left;
+	border-right: 2px solid #bbb;
+}
+
+.ender-overlay div {
+	float: left;
+	width: 278px;
+	padding: 10px;
+}
+
+.ender-overlay h2 {
+	font-size: 20px;
+	line-height: 24px;
+}
+
+.ender-overlay h3 {
+	font-size: 13px;
+	margin: 18px 0 0;
+}
+
+.ender-overlay p,
+.ender-overlay ul {
+	margin: 5px 0 15px;
+}
+
+.ender-overlay ul {
+	padding: 0;
+}
+
+.ender-overlay li {
+	display: inline;
+}
+
+.ender-overlay li::after {
+	content: ",";
+}
+
+.ender-overlay li:last-child::after {
+	content: "";
+}

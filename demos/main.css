@@ -91,7 +91,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #container {
 	width: 900px;
-	margin: 20px auto;
+	margin: 20px auto 70px;
 	/*padding: 30px;
 	border: 3px solid rgba(0,0,0,.4);
 	
@@ -137,7 +137,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .docs p,
-.demo p {
+.demo p,
+.demo pre {
 	margin: 0 0 15px;
 }
 
@@ -146,7 +147,8 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 0 0 0 20px;
 }
 
-.docs samp {
+.docs samp,
+.demo samp {
 	color: #d03737;
 	font-weight: bold;
 }
@@ -244,6 +246,13 @@ h1, h2, h3, h4, h5, h6 {
 .demo h2 {
 	font-size: 20px;
 	line-height: 26px;
+}
+
+.demo h3 {
+	font-size: 13px;
+	line-height: 18px;
+	font-weight: bold;
+	margin: 0 0 15px;
 }
 
 .thumbs {
