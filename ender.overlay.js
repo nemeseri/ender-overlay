@@ -344,7 +344,7 @@
 
 			if (this.options.animation) {
 				this.$mask.css({
-					opacity: 0,
+					opacity: 0.01, // animate
 					display: "block"
 				}).animate({
 					opacity: opt.opacity,
