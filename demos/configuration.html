@@ -27,7 +27,7 @@
 				</div> <!-- #overlay-mask -->
 
 <pre><code class="javascript">$(&quot;#overlay-maskoff&quot;).overlay({
-    trigger: "#trigger-maskoff",
+    trigger: &quot;#trigger-maskoff&quot;,
     showMask: false
 });</code></pre>
 
@@ -44,15 +44,33 @@
 				</div> <!-- #overlay-mask -->
 
 <pre><code class="javascript">$(&quot;#overlay-mask&quot;).overlay({
-    trigger: "#trigger-mask",
+    trigger: &quot;#trigger-mask&quot;,
     mask: {
         opacity: 0.3,
-        color: "magenta"
+        color: &quot;magenta&quot;
     }
 });</code></pre>
 
 			</div> <!-- .example-row -->
-			
+
+
+			<h2>Fixed Overlay</h2>
+			<p>Open the overlay and scroll the page. Please </p>
+			<div class="clr example-row">
+				<a id="trigger-fixed" class="thumbs"><img src="http://farm6.static.flickr.com/5241/5319178865_ab54fb3e02_t.jpg" alt="The Payment" width="100" height="100"></a>
+
+				<div id="overlay-fixed" class="ender-overlay overlay-image">
+					<a class="close close-button" title="Close">&#9747;</a>
+					<img src="http://farm6.static.flickr.com/5241/5319178865_ab54fb3e02.jpg" alt="The Payment" width="500" height="500">
+				</div> <!-- #overlay-mask -->
+
+<pre><code class="javascript">$(&quot;#overlay-fixed&quot;).overlay({
+    trigger: &quot;#trigger-fixed&quot;,
+    position: &quot;fixed&quot;
+});</code></pre>
+			</div> <!-- .example-row -->
+
+
 			<h2>Create Modal Window</h2>
 
 			<div class="clr example-row">
@@ -65,13 +83,35 @@
 				</div> <!-- #overlay-mask -->
 
 <pre><code class="javascript">$(&quot;#overlay-modal&quot;).overlay({
-    trigger: "#trigger-modal",
+    trigger: &quot;#trigger-modal&quot;,
     closeOnEsc: false,
     closeOnMaskClick: false
 });</code></pre>
 
 			</div> <!-- .example-row -->
 
+
+			<h2>Load Content with AJAX</h2>
+			<p>Create the overlay wrapper dynamically and load the content with AJAX. In this case I used <a href="https://github.com/ded/reqwest">Reqwest</a> as an AJAX lib. You can check out the loaded content directly here: <a href="ajax-content.html">ajax-content.html</a></p>
+			<div class="clr example-row">
+				<a id="trigger-ajax">Open overlay with AJAX content</a>
+<pre><code class="javascript">$('&lt;div class=&quot;overlay-ajax&quot;&gt;&lt;/div&gt;').overlay({
+    trigger: &quot;#trigger-ajax&quot;,
+    onBeforeOpen: function (o) {
+        var overlayWrp = o.getOverlay();
+        overlayWrp
+            .empty()
+            .append('&lt;a class=&quot;close close-button&quot;&gt;&amp;#9747;&lt;/a&gt;');
+
+        $.ajax({
+            url: &quot;ajax-content.html&quot;,
+            success: function (resp) {
+                overlayWrp.append(resp);
+            }
+        });
+    }
+});</code></pre>
+			</div>
 
 			<h2>Custom Animations</h2>
 
@@ -86,8 +126,8 @@
 				</div> <!-- #overlay-mask -->
 
 <pre><code class="javascript">$(&quot;#overlay-animation&quot;).overlay({
-    trigger: "#trigger-animation",
-    position: "fixed",
+    trigger: &quot;#trigger-animation&quot;,
+    position: &quot;fixed&quot;,
 
     startAnimationCss: {
         opacity: 0,
@@ -113,6 +153,8 @@
 
 		<script src="../ender.min.js"></script>
 		<script src="../ender.overlay.js"></script>
+		<script src="reqwest.min.js"></script>
+
 		<script>
 			$(document).ready(function () {
 				// custom mask
@@ -130,11 +172,35 @@
 					showMask: false
 				});
 				
+				// fixed
+				$("#overlay-fixed").overlay({
+					trigger: "#trigger-fixed",
+					position: "fixed"
+				});
+
 				// modal window
 				$("#overlay-modal").overlay({
 					trigger: "#trigger-modal",
 					closeOnEsc: false,
 					closeOnMaskClick: false
+				});
+				
+				// AJAX
+				$('<div class="overlay-ajax"></div>').overlay({
+					trigger: "#trigger-ajax",
+					onBeforeOpen: function (o) {
+						var overlayWrp = o.getOverlay();
+						overlayWrp
+							.empty()
+							.append('<a class="close close-button">&#9747;</a>');
+
+						$.ajax({
+							url: "ajax-content.html",
+							success: function (resp) {
+								overlayWrp.append(resp);
+							}
+						});
+					}
 				});
 				
 				// custom animation

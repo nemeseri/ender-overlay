@@ -131,8 +131,7 @@
 			}
 
 			this.$overlay
-				.find(opt.close)
-				.click(function (e) {
+				.delegate(opt.close, 'click', function (e) {
 					e.preventDefault();
 					self.close();
 				});

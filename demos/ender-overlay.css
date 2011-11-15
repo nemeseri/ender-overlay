@@ -118,9 +118,10 @@
 	width: 601px;
 }
 
-/* =============== Modal ============== */
+/* =============== Modal / AJAX ============== */
 
-.overlay-modal {
+.overlay-modal,
+.overlay-ajax {
 	width: 450px;
 	padding: 15px 25px;
 }
@@ -128,4 +129,18 @@
 .overlay-modal p {
 	margin: 10px 0;
 }
+
+.overlay-ajax > a {
+	float: left;
+	margin: 0 15px 10px 0;
+}
+
+.overlay-ajax h1 {
+	margin: 0 0 15px;
+}
+
+.overlay-ajax p {
+	margin: 0 0 10px;
+}
+
 
