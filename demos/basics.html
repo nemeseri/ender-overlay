@@ -40,10 +40,12 @@
 			<p>
 				You need to create all the HTML and CSS codes for your overlays and triggers. 
 				This way you can design every kind of overlays and won't hit stupid built-in walls. 
-				You can check the source of this page if you need some idea.
+				You can check the source of this page if you need some idea.<br>
 			</p>
 			
-			<p>Because of this, you can put picture, pure HTML content, iframe into your overlay. You can even load the content with AJAX.</p>
+			<p>
+				Because of this, you can put picture, pure HTML content, iframe into your overlay. You can even load the content with AJAX.
+			</p>
 			
 			<h3>Add your triggers</h3>
 <pre><code>&lt;a id=&quot;trigger-one&quot; class=&quot;thumbs&quot;&gt;
@@ -70,7 +72,9 @@
 &lt;/div&gt;</code></pre>
 			
 			<h3>Style your overlays</h3>
-			<p>You can use any CSS and HTML you want, but you should hide your overlay initially and define the width of the overlay.</p>
+			<p>
+				You can use any CSS and HTML you want, but you must hide your overlay initially and you should define the width of the overlay with CSS explicitly. The overlay class will try to guess the width, but it might fail.
+			</p>
 			
 <pre><code>.ender-overlay {
     display: none;
