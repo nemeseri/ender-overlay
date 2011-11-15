@@ -75,7 +75,7 @@
 				animation: true,
 				// start values before animation
 				startAnimationCss: {
-					opacity: 0
+					opacity: 0.01
 				},
 
 				// morpheus animation options
