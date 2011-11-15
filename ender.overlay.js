@@ -175,7 +175,8 @@
 		
 		setupOverlay: function () {
 			var topPos = this.options.top,
-				scrollTop = $(window).scrollTop();
+				scrollTop = $(window).scrollTop(),
+				overlayWidth = this.$overlay.width();
 
 			// setup overlay
 			this.$overlay
@@ -185,12 +186,24 @@
 			if (this.options.position === "absolute") 
 				topPos += scrollTop;
 
+			// width is not defined explicitly 
+			// so we try to find out
+			if (overlayWidth === 0) {
+				this.$overlay.css({
+					display: "block",
+					position: "absolute",
+					left: -9999
+				});
+				overlayWidth = this.$overlay.width();
+			}
+
 			this.$overlay.css({
+				display: "none",
 				position: this.options.position,
 				top: topPos,
 				left: "50%",
 				zIndex: this.options.zIndex,
-				marginLeft: this.$overlay.width() / 2 * -1
+				marginLeft: overlayWidth / 2 * -1
 			});
 		},
 		
