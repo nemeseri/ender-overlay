@@ -49,6 +49,12 @@
 	border: 2px solid #fff;
 }
 
+.ie .ender-overlay .close-button {
+	top: 10px;
+	left: 10px;
+}
+
+
 .ender-overlay img,
 .ender-overlay iframe,
 .ender-overlay object,
