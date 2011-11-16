@@ -234,6 +234,8 @@
 				this.$overlay.animate(
 					extend(animationIn, {
 						complete: function () {
+							if (animationIn.opacity === 1)
+								self.$overlay.css({ "filter": "" }); // ie quirk
 							self.options.onOpen(self);
 						}
 					})
