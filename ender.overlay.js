@@ -75,7 +75,7 @@
 				animation: true,
 				// start values before animation
 				startAnimationCss: {
-					opacity: 0.01
+					opacity: 0.01 // ie quirk
 				},
 
 				// morpheus animation options
@@ -208,21 +208,26 @@
 		},
 		
 		open: function (dontOpenMask) {
-			if (this.options.onBeforeOpen(this) === false) {
+			var opt = this.options,
+				self = this,
+				animationIn = clone(opt.animationIn);
+
+			if (opt.onBeforeOpen(this) === false) {
 				return;
 			}
 
 			this.setupOverlay();
 
-			if (! this.options.allowMultipleDisplay)
-				$(document).trigger("ender-overlay.close");
+			if (! opt.allowMultipleDisplay)
+				$(document).trigger("ender-overlay.closeOverlay");
 
-			if (this.options.animation) {
-				var self = this,
-					animationIn = clone(this.options.animationIn);
+			if (opt.animation) {
+				if (opt.startAnimationCss.opacity === 0)
+					opt.startAnimationCss.opacity = 0.01; // ie quirk
+					
 
 				this.$overlay.css(
-					extend({display: "block"}, this.options.startAnimationCss)
+					extend({display: "block"}, opt.startAnimationCss)
 				);
 
 				this.$overlay.animate(
@@ -236,7 +241,7 @@
 				this.$overlay.css({
 					display: "block"
 				});
-				this.options.onOpen(this);
+				opt.onOpen(this);
 			}
 
 			if (this.mask && 
@@ -246,14 +251,16 @@
 		},
 
 		close: function (dontHideMask) {
-			if (this.options.onBeforeClose(this) === false
+			var opt = this.options;
+
+			if (opt.onBeforeClose(this) === false
 				|| this.$overlay.css("display") === "none") {
 				return;
 			}
 			
-			if (this.options.animation) {
+			if (opt.animation) {
 				var self = this,
-					animationOut = clone(this.options.animationOut);
+					animationOut = clone(opt.animationOut);
 
 				this.$overlay.animate(
 					extend(animationOut, {
@@ -267,7 +274,7 @@
 				this.$overlay.css({
 					display: "none"
 				});
-				this.options.onClose(this);
+				opt.onClose(this);
 			}
 
 			if (this.mask && 
@@ -344,7 +351,7 @@
 
 			if (this.options.animation) {
 				this.$mask.css({
-					opacity: 0.01, // animate
+					opacity: 0.01, // ie quirk
 					display: "block"
 				}).animate({
 					opacity: opt.opacity,

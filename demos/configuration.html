@@ -135,7 +135,7 @@
     position: &quot;fixed&quot;,
 
     startAnimationCss: {
-        opacity: 0.01, // ie quirk
+        opacity: 0,
         top: 0
     },
     animationIn: {
@@ -162,6 +162,12 @@
 
 		<script>
 			$(document).ready(function () {
+				// do not show mask
+				$("#overlay-maskoff").overlay({
+					trigger: "#trigger-maskoff",
+					showMask: false
+				});
+
 				// custom mask
 				$("#overlay-mask").overlay({
 					trigger: "#trigger-mask",
@@ -170,13 +176,7 @@
 						color: "magenta"
 					}
 				});
-				
-				// do not show mask
-				$("#overlay-maskoff").overlay({
-					trigger: "#trigger-maskoff",
-					showMask: false
-				});
-				
+
 				// fixed
 				$("#overlay-fixed").overlay({
 					trigger: "#trigger-fixed",
@@ -214,7 +214,7 @@
 					position: "fixed",
 
 					startAnimationCss: {
-						opacity: 0.01, // ie quirk
+						opacity: 0,
 						top: 0
 					},
 					animationIn: {
