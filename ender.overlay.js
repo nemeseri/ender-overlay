@@ -81,12 +81,12 @@
 				// morpheus animation options
 				animationIn: {
 					opacity: 1,
-					duration: 200
+					duration: 250
 				},
 
 				animationOut: {
 					opacity: 0,
-					duration: 200
+					duration: 250
 				},
 
 				mask: {},
