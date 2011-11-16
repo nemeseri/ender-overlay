@@ -212,7 +212,8 @@
 				self = this,
 				animationIn = clone(opt.animationIn);
 
-			if (opt.onBeforeOpen(this) === false) {
+			if (this.$overlay.css("display") === "block" || 
+				opt.onBeforeOpen(this) === false) {
 				return;
 			}
 
