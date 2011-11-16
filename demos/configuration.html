@@ -100,7 +100,8 @@
 			<p>Create the overlay wrapper dynamically and load the content with AJAX. In this case I used <a href="https://github.com/ded/reqwest">Reqwest</a> as an AJAX lib. You can check out the loaded content directly here: <a href="ajax-content.html">ajax-content.html</a></p>
 			<div class="clr example-row">
 				<a id="trigger-ajax">Open overlay with AJAX content</a>
-<pre><code class="javascript">$('&lt;div class=&quot;overlay-ajax&quot;&gt;&lt;/div&gt;').overlay({
+<pre><code class="javascript">// in this case, you must define the width of the overlay with CSS
+$('&lt;div class=&quot;overlay-ajax&quot;&gt;&lt;/div&gt;').overlay({
     trigger: &quot;#trigger-ajax&quot;,
     onBeforeOpen: function (o) {
         var overlayWrp = o.getOverlay();
