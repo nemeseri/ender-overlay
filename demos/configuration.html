@@ -12,10 +12,14 @@
 	<body>
 		<div id="container" class="demo">
 
+			<ul class="breadcrumb">
+				<li><a href="../index.html" class="back-home">Main Page &raquo;</a></li>
+			</ul>
+
 			<h1>Configuration Examples</h1>
-			
+
 			<p>Please check out the <a href="basics.html">configuration tutorial</a> and <a href="../index.html">documentation</a> too.</p>
-			
+
 			<h2>Do Not Show Mask</h2>
 
 			<div class="clr example-row">
@@ -185,7 +189,7 @@ $('&lt;div class=&quot;overlay-ajax&quot;&gt;&lt;/div&gt;').overlay({
 					closeOnEsc: false,
 					closeOnMaskClick: false
 				});
-				
+
 				// AJAX
 				$('<div class="overlay-ajax"></div>').overlay({
 					trigger: "#trigger-ajax",
@@ -203,7 +207,7 @@ $('&lt;div class=&quot;overlay-ajax&quot;&gt;&lt;/div&gt;').overlay({
 						});
 					}
 				});
-				
+
 				// custom animation
 				$("#overlay-animation").overlay({
 					trigger: "#trigger-animation",
@@ -226,8 +230,8 @@ $('&lt;div class=&quot;overlay-ajax&quot;&gt;&lt;/div&gt;').overlay({
 				});
 			});
 		</script>
-		
-		
+
+
 		<script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
 		<script>hljs.initHighlightingOnLoad();</script>
 		<script type="text/javascript">

@@ -12,17 +12,21 @@
 	<body>
 		<div id="container" class="demo">
 
+			<ul class="breadcrumb">
+				<li><a href="../index.html" class="back-home">Main Page &raquo;</a></li>
+			</ul>
+
 			<h1>Examples with different content types</h1>
-			
+
 			<p>
 				You can freely use any content in your overlays. Here you can see a couple of examples. Open the source of this page to see the code. You should define the with of the overlay explicitly.
 				The overlay class will try to guess the width, but it might fail.
 			</p>
-			
+
 			<div class="clr">
 				<div class="grid">
 					<h2>Image</h2>
-			
+
 					<a id="trigger-image" class="thumbs"><img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32_t.jpg" alt="Undercover" width="100" height="100"></a>
 
 					<div id="overlay-image" class="ender-overlay overlay-image">
@@ -30,11 +34,11 @@
 						<img src="http://farm6.static.flickr.com/5008/5248981729_3a05d42d32.jpg" alt="Undercover" width="500" height="500">
 					</div> <!-- #overlay-image -->
 				</div>
-				
-				
+
+
 				<div class="grid">
 					<h2>HTML</h2>
-			
+
 					<a id="trigger-html" class="thumbs"><img src="http://farm6.static.flickr.com/5250/5348822142_9c1e7e8bdd_t.jpg" alt="The Price of Information" width="100" height="100"></a>
 
 					<div id="overlay-html" class="ender-overlay overlay-html">
@@ -81,10 +85,10 @@
 						</div>
 					</div> <!-- #overlay-html -->
 				</div>
-				
+
 				<div class="grid">
 					<h2>iFrame</h2>
-			
+
 					<a id="trigger-iframe" class="thumbs"><img src="http://upload.wikimedia.org/wikipedia/en/9/92/Wikipedia-logo.gif" alt="Wikipedia" width="100" height="100"></a>
 
 					<div id="overlay-iframe" class="ender-overlay overlay-iframe">
@@ -92,10 +96,10 @@
 						<iframe src="http://wikipedia.org/" width="500" height="500" scrolling="no" frameborder="0" style="border:none;"></iframe>
 					</div> <!-- #overlay-iframe -->
 				</div>
-				
+
 				<div class="grid">
 					<h2>Flash</h2>
-			
+
 					<a id="trigger-flash" class="thumbs"><img src="http://www.bradfordbulls.co.uk/Media/jpg/youtube%20logo.jpg" alt="Flash object" width="100" height="100"></a>
 
 					<div id="overlay-flash" class="ender-overlay overlay-flash">
@@ -103,11 +107,11 @@
 						<object width="420" height="315"><param name="wmode" value="transparent"><param name="movie" value="http://www.youtube.com/v/_OBlgSz8sSM?version=3&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/_OBlgSz8sSM?version=3&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true" wmode="transparent"></embed></object>
 					</div> <!-- #overlay-flash -->
 				</div>
-				
-				
+
+
 				<div class="grid">
 					<h2>Vimeo HTML5</h2>
-			
+
 					<a id="trigger-vimeo" class="thumbs"><img src="http://www.samholdren.com/vimeo-Logo2.png" alt="Vimeo HTML5 Embed" width="100" height="100"></a>
 
 					<div id="overlay-vimeo" class="ender-overlay overlay-vimeo">
@@ -120,8 +124,8 @@
 			<p><a href="../index.html">Go back to the documentation</a></p>
 
 		</div> <!-- #container -->
-		
-		
+
+
 		<script src="../ender.min.js"></script>
 		<script src="../ender.overlay.js"></script>
 		<script>

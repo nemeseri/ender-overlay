@@ -12,6 +12,10 @@
 	<body>
 		<div id="container" class="demo">
 
+			<ul class="breadcrumb">
+				<li><a href="../index.html" class="back-home">Main Page &raquo;</a></li>
+			</ul>
+
 			<h1>Basic Configuration Tutorial</h1>
 
 			<p>Below you can see the overlay triggers. You can open up the overlays by clicking on them.</p>
@@ -21,12 +25,12 @@
 				<a id="trigger-two" class="thumbs"><img src="http://farm6.static.flickr.com/5123/5329325629_ba31d93a48_t.jpg" alt="The Raid" width="100" height="100"></a>
 				<a id="trigger-three" class="thumbs"><img src="http://farm6.static.flickr.com/5250/5348822142_9c1e7e8bdd_t.jpg" alt="The Price of Information" width="100" height="100"></a>
 			</div>
-			
+
 			<h2>Include Jeesh and Morpheus</h2>
 			<p>
 				The following Ender packages are the requirements:
-				<a href="http://ender-js.s3.amazonaws.com/jeesh.min.js">Jeesh</a>, 
-				<a href="https://raw.github.com/ded/morpheus/master/morpheus.min.js">Morpheus</a> and 
+				<a href="http://ender-js.s3.amazonaws.com/jeesh.min.js">Jeesh</a>,
+				<a href="https://raw.github.com/ded/morpheus/master/morpheus.min.js">Morpheus</a> and
 				<a href="https://raw.github.com/ded/morpheus/master/src/ender.js">Ender bridge</a> for Morpheus.
 				You can download and include them simply.<br>
 				Or if you are familiar with NPN you can build all the pre-requirements and <strong>ender-overlay</strong> into one file:
@@ -34,19 +38,19 @@
 			<pre><code>npm build ender-overlay</code></pre>
 
 			<p class="note">To use npm, you will need to install <a href="http://nodejs.org/#download">node.js</a> and <a href="http://npmjs.org/">npm</a>.</p>
-			
+
 			<h2>Creating HTML and CSS for the overlays and triggers</h2>
-			
+
 			<p>
-				You need to create all the HTML and CSS codes for your overlays and triggers. 
-				This way you can design every kind of overlays and won't hit stupid built-in walls. 
+				You need to create all the HTML and CSS codes for your overlays and triggers.
+				This way you can design every kind of overlays and won't hit stupid built-in walls.
 				You can check the source of this page if you need some idea.<br>
 			</p>
-			
+
 			<p>
 				Because of this, you can put picture, pure HTML content, iframe into your overlay. You can even load the content with AJAX.
 			</p>
-			
+
 			<h3>Add your triggers</h3>
 <pre><code>&lt;a id=&quot;trigger-one&quot; class=&quot;thumbs&quot;&gt;
     &lt;img src=&quot;http://path.to.your.image&quot; alt=&quot;Undercover&quot; width=&quot;100&quot; height=&quot;100&quot;&gt;
@@ -57,9 +61,9 @@
 
 
 			<h3>Build your overlays</h3>
-			
+
 			<p>Keep in mind that you need to add "close" button manually (if you want). You can place the hidden overlays anywhere you want.</p>
-			
+
 <pre><code>&lt;div id=&quot;overlay-one&quot; class=&quot;ender-overlay clr&quot;&gt;
     &lt;a class=&quot;close&quot;&gt;Close&lt;/a&gt;
     &lt;h1&gt;First Overlay&lt;/h1&gt;
@@ -70,12 +74,12 @@
     &lt;h1&gt;Second Overlay&lt;/h1&gt;
     ...
 &lt;/div&gt;</code></pre>
-			
+
 			<h3>Style your overlays</h3>
 			<p>
 				You can use any CSS and HTML you want, but you must hide your overlay initially and you should define the width of the overlay with CSS explicitly. The overlay class will try to guess the width, but it might fail.
 			</p>
-			
+
 <pre><code>.ender-overlay {
     display: none;
     width: 600px;
@@ -85,12 +89,12 @@
 
 
 			<h2>Control your overlays</h2>
-			
+
 			<p>
-				There is no automatic trigger to overlay assignment, so you need to control your overlays manually. 
+				There is no automatic trigger to overlay assignment, so you need to control your overlays manually.
 				This will give you flexiblity and it's preaty easy to do.
 			</p>
-			
+
 <pre><code>$(document).ready(function () {
     // init overlays
 
@@ -111,7 +115,7 @@
 });</code></pre>
 
 			<h2>Further information</h2>
-			
+
 			<p>
 				Please read the documentation on configuration <a href="../index.html">here</a>.
 			</p>
@@ -129,7 +133,7 @@
 
 					<p>This photo was taken on November 29, 2010 in Russian Hill, San Francisco, CA, US, using a Canon EOS 40D.</p>
 					<p>Strobist info: one bare Yongnuo YN560 @1/4 on the low left, triggered by optical slave</p>
-				
+
 					<h3>Tags</h3>
 					<ul>
 						<li>San Francisco</li>
@@ -142,7 +146,7 @@
 						<li>retro</li>
 						<li>strobist</li>
 					</ul>
-				
+
 					<h3>View all sizes on Flickr</h3>
 					<ul>
 						<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/s/in/set-72157625490624866/">Small</a></li>
@@ -150,7 +154,7 @@
 						<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/l/in/set-72157625490624866/">Large</a></li>
 						<li><a href="http://www.flickr.com/photos/necccc/5248981729/sizes/o/in/set-72157625490624866/">Original</a></li>
 					</ul>
-				
+
 					<h3>Licence</h3>
 					<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5248981729/request/">here</a></p>
 					<p>&copy; All Rights Reserved</p>
@@ -163,10 +167,10 @@
 				<div>
 					<h2>The Raid</h2>
 					<p>by <a href="http://www.flickr.com/people/necccc/">Szabolcs Toth</a></p>
-				
+
 					<p>This photo was taken on November 29, 2010 in Telegraph Hill, San Francisco, CA, US, using a Canon EOS 40D.</p>
 					<p>Strobist info: bare YN560 @ 1/2 from the left<br> Triggered with optical slaves</p>
-				
+
 					<h3>Tags</h3>
 					<ul>
 						<li>San Francisco</li>
@@ -181,7 +185,7 @@
 						<li>banana</li>
 						<li>gun</li>
 					</ul>
-				
+
 					<h3>View all sizes on Flickr</h3>
 					<ul>
 						<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/s/in/set-72157625490624866/">Small</a></li>
@@ -189,7 +193,7 @@
 						<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/l/in/set-72157625490624866/">Large</a></li>
 						<li><a href="http://www.flickr.com/photos/necccc/5329325629/sizes/o/in/set-72157625490624866/">Original</a></li>
 					</ul>
-				
+
 					<h3>Licence</h3>
 					<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5329325629/request/">here</a></p>
 					<p>&copy; All Rights Reserved</p>
@@ -202,14 +206,14 @@
 				<div>
 					<h2>The Price of Information</h2>
 					<p>by <a href="http://www.flickr.com/people/necccc/">Szabolcs Toth</a></p>
-			
+
 					<p>This photo was taken on December 12, 2010 in Financial District South, San Francisco, CA, US, using a Canon EOS 40D.</p>
 					<p>
 						Strobist info: YN560 bare @ 1/8 from the left, <br>
 						YN560 through white umbrella from the right @ 1/4
 						Triggered with optical slaves
 					</p>
-			
+
 					<h3>Tags</h3>
 					<ul>
 						<li>San Francisco</li>
@@ -225,7 +229,7 @@
 						<li>scene</li>
 						<li>CSI</li>
 					</ul>
-			
+
 					<h3>View all sizes on Flickr</h3>
 					<ul>
 						<li><a href="http://www.flickr.com/photos/necccc/5348822142/sizes/s/in/set-72157625490624866/">Small</a></li>
@@ -233,7 +237,7 @@
 						<li><a href="http://www.flickr.com/photos/necccc/5348822142/sizes/l/in/set-72157625490624866/">Large</a></li>
 						<li><a href="http://www.flickr.com/photos/necccc/5348822142/sizes/o/in/set-72157625490624866/">Original</a></li>
 					</ul>
-			
+
 					<h3>Licence</h3>
 					<p>Request to license _Nec's photos via Getty Images: <a href="http://www.flickr.com/photos/necccc/5329325629/request/">here</a></p>
 					<p>&copy; All Rights Reserved</p>
@@ -249,12 +253,12 @@
 		<script>
 			$(document).ready(function () {
 				// init overlays
-				
+
 				// init with trigger selector
 				$("#overlay-one").overlay({
 					trigger: "#trigger-one"
 				});
-				
+
 				// you have to assign events manually
 				var ovrTwo = $("#overlay-two").overlay(); // Overlay objects are returned
 				var ovrThree = $("#overlay-three").overlay();
@@ -270,7 +274,7 @@
 				});
 			});
 		</script>
-		
+
 
 		<script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
 		<script>hljs.initHighlightingOnLoad();</script>

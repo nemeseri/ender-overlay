@@ -19,7 +19,7 @@
 
 	function extend () {
 		// based on jQuery deep merge
-		var options, name, src, copy, clone, 
+		var options, name, src, copy, clone,
 			target = arguments[0], i = 1, length = arguments.length;
 
 		for (; i < length; i++) {
@@ -42,7 +42,7 @@
 		}
 		return target;
 	}
-	
+
 	function clone (obj) {
 		if (null == obj || "object" != typeof obj) return obj;
 		var copy = obj.constructor();
@@ -51,7 +51,7 @@
 		}
 		return copy;
 	}
-	
+
 	function Overlay (el, settings) {
 		this.init(el, settings);
 	}
@@ -96,7 +96,7 @@
 				onOpen: function () {},
 				onClose: function () {}
 			};
-			
+
 			this.setOptions(options);
 			this.$overlay = $el;
 
@@ -117,7 +117,7 @@
 				this.open();
 			}
 		},
-		
+
 		attachEvents: function () {
 			var self = this,
 				opt  = this.options;
@@ -140,7 +140,7 @@
 			$(document).bind("ender-overlay.close", function () {
 				self.close();
 			});
-			
+
 			$(document).bind("ender-overlay.closeOverlay", function () {
 				self.close(true);
 			});
@@ -157,14 +157,14 @@
 				});
 			}
 		},
-		
+
 		initMask: function () {
 			// If there is no explicit duration set for OverlayMask
 			// set it from overlay animation
-			if (! this.options.mask.durationIn) 
+			if (! this.options.mask.durationIn)
 				this.options.mask.durationIn = this.options.animationIn.duration;
 
-			if (! this.options.mask.durationOut) 
+			if (! this.options.mask.durationOut)
 				this.options.mask.durationOut = this.options.animationOut.duration;
 
 			if (typeof this.options.mask.animation !== "boolean")
@@ -172,7 +172,7 @@
 
 			this.mask = new OverlayMask(this.options.mask);
 		},
-		
+
 		setupOverlay: function () {
 			var topPos = this.options.top,
 				scrollTop = $(window).scrollTop(),
@@ -183,10 +183,10 @@
 				.addClass(this.options.cssClass)
 				.appendTo("body");
 
-			if (this.options.position === "absolute") 
+			if (this.options.position === "absolute")
 				topPos += scrollTop;
 
-			// width is not defined explicitly 
+			// width is not defined explicitly
 			// so we try to find out
 			if (overlayWidth === 0) {
 				this.$overlay.css({
@@ -206,13 +206,13 @@
 				marginLeft: overlayWidth / 2 * -1
 			});
 		},
-		
+
 		open: function (dontOpenMask) {
 			var opt = this.options,
 				self = this,
 				animationIn = clone(opt.animationIn);
 
-			if (this.$overlay.css("display") === "block" || 
+			if (this.$overlay.css("display") === "block" ||
 				opt.onBeforeOpen(this) === false) {
 				return;
 			}
@@ -225,7 +225,7 @@
 			if (opt.animation) {
 				if (opt.startAnimationCss.opacity === 0)
 					opt.startAnimationCss.opacity = 0.01; // ie quirk
-					
+
 
 				this.$overlay.css(
 					extend({display: "block"}, opt.startAnimationCss)
@@ -247,7 +247,7 @@
 				opt.onOpen(this);
 			}
 
-			if (this.mask && 
+			if (this.mask &&
 				typeof dontOpenMask === "undefined") {
 				this.mask.show();
 			}
@@ -260,7 +260,7 @@
 				|| this.$overlay.css("display") === "none") {
 				return;
 			}
-			
+
 			if (opt.animation) {
 				var self = this,
 					animationOut = clone(opt.animationOut);
@@ -280,7 +280,7 @@
 				opt.onClose(this);
 			}
 
-			if (this.mask && 
+			if (this.mask &&
 				typeof dontHideMask === "undefined") {
 				this.mask.hide();
 			}
@@ -292,7 +292,7 @@
 				this.close();
 			}
 		},
-		
+
 		getOverlay: function () {
 			return this.$overlay;
 		},
@@ -300,7 +300,7 @@
 		getOptions: function () {
 			return this.options;
 		},
-		
+
 		setOptions: function (options) {
 			extend(this.options, options || {});
 		}
@@ -309,7 +309,7 @@
 	function OverlayMask (settings) {
 		this.init(settings);
 	}
-	
+
 	OverlayMask.prototype = {
 		init: function (options) {
 			this.options = {
@@ -318,7 +318,7 @@
 				opacity: 0.6,
 				color: "#777"
 			};
-			
+
 			extend(this.options, options || {});
 
 			var $mask = $("#" + this.options.id);
@@ -340,7 +340,7 @@
 
 			this.$mask = $mask;
 		},
-		
+
 		show: function () {
 			// apply instance mask options
 			var opt = this.options;
@@ -348,8 +348,8 @@
 			this.$mask.css({
 				zIndex: opt.zIndex,
 				backgroundColor: opt.color,
-				width: $(document).width(),
-				height: $(document).height()
+				width: $.doc().width,
+				height: $.doc().height
 			});
 
 			if (this.options.animation) {
@@ -391,7 +391,7 @@
 			return this.$mask;
 		}
 	};
-	
+
 	$.ender({
 		overlay: function (options) {
 			var el = $(this).first();
