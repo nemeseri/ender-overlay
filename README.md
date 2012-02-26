@@ -8,6 +8,8 @@ It requires [Jeesh](https://github.com/ender-js/jeesh) and [Morpheus](https://gi
 Even though, you can leave Morpheus out if you are fine without animations. Currently it's tested in Chrome, Firefox, Safari, Opera and IE7+.
 Currently it's in beta state, please report bugs [here](https://github.com/nemeseri/ender-overlay/issues).
 
+Moreover, it's even compatible with jQuery! So if you want to include it in a jQuery based project, you can do it without any extra work.
+
 I got a lot inspiration from [jQuery Tools](http://flowplayer.org/tools/), thanks for that.
 
 More information, documentation, demos: [http://nemeseri.com/ender-overlay/](http://nemeseri.com/ender-overlay/)
