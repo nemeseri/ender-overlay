@@ -5,10 +5,11 @@ Ender-overlay is a highly configurable overlay plugin for [Ender](http://ender.n
 own gallery or other overlay based logic on the top of this plugin. It's just **1.7 KByte** (minified and gzipped).
 
 It requires [Jeesh](https://github.com/ender-js/jeesh) and [Morpheus](https://github.com/ded/morpheus) for animations.
-Even though, you can leave Morpheus out if you are fine without animations. Currently it's tested in Chrome, Firefox, Safari, Opera and IE7+.
-Currently it's in beta state, please report bugs [here](https://github.com/nemeseri/ender-overlay/issues).
+Even though, you can leave Morpheus out if you are fine without animations. Currently it's tested in Chrome, Firefox, Safari, Opera and IE7+. You can report bugs [here](https://github.com/nemeseri/ender-overlay/issues).
 
 Moreover, it's even compatible with jQuery! So if you want to include it in a jQuery based project, you can do it without any extra work.
+
+You might be interested in [ender-carousel](https://github.com/nemeseri/ender-carousel), which is a simple carousel plugin for Ender.
 
 I got a lot inspiration from [jQuery Tools](http://flowplayer.org/tools/), thanks for that.
 
