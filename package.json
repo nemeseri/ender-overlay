@@ -1,7 +1,7 @@
 {
 	"name": "ender-overlay",
 	"description": "Highly customizable overlay for Ender",
-	"version": "0.0.7",
+	"version": "0.1.0",
 	"homepage": "http://nemeseri.com/ender-overlay/",
 	"author": "Andras Nemeseri <andras@nemeseri.com> (http://nemeseri.com)",
 	"keywords": ["ender", "overlay", "ui", "lightbox", "fancybox", "modal"],

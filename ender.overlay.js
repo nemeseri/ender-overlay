@@ -52,6 +52,23 @@
 		return copy;
 	}
 
+	/*
+		Masking jQuery and Morpheus differences
+	*/
+	function animate (el, animationSettins) {
+		if (window.ender) {
+			// use morpheus
+			el.animate(animationSettins);
+		} else {
+			// convert animation properties
+			var duration = animationSettins.duration,
+				easing = animationSettins.easing,
+				onComplete = animationSettins.complete;
+
+			el.animate(animationSettins, duration, easing, onComplete);
+		}
+	}
+
 	function Overlay (el, settings) {
 		this.init(el, settings);
 	}
@@ -231,7 +248,8 @@
 					extend({display: "block"}, opt.startAnimationCss)
 				);
 
-				this.$overlay.animate(
+				animate(
+					this.$overlay,
 					extend(animationIn, {
 						complete: function () {
 							if (animationIn.opacity === 1)
@@ -265,7 +283,8 @@
 				var self = this,
 					animationOut = clone(opt.animationOut);
 
-				this.$overlay.animate(
+				animate(
+					this.$overlay,
 					extend(animationOut, {
 						complete: function () {
 							self.$overlay.css({display: "none"});
@@ -343,20 +362,22 @@
 
 		show: function () {
 			// apply instance mask options
-			var opt = this.options;
+			var opt = this.options,
+				docSize = this.getDocSize();
 
 			this.$mask.css({
 				zIndex: opt.zIndex,
 				backgroundColor: opt.color,
-				width: $.doc().width,
-				height: $.doc().height
+				width: docSize.width,
+				height: docSize.height
 			});
 
 			if (this.options.animation) {
 				this.$mask.css({
 					opacity: 0.01, // ie quirk
 					display: "block"
-				}).animate({
+				});
+				animate(this.$mask, {
 					opacity: opt.opacity,
 					duration: opt.durationIn
 				});
@@ -371,7 +392,8 @@
 		hide: function () {
 			if (this.options.animation) {
 				var self = this;
-				this.$mask.animate({
+
+				animate(this.$mask, {
 					opacity: 0,
 					duration: this.options.durationOut,
 					complete: function () {
@@ -387,15 +409,28 @@
 			}
 		},
 
+		getDocSize: function () {
+			if (window.ender) { // ender
+				return {
+					width: $.doc().width,
+					height: $.doc().height
+				}
+			} else { // jquery
+				return {
+					width: $(document).width(),
+					height: $(document).height()
+				}
+			}
+		},
+
 		getMask: function () {
 			return this.$mask;
 		}
 	};
 
-	$.ender({
-		overlay: function (options) {
-			var el = $(this).first();
-			return new Overlay(el, options);
-		}
-	}, true);
-}(ender);
+	$.fn.overlay = function (options) {
+		var el = $(this).first();
+		return new Overlay(el, options);
+	}
+
+}(window.ender || window.jQuery);
