@@ -3,7 +3,7 @@
   * copyright Andras Nemeseri @nemeseri 2011 | License MIT
   * https://github.com/nemeseri/ender-overlay
   */
-!function ($) {
+(function ($) {
 	// from valentine
 	var is = {
 		fun: function (f) {
@@ -17,12 +17,12 @@
 		}
 	};
 
-	function extend () {
+	function extend() {
 		// based on jQuery deep merge
 		var options, name, src, copy, clone,
 			target = arguments[0], i = 1, length = arguments.length;
 
-		for (; i < length; i++) {
+		for (; i < length; i += 1) {
 			if ((options = arguments[i]) !== null) {
 				// Extend the base object
 				for (name in options) {
@@ -43,11 +43,16 @@
 		return target;
 	}
 
-	function clone (obj) {
-		if (null == obj || "object" != typeof obj) return obj;
-		var copy = obj.constructor();
-		for (var attr in obj) {
-			if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+	function clone(obj) {
+		if (null === obj || "object" !== typeof obj) {
+			return obj;
+		}
+		var copy = obj.constructor(),
+			attr;
+		for (attr in obj) {
+			if (obj.hasOwnProperty(attr)) {
+				copy[attr] = obj[attr];
+			}
 		}
 		return copy;
 	}
@@ -55,7 +60,7 @@
 	/*
 		Masking jQuery and Morpheus differences
 	*/
-	function animate (el, animationSettins) {
+	function animate(el, animationSettins) {
 		if (window.ender) {
 			// use morpheus
 			el.animate(animationSettins);
@@ -69,263 +74,19 @@
 		}
 	}
 
-	function Overlay (el, settings) {
-		this.init(el, settings);
+	// from jquery
+	function proxy(fn, context) {
+		var slice = Array.prototype.slice,
+			args = slice.call(arguments, 2);
+		return function () {
+			return fn.apply(context, args.concat(slice.call(arguments)));
+		};
 	}
 
-	Overlay.prototype = {
-		init: function ($el, options) {
-			this.options = {
-				top: 80,
-				position: "absolute",
-				cssClass: "ender-overlay",
-				close: ".close",
-				trigger: null,
-				zIndex: 9999,
-				showMask: true,
-				closeOnEsc: true,
-				closeOnMaskClick: true,
-				autoOpen: false,
-				allowMultipleDisplay: false,
-
-				// morpheus required
-				animation: true,
-				// start values before animation
-				startAnimationCss: {
-					opacity: 0.01 // ie quirk
-				},
-
-				// morpheus animation options
-				animationIn: {
-					opacity: 1,
-					duration: 250
-				},
-
-				animationOut: {
-					opacity: 0,
-					duration: 250
-				},
-
-				mask: {},
-
-				onBeforeOpen: function () {},
-				onBeforeClose: function () {},
-				onOpen: function () {},
-				onClose: function () {}
-			};
-
-			this.setOptions(options);
-			this.$overlay = $el;
-
-			if (this.options.showMask) {
-				this.initMask();
-			}
-
-			// prevent multiple event binding
-			if (! this.$overlay.attr("data-overlayloaded")) {
-				this.attachEvents();
-				this.$overlay.attr("data-overlayloaded", 1);
-			}
-
-			if (this.options.animation && ! $el.animate)
-				this.options.animation = false;
-
-			if (this.options.autoOpen) {
-				this.open();
-			}
-		},
-
-		attachEvents: function () {
-			var self = this,
-				opt  = this.options;
-
-			// Bind open method to trigger's click event
-			if (opt.trigger && $(opt.trigger).length) {
-				$(opt.trigger).click(function (e) {
-					e.preventDefault();
-					self.open();
-				});
-			}
-
-			this.$overlay
-				.delegate(opt.close, 'click', function (e) {
-					e.preventDefault();
-					self.close();
-				});
-
-			// attach event listeners
-			$(document).bind("ender-overlay.close", function () {
-				self.close();
-			});
-
-			$(document).bind("ender-overlay.closeOverlay", function () {
-				self.close(true);
-			});
-
-			if (opt.closeOnEsc) {
-				$(document).keyup(function (e) {
-					self.onKeyUp(e);
-				});
-			}
-
-			if (this.mask && opt.closeOnMaskClick) {
-				this.mask.getMask().click(function () {
-					self.close();
-				});
-			}
-		},
-
-		initMask: function () {
-			// If there is no explicit duration set for OverlayMask
-			// set it from overlay animation
-			if (! this.options.mask.durationIn)
-				this.options.mask.durationIn = this.options.animationIn.duration;
-
-			if (! this.options.mask.durationOut)
-				this.options.mask.durationOut = this.options.animationOut.duration;
-
-			if (typeof this.options.mask.animation !== "boolean")
-				this.options.mask.animation = this.options.animation;
-
-			this.mask = new OverlayMask(this.options.mask);
-		},
-
-		setupOverlay: function () {
-			var topPos = this.options.top,
-				scrollTop = $(window).scrollTop(),
-				overlayWidth = this.$overlay.width();
-
-			// setup overlay
-			this.$overlay
-				.addClass(this.options.cssClass)
-				.appendTo("body");
-
-			if (this.options.position === "absolute")
-				topPos += scrollTop;
-
-			// width is not defined explicitly
-			// so we try to find out
-			if (overlayWidth === 0) {
-				this.$overlay.css({
-					display: "block",
-					position: "absolute",
-					left: -9999
-				});
-				overlayWidth = this.$overlay.width();
-			}
-
-			this.$overlay.css({
-				display: "none",
-				position: this.options.position,
-				top: topPos,
-				left: "50%",
-				zIndex: this.options.zIndex,
-				marginLeft: overlayWidth / 2 * -1
-			});
-		},
-
-		open: function (dontOpenMask) {
-			var opt = this.options,
-				self = this,
-				animationIn = clone(opt.animationIn);
-
-			if (this.$overlay.css("display") === "block" ||
-				opt.onBeforeOpen(this) === false) {
-				return;
-			}
-
-			this.setupOverlay();
-
-			if (! opt.allowMultipleDisplay)
-				$(document).trigger("ender-overlay.closeOverlay");
-
-			if (opt.animation) {
-				if (opt.startAnimationCss.opacity === 0)
-					opt.startAnimationCss.opacity = 0.01; // ie quirk
-
-
-				this.$overlay.css(
-					extend({display: "block"}, opt.startAnimationCss)
-				);
-
-				animate(
-					this.$overlay,
-					extend(animationIn, {
-						complete: function () {
-							if (animationIn.opacity === 1)
-								self.$overlay.css({ "filter": "" }); // ie quirk
-							self.options.onOpen(self);
-						}
-					})
-				);
-			} else {
-				this.$overlay.css({
-					display: "block"
-				});
-				opt.onOpen(this);
-			}
-
-			if (this.mask &&
-				typeof dontOpenMask === "undefined") {
-				this.mask.show();
-			}
-		},
-
-		close: function (dontHideMask) {
-			var opt = this.options;
-
-			if (opt.onBeforeClose(this) === false
-				|| this.$overlay.css("display") === "none") {
-				return;
-			}
-
-			if (opt.animation) {
-				var self = this,
-					animationOut = clone(opt.animationOut);
-
-				animate(
-					this.$overlay,
-					extend(animationOut, {
-						complete: function () {
-							self.$overlay.css({display: "none"});
-							self.options.onClose(self);
-						}
-					})
-				);
-			} else {
-				this.$overlay.css({
-					display: "none"
-				});
-				opt.onClose(this);
-			}
-
-			if (this.mask &&
-				typeof dontHideMask === "undefined") {
-				this.mask.hide();
-			}
-		},
-
-		onKeyUp: function (e) {
-			if (e.keyCode === 27
-				&& this.$overlay.css("display") !== "none") {
-				this.close();
-			}
-		},
-
-		getOverlay: function () {
-			return this.$overlay;
-		},
-
-		getOptions: function () {
-			return this.options;
-		},
-
-		setOptions: function (options) {
-			extend(this.options, options || {});
-		}
-	};
-
-	function OverlayMask (settings) {
+	/*
+		OverlayMask Constructor
+	*/
+	function OverlayMask(settings) {
 		this.init(settings);
 	}
 
@@ -354,8 +115,9 @@
 					.appendTo("body");
 			}
 
-			if (this.options.animation && ! $mask.animate)
+			if (this.options.animation && ! $mask.animate) {
 				this.options.animation = false;
+			}
 
 			this.$mask = $mask;
 		},
@@ -414,12 +176,12 @@
 				return {
 					width: $.doc().width,
 					height: $.doc().height
-				}
+				};
 			} else { // jquery
 				return {
 					width: $(document).width(),
 					height: $(document).height()
-				}
+				};
 			}
 		},
 
@@ -428,9 +190,286 @@
 		}
 	};
 
+	/*
+		Overlay Constructor
+	*/
+	function Overlay(el, settings) {
+		this.init(el, settings);
+
+		// only return the API
+		// instead of this
+		return {
+			open: proxy(this.open, this),
+			close: proxy(this.close, this),
+			getOverlay: proxy(this.getOverlay, this),
+			getOptions: proxy(this.getOptions, this),
+			setOptions: proxy(this.setOptions, this)
+		};
+	}
+
+	Overlay.prototype = {
+		init: function ($el, options) {
+			this.options = {
+				top: 80,
+				position: "absolute",
+				cssClass: "ender-overlay",
+				close: ".close",
+				trigger: null,
+				zIndex: 9999,
+				showMask: true,
+				closeOnEsc: true,
+				closeOnMaskClick: true,
+				autoOpen: false,
+				allowMultipleDisplay: false,
+
+				// morpheus required
+				animation: true,
+				// start values before animation
+				startAnimationCss: {
+					opacity: 0.01 // ie quirk
+				},
+
+				// morpheus animation options
+				animationIn: {
+					opacity: 1,
+					duration: 250
+				},
+
+				animationOut: {
+					opacity: 0,
+					duration: 250
+				},
+
+				mask: {},
+
+				onBeforeOpen: function () {},
+				onBeforeClose: function () {},
+				onOpen: function () {},
+				onClose: function () {}
+			};
+
+			this.setOptions(options);
+			this.$overlay = $el;
+
+			if (this.options.showMask) {
+				this.initMask();
+			}
+
+			// prevent multiple event binding
+			if (! this.$overlay.attr("data-overlayloaded")) {
+				this.attachEvents();
+				this.$overlay.attr("data-overlayloaded", 1);
+			}
+
+			if (this.options.animation && ! $el.animate) {
+				this.options.animation = false;
+			}
+
+			if (this.options.autoOpen) {
+				this.open();
+			}
+		},
+
+		attachEvents: function () {
+			var self = this,
+				opt = this.options;
+
+			// Bind open method to trigger's click event
+			if (opt.trigger && $(opt.trigger).length) {
+				$(opt.trigger).click(function (e) {
+					e.preventDefault();
+					self.open();
+				});
+			}
+
+			this.$overlay
+				.delegate(opt.close, 'click', function (e) {
+					e.preventDefault();
+					self.close();
+				});
+
+			// attach event listeners
+			$(document).bind("ender-overlay.close", function () {
+				self.close();
+			});
+
+			$(document).bind("ender-overlay.closeOverlay", function () {
+				self.close(true);
+			});
+
+			if (opt.closeOnEsc) {
+				$(document).keyup(function (e) {
+					self.onKeyUp(e);
+				});
+			}
+
+			if (this.mask && opt.closeOnMaskClick) {
+				this.mask.getMask().click(function () {
+					self.close();
+				});
+			}
+		},
+
+		initMask: function () {
+			// If there is no explicit duration set for OverlayMask
+			// set it from overlay animation
+			if (! this.options.mask.durationIn) {
+				this.options.mask.durationIn = this.options.animationIn.duration;
+			}
+
+			if (! this.options.mask.durationOut) {
+				this.options.mask.durationOut = this.options.animationOut.duration;
+			}
+
+			if (typeof this.options.mask.animation !== "boolean") {
+				this.options.mask.animation = this.options.animation;
+			}
+
+			this.mask = new OverlayMask(this.options.mask);
+		},
+
+		setupOverlay: function () {
+			var topPos = this.options.top,
+				scrollTop = $(window).scrollTop(),
+				overlayWidth = this.$overlay.width();
+
+			// setup overlay
+			this.$overlay
+				.addClass(this.options.cssClass)
+				.appendTo("body");
+
+			if (this.options.position === "absolute") {
+				topPos += scrollTop;
+			}
+
+			// width is not defined explicitly
+			// so we try to find out
+			if (overlayWidth === 0) {
+				this.$overlay.css({
+					display: "block",
+					position: "absolute",
+					left: -9999
+				});
+				overlayWidth = this.$overlay.width();
+			}
+
+			this.$overlay.css({
+				display: "none",
+				position: this.options.position,
+				top: topPos,
+				left: "50%",
+				zIndex: this.options.zIndex,
+				marginLeft: overlayWidth / 2 * -1
+			});
+		},
+
+		open: function (dontOpenMask) {
+			var opt = this.options,
+				self = this,
+				animationIn = clone(opt.animationIn);
+
+			if (this.$overlay.css("display") === "block" ||
+				opt.onBeforeOpen(this) === false) {
+				return;
+			}
+
+			this.setupOverlay();
+
+			if (! opt.allowMultipleDisplay) {
+				$(document).trigger("ender-overlay.closeOverlay");
+			}
+
+			if (opt.animation) {
+				if (opt.startAnimationCss.opacity === 0) {
+					opt.startAnimationCss.opacity = 0.01; // ie quirk
+				}
+
+				this.$overlay.css(
+					extend({display: "block"}, opt.startAnimationCss)
+				);
+
+				animate(
+					this.$overlay,
+					extend(animationIn, {
+						complete: function () {
+							if (animationIn.opacity === 1) {
+								self.$overlay.css({ "filter": "" }); // ie quirk
+							}
+							self.options.onOpen(self);
+						}
+					})
+				);
+			} else {
+				this.$overlay.css({
+					display: "block"
+				});
+				opt.onOpen(this);
+			}
+
+			if (this.mask &&
+				typeof dontOpenMask === "undefined") {
+				this.mask.show();
+			}
+		},
+
+		close: function (dontHideMask) {
+			var opt = this.options,
+				self = this,
+				animationOut;
+
+			if (opt.onBeforeClose(this) === false ||
+				this.$overlay.css("display") === "none") {
+				return;
+			}
+
+			if (opt.animation) {
+				animationOut = clone(opt.animationOut);
+
+				animate(
+					this.$overlay,
+					extend(animationOut, {
+						complete: function () {
+							self.$overlay.css({display: "none"});
+							self.options.onClose(self);
+						}
+					})
+				);
+			} else {
+				this.$overlay.css({
+					display: "none"
+				});
+				opt.onClose(this);
+			}
+
+			if (this.mask &&
+				typeof dontHideMask === "undefined") {
+				this.mask.hide();
+			}
+		},
+
+		onKeyUp: function (e) {
+			if (e.keyCode === 27 &&
+				this.$overlay.css("display") !== "none") {
+				this.close();
+			}
+		},
+
+		getOverlay: function () {
+			return this.$overlay;
+		},
+
+		getOptions: function () {
+			return this.options;
+		},
+
+		setOptions: function (options) {
+			extend(this.options, options || {});
+		}
+	};
+
 	$.fn.overlay = function (options) {
 		var el = $(this).first();
 		return new Overlay(el, options);
-	}
+	};
 
-}(window.ender || window.jQuery);
+}(window.ender || window.jQuery));
