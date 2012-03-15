@@ -7,7 +7,7 @@
 
 /*!
   * Ender: open module JavaScript framework (client-lib)
-  * copyright Dustin Diaz & Jacob Thornton 2011 (@ded @fat)
+  * copyright Dustin Diaz & Jacob Thornton 2011-2012 (@ded @fat)
   * http://ender.no.de
   * License MIT
   */
@@ -27,13 +27,13 @@
 
   function require (identifier) {
     // modules can be required from ender's build system, or found on the window
-    var module = modules[identifier] || window[identifier]
+    var module = modules['$' + identifier] || window[identifier]
     if (!module) throw new Error("Requested module '" + identifier + "' has not been defined.")
     return module
   }
 
   function provide (name, what) {
-    return (modules[name] = what)
+    return (modules['$' + name] = what)
   }
 
   context['provide'] = provide
@@ -46,10 +46,14 @@
 
   function boosh(s, r, els) {
     // string || node || nodelist || window
-    if (typeof s == 'string' || s.nodeName || (s.length && 'item' in s) || s == window) {
+    if (typeof s == 'undefined') {
+      els = []
+    } else if (typeof s == 'string' || s.nodeName || (s.length && 'item' in s) || s == window) {
       els = ender._select(s, r)
       els.selector = s
-    } else els = isFinite(s.length) ? s : [s]
+    } else {
+      els = isFinite(s.length) ? s : [s]
+    }
     return aug(els, boosh)
   }
 
@@ -57,26 +61,29 @@
     return boosh(s, r)
   }
 
+  ender._VERSION = '0.3.7'
+
   aug(ender, {
-      _VERSION: '0.3.6'
-    , fn: boosh // for easy compat to jQuery plugins
+      fn: boosh // for easy compat to jQuery plugins
     , ender: function (o, chain) {
         aug(chain ? boosh : ender, o)
       }
     , _select: function (s, r) {
-        return (r || document).querySelectorAll(s)
+        if (typeof s == 'string') return (r || document).querySelectorAll(s)
+        if (s.nodeName) return [ s ]
+        return s
       }
   })
 
   aug(boosh, {
-    forEach: function (fn, scope, i) {
-      // opt out of native forEach so we can intentionally call our own scope
-      // defaulting to the current item and be able to return self
-      for (i = 0, l = this.length; i < l; ++i) i in this && fn.call(scope || this[i], this[i], i, this)
-      // return self for chaining
-      return this
-    },
-    $: ender // handy reference to self
+      forEach: function (fn, scope, i, l) {
+        // opt out of native forEach so we can intentionally call our own scope
+        // defaulting to the current item and be able to return self
+        for (i = 0, l = this.length; i < l; ++i) i in this && fn.call(scope || this[i], this[i], i, this)
+        // return self for chaining
+        return this
+      }
+    , $: ender // handy reference to self
   })
 
   ender.noConflict = function () {
@@ -89,6 +96,7 @@
   context['ender'] = context['$'] = context['ender'] || ender
 
 }(this);
+
 
 !function () {
 
@@ -109,6 +117,7 @@
       , doc = document
       , win = window
       , html = doc.documentElement
+      , thousand = 1000
       , rgbOhex = /^rgb\(|#/
       , relVal = /^([+\-])=([\d\.]+)/
       , numUnit = /^(?:[\+\-]=)?\d+(?:\.\d+)?(%|in|cm|mm|em|ex|pt|pc|px)$/
@@ -175,9 +184,39 @@
             function (callback) {
               win.setTimeout(function () {
                 callback(+new Date())
-              }, 10)
+              }, 11) // these go to eleven
             }
         }()
+      , children = []
+  
+    function has(array, elem, i) {
+      if (Array.prototype.indexOf) return array.indexOf(elem)
+      for (i = 0; i < array.length; ++i) {
+        if (array[i] === elem) return i
+      }
+    }
+  
+    function render(t) {
+      var i, found, count = children.length
+      for (i = count; i--;) {
+        children[i](t)
+        found = true
+      }
+      found && frame(render)
+    }
+  
+    function live(f) {
+      if (children.push(f) === 1) render()
+    }
+  
+    function die(f) {
+      var i, rest, index = has(children, f)
+      if (index >= 0) {
+        rest = children.slice(index+1)
+        children.length = index
+        children = children.concat(rest)
+      }
+    }
   
     function parseTransform(style, base) {
       var values = {}, m
@@ -205,7 +244,7 @@
     function toHex(c) {
       var m = /rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec(c)
       return (m ? rgb(m[1], m[2], m[3]) : c)
-        .replace(/#(\w)(\w)(\w)$/, '#$1$1$2$2$3$3') // short to long
+        .replace(/#(\w)(\w)(\w)$/, '#$1$1$2$2$3$3') // short skirt to long jacket
     }
   
     // change font-size => fontSize etc.
@@ -215,6 +254,7 @@
       })
     }
   
+    // aren't we having it?
     function fun(f) {
       return typeof f == 'function'
     }
@@ -234,26 +274,27 @@
         // default to a pleasant-to-the-eye easeOut (like native animations)
         return Math.sin(t * Math.PI / 2)
       }
-      var time = duration || 1000
+      var time = duration || thousand
+        , self = this
         , diff = to - from
         , start = +new Date()
         , stop = 0
         , end = 0
-      frame(run)
+      live(run)
   
       function run(t) {
         var delta = t - start
         if (delta > time || stop) {
           to = isFinite(to) ? to : 1
           stop ? end && fn(to) : fn(to)
-          return done && done()
+          die(run)
+          return done && done.apply(self)
         }
         // if you don't specify a 'to' you can use tween as a generic delta tweener
         // cool, eh?
         isFinite(to) ?
           fn((diff * ease(delta / time)) + from) :
           fn(ease(delta / time))
-        frame(run)
       }
       return {
         stop: function (jump) {
@@ -290,7 +331,7 @@
   
     // this gets you the next hex in line according to a 'position'
     function nextColor(pos, start, finish) {
-      var r = [], i, e
+      var r = [], i, e, from, to
       for (i = 0; i < 6; i++) {
         from = Math.min(15, parseInt(start.charAt(i),  16))
         to   = Math.min(15, parseInt(finish.charAt(i), 16))
@@ -306,14 +347,14 @@
       if (k == 'transform') {
         v = {}
         for(var t in begin[i][k]) {
-          v[t] = (t in end[i][k]) ? Math.round(((end[i][k][t] - begin[i][k][t]) * pos + begin[i][k][t]) * 1000) / 1000 : begin[i][k][t]
+          v[t] = (t in end[i][k]) ? Math.round(((end[i][k][t] - begin[i][k][t]) * pos + begin[i][k][t]) * thousand) / thousand : begin[i][k][t]
         }
         return v
       } else if (typeof begin[i][k] == 'string') {
         return nextColor(pos, begin[i][k], end[i][k])
       } else {
         // round so we don't get crazy long floats
-        v = Math.round(((end[i][k] - begin[i][k]) * pos + begin[i][k]) * 1000) / 1000
+        v = Math.round(((end[i][k] - begin[i][k]) * pos + begin[i][k]) * thousand) / thousand
         // some css properties don't require a unit (like zIndex, lineHeight, opacity)
         if (!(k in unitless)) v += units[i][k] || 'px'
         return v
@@ -416,7 +457,7 @@
         }
       }
       // ONE TWEEN TO RULE THEM ALL
-      return tween(duration, function (pos, v, xy) {
+      return tween.apply(els, [duration, function (pos, v, xy) {
         // normally not a fan of optimizing for() loops, but we want something
         // fast for animating
         for (i = els.length; i--;) {
@@ -434,7 +475,7 @@
                 (els[i].style[camelize(k)] = v)
           }
         }
-      }, complete, ease)
+      }, complete, ease])
     }
   
     // expose useful methods
