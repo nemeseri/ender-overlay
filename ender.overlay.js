@@ -198,13 +198,7 @@
 
 		// only return the API
 		// instead of this
-		return {
-			open: proxy(this.open, this),
-			close: proxy(this.close, this),
-			getOverlay: proxy(this.getOverlay, this),
-			getOptions: proxy(this.getOptions, this),
-			setOptions: proxy(this.setOptions, this)
-		};
+		return this.getApi();
 	}
 
 	Overlay.prototype = {
@@ -366,10 +360,11 @@
 		open: function (dontOpenMask) {
 			var opt = this.options,
 				self = this,
-				animationIn = clone(opt.animationIn);
+				animationIn = clone(opt.animationIn),
+				api = this.getApi();
 
 			if (this.$overlay.css("display") === "block" ||
-				opt.onBeforeOpen(this) === false) {
+				opt.onBeforeOpen(api) === false) {
 				return;
 			}
 
@@ -395,7 +390,7 @@
 							if (animationIn.opacity === 1) {
 								self.$overlay.css({ "filter": "" }); // ie quirk
 							}
-							self.options.onOpen(self);
+							self.options.onOpen(api);
 						}
 					})
 				);
@@ -403,7 +398,7 @@
 				this.$overlay.css({
 					display: "block"
 				});
-				opt.onOpen(this);
+				opt.onOpen();
 			}
 
 			if (this.mask &&
@@ -415,9 +410,10 @@
 		close: function (dontHideMask) {
 			var opt = this.options,
 				self = this,
-				animationOut;
+				animationOut,
+				api = this.getApi();
 
-			if (opt.onBeforeClose(this) === false ||
+			if (opt.onBeforeClose(api) === false ||
 				this.$overlay.css("display") === "none") {
 				return;
 			}
@@ -430,7 +426,7 @@
 					extend(animationOut, {
 						complete: function () {
 							self.$overlay.css({display: "none"});
-							self.options.onClose(self);
+							self.options.onClose(api);
 						}
 					})
 				);
@@ -438,7 +434,7 @@
 				this.$overlay.css({
 					display: "none"
 				});
-				opt.onClose(this);
+				opt.onClose(api);
 			}
 
 			if (this.mask &&
@@ -464,6 +460,16 @@
 
 		setOptions: function (options) {
 			extend(this.options, options || {});
+		},
+
+		getApi: function () {
+			return {
+				open: proxy(this.open, this),
+				close: proxy(this.close, this),
+				getOverlay: proxy(this.getOverlay, this),
+				getOptions: proxy(this.getOptions, this),
+				setOptions: proxy(this.setOptions, this)
+			};
 		}
 	};
 
