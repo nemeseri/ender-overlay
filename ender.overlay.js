@@ -24,7 +24,7 @@
 		Based on Bootstrap
 		Mozilla and Webkit support only
 	*/
-    transition = (function () {
+	transition = (function () {
 		var st = document.createElement("div").style,
 			transitionEnd = "TransitionEnd",
 			transitionProp = "Transition",
