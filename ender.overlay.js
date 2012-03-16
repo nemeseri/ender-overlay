@@ -243,7 +243,9 @@
 			};
 
 			this.setOptions(options);
-			this.$overlay = $el;
+			this.$overlay = $el.css({
+				display: "none"
+			});
 
 			if (this.options.showMask) {
 				this.initMask();
