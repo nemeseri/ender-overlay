@@ -4,8 +4,11 @@
   * https://github.com/nemeseri/ender-overlay
   */
 (function ($) {
+	var is,
+		transition;
+
 	// from valentine
-	var is = {
+	is = {
 		fun: function (f) {
 			return typeof f === 'function';
 		},
@@ -16,6 +19,38 @@
 			return o instanceof Object && !is.fun(o) && !is.arr(o);
 		}
 	};
+
+	/*
+		Based on Bootstrap
+		Mozilla and Webkit support only
+	*/
+    transition = (function () {
+		var st = document.createElement("div").style,
+			transitionEnd = "TransitionEnd",
+			transitionProp = "Transition",
+			support = st.transition !== undefined ||
+				st.WebkitTransition !== undefined ||
+				st.MozTransition !== undefined;
+
+		return support && {
+			prop: (function () {
+				if (st.WebkitTransition !== undefined) {
+					transitionProp = "WebkitTransition";
+				} else if (st.MozTransition !== undefined) {
+					transitionProp = "MozTransition";
+				}
+				return transitionProp;
+			}()),
+			end: (function () {
+				if (st.WebkitTransition !== undefined) {
+					transitionEnd = "webkitTransitionEnd";
+				} else if (st.MozTransition !== undefined) {
+					transitionEnd = "transitionend";
+				}
+				return transitionEnd;
+			}())
+		};
+	}());
 
 	function extend() {
 		// based on jQuery deep merge
@@ -57,23 +92,6 @@
 		return copy;
 	}
 
-	/*
-		Masking jQuery and Morpheus differences
-	*/
-	function animate(el, animationSettins) {
-		if (window.ender) {
-			// use morpheus
-			el.animate(animationSettins);
-		} else {
-			// convert animation properties
-			var duration = animationSettins.duration,
-				easing = animationSettins.easing,
-				onComplete = animationSettins.complete;
-
-			el.animate(animationSettins, duration, easing, onComplete);
-		}
-	}
-
 	// from jquery
 	function proxy(fn, context) {
 		var slice = Array.prototype.slice,
@@ -81,6 +99,35 @@
 		return function () {
 			return fn.apply(context, args.concat(slice.call(arguments)));
 		};
+	}
+
+	function animate(el, animationSettings, css3transition) {
+		var duration = animationSettings.duration,
+			easing = animationSettings.easing,
+			complete = animationSettings.complete ? animationSettings.complete : function () {},
+			dummy;
+
+		if (css3transition && transition) {
+			// css3 transitions instead of JS animation
+			dummy = el[0].offsetWidth; // force reflow; source: bootstrap
+			el[0].style[transition.prop] = "all " + animationSettings.duration + "ms";
+
+			// takaritas
+			// valamiert lefut azonnal a complete fgv enelkul..
+			delete animationSettings.complete;
+			delete animationSettings.duration;
+			delete animationSettings.easing;
+
+			el.css(animationSettings);
+			el.unbind(transition.end);
+			el.bind(transition.end, complete);
+		} else if (window.ender) {
+			// use morpheus
+			el.animate(animationSettings);
+		} else {
+			// use animate from jquery
+			el.animate(animationSettings, duration, easing, complete);
+		}
 	}
 
 	/*
@@ -134,7 +181,7 @@
 				height: docSize.height
 			});
 
-			if (this.options.animation) {
+			if (opt.animation) {
 				this.$mask.css({
 					opacity: 0.01, // ie quirk
 					display: "block"
@@ -142,7 +189,7 @@
 				animate(this.$mask, {
 					opacity: opt.opacity,
 					duration: opt.durationIn
-				});
+				}, opt.css3transition);
 			} else {
 				this.$mask.css({
 					display: "block",
@@ -152,9 +199,10 @@
 		},
 
 		hide: function () {
-			if (this.options.animation) {
-				var self = this;
+			var opt = this.options,
+				self = this;
 
+			if (opt.animation) {
 				animate(this.$mask, {
 					opacity: 0,
 					duration: this.options.durationOut,
@@ -163,7 +211,7 @@
 							display: "none"
 						});
 					}
-				});
+				}, opt.css3transition);
 			} else {
 				this.$mask.css({
 					display: "none"
@@ -216,8 +264,9 @@
 				autoOpen: false,
 				allowMultipleDisplay: false,
 
-				// morpheus required
+				// morpheus required for JS fallback
 				animation: true,
+				css3transition: true, // beta
 				// start values before animation
 				startAnimationCss: {
 					opacity: 0.01 // ie quirk
@@ -319,20 +368,25 @@
 				this.options.mask.animation = this.options.animation;
 			}
 
+			if (typeof this.options.mask.css3transition !== "boolean") {
+				this.options.mask.css3transition = this.options.css3transition;
+			}
+
 			this.mask = new OverlayMask(this.options.mask);
 		},
 
 		setupOverlay: function () {
-			var topPos = this.options.top,
+			var opt = this.options,
+				topPos = opt.top,
 				scrollTop = $(window).scrollTop(),
 				overlayWidth = this.$overlay.width();
 
 			// setup overlay
 			this.$overlay
-				.addClass(this.options.cssClass)
+				.addClass(opt.cssClass)
 				.appendTo("body");
 
-			if (this.options.position === "absolute") {
+			if (opt.position === "absolute") {
 				topPos += scrollTop;
 			}
 
@@ -349,10 +403,10 @@
 
 			this.$overlay.css({
 				display: "none",
-				position: this.options.position,
+				position: opt.position,
 				top: topPos,
 				left: "50%",
-				zIndex: this.options.zIndex,
+				zIndex: opt.zIndex,
 				marginLeft: overlayWidth / 2 * -1
 			});
 		},
@@ -392,7 +446,8 @@
 							}
 							self.options.onOpen(api);
 						}
-					})
+					}),
+					opt.css3transition
 				);
 			} else {
 				this.$overlay.css({
@@ -428,7 +483,8 @@
 							self.$overlay.css({display: "none"});
 							self.options.onClose(api);
 						}
-					})
+					}),
+					opt.css3transition
 				);
 			} else {
 				this.$overlay.css({
