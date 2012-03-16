@@ -148,7 +148,8 @@
 
 			extend(this.options, options || {});
 
-			var $mask = $("#" + this.options.id);
+			var $mask = $("#" + this.options.id),
+				opt = this.options;
 
 			if (! $mask.length) {
 				$mask = $("<div></div>")
@@ -162,8 +163,12 @@
 					.appendTo("body");
 			}
 
-			if (this.options.animation && ! $mask.animate) {
-				this.options.animation = false;
+			if (opt.css3transition && ! transition) {
+				opt.css3transition = false;
+			}
+
+			if (opt.animation && ! ($mask.animate || opt.css3transition)) {
+				opt.animation = false;
 			}
 
 			this.$mask = $mask;
@@ -251,6 +256,8 @@
 
 	Overlay.prototype = {
 		init: function ($el, options) {
+			var opt;
+
 			this.options = {
 				top: 80,
 				position: "absolute",
@@ -266,7 +273,7 @@
 
 				// morpheus required for JS fallback
 				animation: true,
-				css3transition: true, // beta
+				css3transition: false, // experimental
 				// start values before animation
 				startAnimationCss: {
 					opacity: 0.01 // ie quirk
@@ -292,11 +299,12 @@
 			};
 
 			this.setOptions(options);
+			opt = this.options;
 			this.$overlay = $el.css({
 				display: "none"
 			});
 
-			if (this.options.showMask) {
+			if (opt.showMask) {
 				this.initMask();
 			}
 
@@ -306,11 +314,15 @@
 				this.$overlay.attr("data-overlayloaded", 1);
 			}
 
-			if (this.options.animation && ! $el.animate) {
-				this.options.animation = false;
+			if (opt.css3transition && ! transition) {
+				opt.css3transition = false;
 			}
 
-			if (this.options.autoOpen) {
+			if (opt.animation && ! ($el.animate || opt.css3transition)) {
+				opt.animation = false;
+			}
+
+			if (opt.autoOpen) {
 				this.open();
 			}
 		},
