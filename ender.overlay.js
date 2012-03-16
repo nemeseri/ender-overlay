@@ -414,7 +414,7 @@
 				api = this.getApi();
 
 			if (opt.onBeforeClose(api) === false ||
-				this.$overlay.css("display") === "none") {
+				this.$overlay.css("display") !== "block") {
 				return;
 			}
 
