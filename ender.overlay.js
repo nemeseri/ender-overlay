@@ -222,7 +222,7 @@
 		getDocSize: function () {
 			if (window.ender) { // ender
 				return {
-					width: $.doc().width,
+					width: $("body").width(),
 					height: $.doc().height
 				};
 			} else { // jquery
