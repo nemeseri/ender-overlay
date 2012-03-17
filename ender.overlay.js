@@ -3,7 +3,7 @@
   * copyright Andras Nemeseri @nemeseri 2012 | License MIT
   * https://github.com/nemeseri/ender-overlay
   */
-(function ($) {
+!function ($) {
 	var is,
 		transition;
 
@@ -548,4 +548,4 @@
 		return new Overlay(el, options);
 	};
 
-}(window.ender || window.jQuery));
+}(window.ender || window.jQuery);
