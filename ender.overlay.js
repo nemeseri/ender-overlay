@@ -149,32 +149,6 @@
 			// use animate from jquery
 			el.animate(animation, animation.duration, animation.easing, complete);
 		}
-
-/*		var duration = animationSettings.duration,
-			easing = animationSettings.easing,
-			complete = animationSettings.complete ? animationSettings.complete : function () {},
-			dummy;
-
-		if (css3transition && transition) {
-			// css3 transitions instead of JS animation
-			dummy = el[0].offsetWidth; // force reflow; source: bootstrap
-			el[0].style[transition.prop] = "all " + animationSettings.duration + "ms";
-
-			// takaritas
-			// valamiert lefut azonnal a complete fgv enelkul..
-			delete animationSettings.complete;
-			delete animationSettings.duration;
-			delete animationSettings.easing;
-
-			el.css(animationSettings);
-			el.unbind(transition.end);
-			el.bind(transition.end, complete);
-		} else if (window.ender) {
-
-		} else {
-			// use animate from jquery
-			el.animate(animationSettings, duration, easing, complete);
-		}*/
 	}
 
 	/*
