@@ -1,6 +1,6 @@
 /*!
-  * Ender-Overlay: Simple Overlay for Ender
-  * copyright Andras Nemeseri @nemeseri 2011 | License MIT
+  * Ender-Overlay: Highly Customizable Overlay for Ender
+  * copyright Andras Nemeseri @nemeseri 2012 | License MIT
   * https://github.com/nemeseri/ender-overlay
   */
 (function ($) {
