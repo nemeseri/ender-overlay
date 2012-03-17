@@ -101,8 +101,56 @@
 		};
 	}
 
-	function animate(el, animationSettings, css3transition) {
-		var duration = animationSettings.duration,
+	function animate(options) {
+		var el = options.el,
+			complete = options.complete ? options.complete : function () {},
+			animation,
+			dummy;
+
+		// no animation obj OR animation is not available,
+		// fallback to css and call the callback
+		if (! options.animation ||
+			! (el.animate || (options.css3transition && transition))) {
+			el.css(options.fallbackCss);
+			complete();
+			return;
+		}
+
+		// we will animate, apply start CSS
+		if (options.animStartCss) {
+			if (options.animStartCss.opacity === 0) {
+				options.animStartCss.opacity = 0.01; // ie quirk
+			}
+			el.css(options.animStartCss);
+		}
+		animation = options.animation;
+
+		// css3 setted, if available apply the css
+		if (options.css3transition && transition) {
+			dummy = el[0].offsetWidth; // force reflow; source: bootstrap
+			el[0].style[transition.prop] = "all " + animation.duration + "ms";
+
+			// takaritas
+			delete animation.duration;
+			delete animation.easing;
+
+			el.css(animation);
+			//el.unbind(transition.end);
+			el.bind(transition.end, function () {
+				// delete transition properties and events
+				el.unbind(transition.end);
+				el[0].style[transition.prop] = "none";
+				complete();
+			});
+		} else if (window.ender) {
+			// use morpheus
+			el.animate(extend(animation, {"complete": complete}));
+		} else {
+			// use animate from jquery
+			el.animate(animation, animation.duration, animation.easing, complete);
+		}
+
+/*		var duration = animationSettings.duration,
 			easing = animationSettings.easing,
 			complete = animationSettings.complete ? animationSettings.complete : function () {},
 			dummy;
@@ -122,12 +170,11 @@
 			el.unbind(transition.end);
 			el.bind(transition.end, complete);
 		} else if (window.ender) {
-			// use morpheus
-			el.animate(animationSettings);
+
 		} else {
 			// use animate from jquery
 			el.animate(animationSettings, duration, easing, complete);
-		}
+		}*/
 	}
 
 	/*
@@ -163,21 +210,14 @@
 					.appendTo("body");
 			}
 
-			if (opt.css3transition && ! transition) {
-				opt.css3transition = false;
-			}
-
-			if (opt.animation && ! ($mask.animate || opt.css3transition)) {
-				opt.animation = false;
-			}
-
 			this.$mask = $mask;
 		},
 
 		show: function () {
 			// apply instance mask options
 			var opt = this.options,
-				docSize = this.getDocSize();
+				docSize = this.getDocSize(),
+				animObj = false;
 
 			this.$mask.css({
 				zIndex: opt.zIndex,
@@ -186,42 +226,47 @@
 				height: docSize.height
 			});
 
-			if (opt.animation) {
-				this.$mask.css({
-					opacity: 0.01, // ie quirk
-					display: "block"
-				});
-				animate(this.$mask, {
+			if (opt.durationIn) {
+				animObj = {
 					opacity: opt.opacity,
 					duration: opt.durationIn
-				}, opt.css3transition);
-			} else {
-				this.$mask.css({
-					display: "block",
-					opacity: opt.opacity
-				});
+				};
 			}
+
+			animate({
+				el: this.$mask,
+				animStartCss: {
+					opacity: 0.01, // ie quirk
+					display: "block"
+				},
+				animation: animObj,
+				fallbackCss: {display: "block", opacity: opt.opacity},
+				css3transition: opt.css3transition
+			});
+
 		},
 
 		hide: function () {
 			var opt = this.options,
-				self = this;
+				self = this,
+				animObj = false;
 
-			if (opt.animation) {
-				animate(this.$mask, {
+			if (opt.durationOut) {
+				animObj = {
 					opacity: 0,
-					duration: this.options.durationOut,
-					complete: function () {
-						self.$mask.css({
-							display: "none"
-						});
-					}
-				}, opt.css3transition);
-			} else {
-				this.$mask.css({
-					display: "none"
-				});
+					duration: opt.durationOut
+				};
 			}
+
+			animate({
+				el: this.$mask,
+				animation: animObj,
+				complete: function () {
+					self.$mask.css({display: "none"});
+				},
+				fallbackCss: {display: "none"},
+				css3transition: opt.css3transition
+			});
 		},
 
 		getDocSize: function () {
@@ -272,8 +317,8 @@
 				allowMultipleDisplay: false,
 
 				// morpheus required for JS fallback
-				animation: true,
 				css3transition: false, // experimental
+
 				// start values before animation
 				startAnimationCss: {
 					opacity: 0.01 // ie quirk
@@ -304,6 +349,14 @@
 				display: "none"
 			});
 
+			if (opt.animationIn === "none") {
+				opt.animationIn = false;
+			}
+
+			if (opt.animationOut === "none") {
+				opt.animationOut = false;
+			}
+
 			if (opt.showMask) {
 				this.initMask();
 			}
@@ -312,14 +365,6 @@
 			if (! this.$overlay.attr("data-overlayloaded")) {
 				this.attachEvents();
 				this.$overlay.attr("data-overlayloaded", 1);
-			}
-
-			if (opt.css3transition && ! transition) {
-				opt.css3transition = false;
-			}
-
-			if (opt.animation && ! ($el.animate || opt.css3transition)) {
-				opt.animation = false;
 			}
 
 			if (opt.autoOpen) {
@@ -368,25 +413,32 @@
 		},
 
 		initMask: function () {
+			var opt = this.options;
+
 			// If there is no explicit duration set for OverlayMask
 			// set it from overlay animation
-			if (! this.options.mask.durationIn) {
-				this.options.mask.durationIn = this.options.animationIn.duration;
+			if (! opt.mask.durationIn && opt.animationIn && opt.animationIn.duration) {
+				opt.mask.durationIn = opt.animationIn.duration;
 			}
 
-			if (! this.options.mask.durationOut) {
-				this.options.mask.durationOut = this.options.animationOut.duration;
+			if (! opt.mask.durationOut && opt.animationOut && opt.animationOut.duration) {
+				opt.mask.durationOut = opt.animationOut.duration;
 			}
 
-			if (typeof this.options.mask.animation !== "boolean") {
-				this.options.mask.animation = this.options.animation;
+			// no animation
+			if (! opt.mask.durationIn && ! opt.animationIn) {
+				opt.mask.durationIn = 0;
 			}
 
-			if (typeof this.options.mask.css3transition !== "boolean") {
-				this.options.mask.css3transition = this.options.css3transition;
+			if (! opt.mask.durationOut && ! opt.animationOut) {
+				opt.mask.durationOut = 0;
 			}
 
-			this.mask = new OverlayMask(this.options.mask);
+			if (typeof opt.mask.css3transition !== "boolean") {
+				opt.mask.css3transition = opt.css3transition;
+			}
+
+			this.mask = new OverlayMask(opt.mask);
 		},
 
 		setupOverlay: function () {
@@ -428,7 +480,7 @@
 		open: function (dontOpenMask) {
 			var opt = this.options,
 				self = this,
-				animationIn = clone(opt.animationIn),
+				animationIn = opt.animationIn ? clone(opt.animationIn) : false,
 				api = this.getApi();
 
 			if (this.$overlay.css("display") === "block" ||
@@ -442,33 +494,19 @@
 				$(document).trigger("ender-overlay.closeOverlay");
 			}
 
-			if (opt.animation) {
-				if (opt.startAnimationCss.opacity === 0) {
-					opt.startAnimationCss.opacity = 0.01; // ie quirk
-				}
-
-				this.$overlay.css(
-					extend({display: "block"}, opt.startAnimationCss)
-				);
-
-				animate(
-					this.$overlay,
-					extend(animationIn, {
-						complete: function () {
-							if (animationIn.opacity === 1) {
-								self.$overlay.css({ "filter": "" }); // ie quirk
-							}
-							self.options.onOpen(api);
-						}
-					}),
-					opt.css3transition
-				);
-			} else {
-				this.$overlay.css({
-					display: "block"
-				});
-				opt.onOpen();
-			}
+			animate({
+				el: this.$overlay,
+				animStartCss: extend({display: "block"}, opt.startAnimationCss),
+				animation: animationIn,
+				complete: function () {
+					if (animationIn && animationIn.opacity === 1) {
+						self.$overlay.css({ "filter": "" }); // ie quirk
+					}
+					self.options.onOpen(api);
+				},
+				fallbackCss: {display: "block", opacity: 1},
+				css3transition: opt.css3transition
+			});
 
 			if (this.mask &&
 				typeof dontOpenMask === "undefined") {
@@ -479,7 +517,7 @@
 		close: function (dontHideMask) {
 			var opt = this.options,
 				self = this,
-				animationOut,
+				animationOut = opt.animationOut ? clone(opt.animationOut) : false,
 				api = this.getApi();
 
 			if (opt.onBeforeClose(api) === false ||
@@ -487,25 +525,16 @@
 				return;
 			}
 
-			if (opt.animation) {
-				animationOut = clone(opt.animationOut);
-
-				animate(
-					this.$overlay,
-					extend(animationOut, {
-						complete: function () {
-							self.$overlay.css({display: "none"});
-							self.options.onClose(api);
-						}
-					}),
-					opt.css3transition
-				);
-			} else {
-				this.$overlay.css({
-					display: "none"
-				});
-				opt.onClose(api);
-			}
+			animate({
+				el: this.$overlay,
+				animation: animationOut,
+				complete: function () {
+					self.$overlay.css({display: "none"});
+					self.options.onClose(api);
+				},
+				fallbackCss: {display: "none", opacity: 0},
+				css3transition: opt.css3transition
+			});
 
 			if (this.mask &&
 				typeof dontHideMask === "undefined") {

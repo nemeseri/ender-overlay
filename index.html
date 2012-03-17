@@ -22,10 +22,12 @@
 			</p>
 
 			<p>
-				If you want to use <strong>CSS3 transitions</strong> instead of JS animations, just set the "css3transition" property to true. You have to set "animation" to true and only recent Firefox and Webkit based browsers will use transitions. Older browsers will fall back to JS animations (if morpheus is available).
+				If you want to use <strong>CSS3 transitions</strong> instead of JS animations, just set the "css3transition" property to true. It will only work if the animationIn or animationOut property are not "none". Only recent Firefox and Webkit based browsers will use transitions, older browsers will fall back to JS animations (if morpheus is available).
 			</p>
 
-			<p>Moreover, it's even compatible with jQuery! So if you want to include it in a jQuery based project, you can do it without any extra work.</p>
+			<p>
+				Moreover, it's even compatible with jQuery! So if you want to include it in a jQuery based project, you can do it without any extra work.
+			</p>
 
 			<p>
 				You might be interested in <a href="../ender-carousel">ender-carousel</a>, which is a simple carousel plugin for Ender.
@@ -58,7 +60,7 @@
 			<h2>Download Source</h2>
 
 			<p>The source is hosted at <a href="https://github.com/nemeseri/ender-overlay">Github</a>.</p>
-			<a href="https://raw.github.com/nemeseri/ender-overlay/master/ender.overlay.js" class="button">Download v0.2.1</a>
+			<a href="https://raw.github.com/nemeseri/ender-overlay/master/ender.overlay.js" class="button">Download v0.2.2</a>
 
 			<h2>Overlay configuration</h2>
 
@@ -127,14 +129,9 @@
 						<td>If it's <samp>false</samp>, then all overlays are closed automaticaly when a new overlay opens. If you set this to <samp>true</samp> you can manage multiple open overlays.</td>
 					</tr>
 					<tr>
-						<td>animation</td>
-						<td>true</td>
-						<td>You can turn off the animation with this property. Please note that you have to include <a href="https://github.com/ded/morpheus">Morpheus</a> to have animations.</td>
-					</tr>
-					<tr>
 						<td>css3transition</td>
 						<td>false</td>
-						<td><strong>Experimental!</strong> You can start using CSS transitions instead of JS animations. This feature is currently limited to recent versions of Firefox and Webkit based browsers. It will only work if the animation property has been set to true. It will fall back to JS animations if transition is not supported by the browser.</td>
+						<td><strong>Experimental!</strong> You can start using CSS transitions instead of JS animations. This feature is currently limited to recent versions of Firefox and Webkit based browsers. It will only work if the animationIn or animationOut property are not "none". It will fall back to JS animations if transition is not supported by the browser.</td>
 					</tr>
 					<tr>
 						<td>startAnimationCss</td>
@@ -151,7 +148,7 @@
 }
 </pre>
 						</td>
-						<td>Opening animation params. Passed directly to <a href="https://github.com/ded/morpheus">Morpheus</a>. Please refer the docs of Morpheus for more information or check out the animation tutorials. If the mask is enabled it will inherit the animation duration automatically.</td>
+						<td>Opening animation params. Set the CSS properties you want to animate and the duration of the animation. Check the configuration demo page for more info. If the mask is enabled it will inherit the animation duration automatically. Set to <b>"none"</b> to disable opening animation.</td>
 					</tr>
 					<tr>
 						<td>animationOut</td>
@@ -163,7 +160,7 @@
 }
 </pre>
 						</td>
-						<td>Closing animation params. Passed directly to <a href="https://github.com/ded/morpheus">Morpheus</a>. Please refer the docs of Morpheus for more information or check out the animation tutorials. If the mask is enabled it will inherit the animation duration automatically.</td>
+						<td>Closing animation params. Set the CSS properties you want to animate and the duration of the animation. Check the configuration demo page for more info. If the mask is enabled it will inherit the animation duration automatically. Set this to <b>"none"</b> to disable closing animation.</td>
 					</tr>
 					<tr>
 						<td>mask</td>

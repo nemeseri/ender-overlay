@@ -7,7 +7,7 @@ own gallery or other overlay based logic on the top of this plugin. It's just **
 It requires [Jeesh](https://github.com/ender-js/jeesh) and [Morpheus](https://github.com/ded/morpheus) for animations.
 Even though, you can leave Morpheus out if you are fine without animations. Currently it's tested in Chrome, Firefox, Safari, Opera and IE7+. You can report bugs [here](https://github.com/nemeseri/ender-overlay/issues).
 
-If you want to use **CSS3 transitions** instead of JS animations, just set the "css3transition" property to true. You have to set "animation" to true and only recent Firefox and Webkit based browsers will use transitions. Older browsers will fall back to JS animations (if morpheus is available).
+If you want to use ***CSS3 transitions*** instead of JS animations, just set the "css3transition" property to true. It will only work if the animationIn or animationOut property are not "none". Only recent Firefox and Webkit based browsers will use transitions, older browsers will fall back to JS animations (if morpheus is available).
 
 Moreover, it's even compatible with jQuery! So if you want to include it in a jQuery based project, you can do it without any extra work.
 
