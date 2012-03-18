@@ -128,11 +128,10 @@
 		// css3 setted, if available apply the css
 		if (options.css3transition && transition) {
 			dummy = el[0].offsetWidth; // force reflow; source: bootstrap
-			el[0].style[transition.prop] = "all " + animation.duration + "ms";
+			el[0].style[transition.prop] = "all " + animation.duration + "ms ease-out";
 
 			// takaritas
 			delete animation.duration;
-			delete animation.easing;
 
 			el.css(animation);
 			//el.unbind(transition.end);
@@ -147,7 +146,7 @@
 			el.animate(extend(animation, {"complete": complete}));
 		} else {
 			// use animate from jquery
-			el.animate(animation, animation.duration, animation.easing, complete);
+			el.animate(animation, animation.duration, "swing", complete);
 		}
 	}
 
@@ -275,8 +274,6 @@
 
 	Overlay.prototype = {
 		init: function ($el, options) {
-			var opt;
-
 			this.options = {
 				top: 80,
 				position: "absolute",
@@ -318,21 +315,12 @@
 			};
 
 			this.setOptions(options);
-			opt = this.options;
 			this.$overlay = $el.css({
 				display: "none"
 			});
 
-			if (opt.animationIn === "none") {
-				opt.animationIn = false;
-			}
-
-			if (opt.animationOut === "none") {
-				opt.animationOut = false;
-			}
-
-			if (opt.showMask) {
-				this.initMask();
+			if (this.options.showMask) {
+				this.mask = new OverlayMask(this.options.mask);
 			}
 
 			// prevent multiple event binding
@@ -341,7 +329,7 @@
 				this.$overlay.attr("data-overlayloaded", 1);
 			}
 
-			if (opt.autoOpen) {
+			if (this.options.autoOpen) {
 				this.open();
 			}
 		},
@@ -384,35 +372,6 @@
 					self.close();
 				});
 			}
-		},
-
-		initMask: function () {
-			var opt = this.options;
-
-			// If there is no explicit duration set for OverlayMask
-			// set it from overlay animation
-			if (! opt.mask.durationIn && opt.animationIn && opt.animationIn.duration) {
-				opt.mask.durationIn = opt.animationIn.duration;
-			}
-
-			if (! opt.mask.durationOut && opt.animationOut && opt.animationOut.duration) {
-				opt.mask.durationOut = opt.animationOut.duration;
-			}
-
-			// no animation
-			if (! opt.mask.durationIn && ! opt.animationIn) {
-				opt.mask.durationIn = 0;
-			}
-
-			if (! opt.mask.durationOut && ! opt.animationOut) {
-				opt.mask.durationOut = 0;
-			}
-
-			if (typeof opt.mask.css3transition !== "boolean") {
-				opt.mask.css3transition = opt.css3transition;
-			}
-
-			this.mask = new OverlayMask(opt.mask);
 		},
 
 		setupOverlay: function () {
@@ -533,6 +492,41 @@
 
 		setOptions: function (options) {
 			extend(this.options, options || {});
+			var opt = this.options;
+
+			if (opt.animationIn === "none") {
+				opt.animationIn = false;
+			}
+
+			if (opt.animationOut === "none") {
+				opt.animationOut = false;
+			}
+
+			if (opt.showMask) {
+				// If there is no explicit duration set for OverlayMask
+				// set it from overlay animation
+				if (! opt.mask.durationIn && opt.animationIn && opt.animationIn.duration) {
+					opt.mask.durationIn = opt.animationIn.duration;
+				}
+
+				if (! opt.mask.durationOut && opt.animationOut && opt.animationOut.duration) {
+					opt.mask.durationOut = opt.animationOut.duration;
+				}
+
+				// no animation
+				if (! opt.mask.durationIn && ! opt.animationIn) {
+					opt.mask.durationIn = 0;
+				}
+
+				if (! opt.mask.durationOut && ! opt.animationOut) {
+					opt.mask.durationOut = 0;
+				}
+
+				if (typeof opt.mask.css3transition !== "boolean") {
+					opt.mask.css3transition = opt.css3transition;
+				}
+			}
+
 		},
 
 		getApi: function () {
