@@ -11,7 +11,7 @@
   * http://ender.no.de
   * License MIT
   */
-!function (context) {
+(function (context) {
 
   // a global object for node.js module compatiblity
   // ============================================
@@ -23,12 +23,14 @@
   // ============================================
 
   var modules = {}
-    , old = context.$
+    , old = context['$']
+    , oldRequire = context['require']
+    , oldProvide = context['provide']
 
   function require (identifier) {
     // modules can be required from ender's build system, or found on the window
     var module = modules['$' + identifier] || window[identifier]
-    if (!module) throw new Error("Requested module '" + identifier + "' has not been defined.")
+    if (!module) throw new Error("Ender Error: Requested module '" + identifier + "' has not been defined.")
     return module
   }
 
@@ -44,50 +46,74 @@
     return o
   }
 
-  function boosh(s, r, els) {
+  /**
+   * main Ender return object
+   * @constructor
+   * @param {Array|Node|string} s a CSS selector or DOM node(s)
+   * @param {Array.|Node} r a root node(s)
+   */
+  function Ender(s, r) {
+    var elements
+      , i
+
+    this.selector = s
     // string || node || nodelist || window
     if (typeof s == 'undefined') {
-      els = []
+      elements = []
+      this.selector = ''
     } else if (typeof s == 'string' || s.nodeName || (s.length && 'item' in s) || s == window) {
-      els = ender._select(s, r)
-      els.selector = s
+      elements = ender._select(s, r)
     } else {
-      els = isFinite(s.length) ? s : [s]
+      elements = isFinite(s.length) ? s : [s]
     }
-    return aug(els, boosh)
+    this.length = elements.length
+    for (i = this.length; i--;) this[i] = elements[i]
   }
+
+  /**
+   * @param {function(el, i, inst)} fn
+   * @param {Object} opt_scope
+   * @returns {Ender}
+   */
+  Ender.prototype['forEach'] = function (fn, opt_scope) {
+    var i, l
+    // opt out of native forEach so we can intentionally call our own scope
+    // defaulting to the current item and be able to return self
+    for (i = 0, l = this.length; i < l; ++i) i in this && fn.call(opt_scope || this[i], this[i], i, this)
+    // return self for chaining
+    return this
+  }
+
+  Ender.prototype.$ = ender // handy reference to self
+
 
   function ender(s, r) {
-    return boosh(s, r)
+    return new Ender(s, r)
   }
 
-  ender._VERSION = '0.3.7'
+  ender['_VERSION'] = '0.4.3-dev'
 
-  aug(ender, {
-      fn: boosh // for easy compat to jQuery plugins
-    , ender: function (o, chain) {
-        aug(chain ? boosh : ender, o)
-      }
-    , _select: function (s, r) {
-        if (typeof s == 'string') return (r || document).querySelectorAll(s)
-        if (s.nodeName) return [ s ]
-        return s
-      }
-  })
+  ender.fn = Ender.prototype // for easy compat to jQuery plugins
 
-  aug(boosh, {
-      forEach: function (fn, scope, i, l) {
-        // opt out of native forEach so we can intentionally call our own scope
-        // defaulting to the current item and be able to return self
-        for (i = 0, l = this.length; i < l; ++i) i in this && fn.call(scope || this[i], this[i], i, this)
-        // return self for chaining
-        return this
-      }
-    , $: ender // handy reference to self
-  })
+  ender.ender = function (o, chain) {
+    aug(chain ? Ender.prototype : ender, o)
+  }
 
-  ender.noConflict = function () {
-    context.$ = old
+  ender._select = function (s, r) {
+    if (typeof s == 'string') return (r || document).querySelectorAll(s)
+    if (s.nodeName) return [s]
+    return s
+  }
+
+
+  // use callback to receive Ender's require & provide
+  ender.noConflict = function (callback) {
+    context['$'] = old
+    if (callback) {
+      context['provide'] = oldProvide
+      context['require'] = oldRequire
+      callback(require, provide, this)
+    }
     return this
   }
 
@@ -95,10 +121,10 @@
   // use subscript notation as extern for Closure compilation
   context['ender'] = context['$'] = context['ender'] || ender
 
-}(this);
+}(this));
 
 
-!function () {
+(function () {
 
   var module = { exports: {} }, exports = module.exports;
 
@@ -520,9 +546,9 @@
     })
   }(ender)
 
-}();
+}());
 
-!function () {
+(function () {
 
   var module = { exports: {} }, exports = module.exports;
 
@@ -549,6 +575,9 @@
       , attachEvent = 'attachEvent'
       , removeEvent = 'removeEventListener'
       , detachEvent = 'detachEvent'
+      , ownerDocument = 'ownerDocument'
+      , targetS = 'target'
+      , qSA = 'querySelectorAll'
       , doc = document || {}
       , root = doc.documentElement || {}
       , W3C_MODEL = root[addEvent]
@@ -558,20 +587,21 @@
       , mouseWheelTypeRegex = /mouse.*(wheel|scroll)/i
       , textTypeRegex = /^text/i
       , touchTypeRegex = /^touch|^gesture/i
-      , ONE = { one: 1 } // singleton for quick matching making add() do one()
+      , ONE = {} // singleton for quick matching making add() do one()
   
       , nativeEvents = (function (hash, events, i) {
           for (i = 0; i < events.length; i++)
             hash[events[i]] = 1
           return hash
-        })({}, (
+        }({}, (
             'click dblclick mouseup mousedown contextmenu ' +                  // mouse buttons
             'mousewheel mousemultiwheel DOMMouseScroll ' +                     // mouse wheel
             'mouseover mouseout mousemove selectstart selectend ' +            // mouse movement
             'keydown keypress keyup ' +                                        // keyboard
             'orientationchange ' +                                             // mobile
             'focus blur change reset select submit ' +                         // form elements
-            'load unload beforeunload resize move DOMContentLoaded readystatechange ' + // window
+            'load unload beforeunload resize move DOMContentLoaded '+          // window
+            'readystatechange message ' +                                      // window
             'error abort scroll ' +                                            // misc
             (W3C_MODEL ? // element.fireEvent('onXYZ'... is not forgiving if we try to fire an event
                          // that doesn't actually exist, so make sure we only do these on newer browsers
@@ -579,7 +609,7 @@
               'input invalid ' +                                                 // form elements
               'touchstart touchmove touchend touchcancel ' +                     // touch
               'gesturestart gesturechange gestureend ' +                         // gesture
-              'message readystatechange pageshow pagehide popstate ' +           // window
+              'readystatechange pageshow pagehide popstate ' +                   // window
               'hashchange offline online ' +                                     // window
               'afterprint beforeprint ' +                                        // printing
               'dragstart dragenter dragover dragleave drag drop dragend ' +      // dnd
@@ -590,28 +620,29 @@
               'checking noupdate downloading cached updateready obsolete ' +     // appcache
               '' : '')
           ).split(' ')
-        )
+        ))
   
       , customEvents = (function () {
           var cdp = 'compareDocumentPosition'
-          var isAncestor = cdp in root
-            ? function (element, container) {
-                return container[cdp] && (container[cdp](element) & 16) === 16
-              }
-            : 'contains' in root
-              ? function (element, container) {
-                  container = container.nodeType === 9 || container === window ? root : container
-                  return container !== element && container.contains(element)
-                }
-              : function (element, container) {
-                  while (element = element.parentNode) if (element === container) return 1
-                  return 0
-                }
+            , isAncestor = cdp in root
+                ? function (element, container) {
+                    return container[cdp] && (container[cdp](element) & 16) === 16
+                  }
+                : 'contains' in root
+                  ? function (element, container) {
+                      container = container.nodeType === 9 || container === window ? root : container
+                      return container !== element && container.contains(element)
+                    }
+                  : function (element, container) {
+                      while (element = element.parentNode) if (element === container) return 1
+                      return 0
+                    }
   
           function check(event) {
             var related = event.relatedTarget
-            if (!related) return related === null
-            return (related !== this && related.prefix !== 'xul' && !/document/.test(this.toString()) && !isAncestor(related, this))
+            return !related
+              ? related === null
+              : (related !== this && related.prefix !== 'xul' && !/document/.test(this.toString()) && !isAncestor(related, this))
           }
   
           return {
@@ -619,7 +650,7 @@
             , mouseleave: { base: 'mouseout', condition: check }
             , mousewheel: { base: /Firefox/.test(navigator.userAgent) ? 'DOMMouseScroll' : 'mousewheel' }
           }
-        })()
+        }())
   
       , fixEvent = (function () {
           var commonProps = 'altKey attrChange attrName bubbles cancelable ctrlKey currentTarget detail eventPhase getModifierState isTrusted metaKey relatedNode relatedTarget shiftKey srcElement target timeStamp type view which'.split(' ')
@@ -628,6 +659,7 @@
             , keyProps = commonProps.concat('char charCode key keyCode keyIdentifier keyLocation'.split(' '))
             , textProps = commonProps.concat(['data'])
             , touchProps = commonProps.concat('touches targetTouches changedTouches scale rotation'.split(' '))
+            , messageProps = commonProps.concat(['data', 'origin', 'source'])
             , preventDefault = 'preventDefault'
             , createPreventDefault = function (event) {
                 return function () {
@@ -668,17 +700,17 @@
   
             var props
               , type = event.type
-              , target = event.target || event.srcElement
+              , target = event[targetS] || event.srcElement
   
             result[preventDefault] = createPreventDefault(event)
             result[stopPropagation] = createStopPropagation(event)
             result.stop = createStop(result)
-            result.target = target && target.nodeType === 3 ? target.parentNode : target
+            result[targetS] = target && target.nodeType === 3 ? target.parentNode : target
   
             if (isNative) { // we only need basic augmentation on custom events, the rest is too expensive
               if (type.indexOf('key') !== -1) {
                 props = keyProps
-                result.keyCode = event.which || event.keyCode
+                result.keyCode = event.keyCode || event.which
               } else if (mouseTypeRegex.test(type)) {
                 props = mouseProps
                 result.rightClick = event.which === 3 || event.button === 2
@@ -698,12 +730,14 @@
                 props = mouseWheelProps
               } else if (textTypeRegex.test(type)) {
                 props = textProps
+              } else if (type === 'message') {
+                props = messageProps
               }
               copyProps(event, result, props || commonProps)
             }
             return result
           }
-        })()
+        }())
   
         // if we're in old IE we can't do onpropertychange on doc or win so we use doc.documentElement for both
       , targetElement = function (element, isNative) {
@@ -713,17 +747,17 @@
         // we use one of these per listener, of any type
       , RegEntry = (function () {
           function entry(element, type, handler, original, namespaces) {
+            var isNative = this.isNative = nativeEvents[type] && element[eventSupport]
             this.element = element
             this.type = type
             this.handler = handler
             this.original = original
             this.namespaces = namespaces
             this.custom = customEvents[type]
-            this.isNative = nativeEvents[type] && element[eventSupport]
-            this.eventType = W3C_MODEL || this.isNative ? type : 'propertychange'
-            this.customType = !W3C_MODEL && !this.isNative && type
-            this.target = targetElement(element, this.isNative)
-            this.eventSupport = this.target[eventSupport]
+            this.eventType = W3C_MODEL || isNative ? type : 'propertychange'
+            this.customType = !W3C_MODEL && !isNative && type
+            this[targetS] = targetElement(element, isNative)
+            this[eventSupport] = this[targetS][eventSupport]
           }
   
           entry.prototype = {
@@ -752,7 +786,7 @@
           }
   
           return entry
-        })()
+        }())
   
       , registry = (function () {
           // our map stores arrays by event type, just because it's better than storing
@@ -824,7 +858,19 @@
               }
   
           return { has: has, get: get, put: put, del: del, entries: entries }
-        })()
+        }())
+  
+      , selectorEngine = doc[qSA]
+          ? function (s, r) {
+              return r[qSA](s)
+            }
+          : function () {
+              throw new Error('Bean: No selector engine installed') // eeek
+            }
+  
+      , setSelectorEngine = function (e) {
+          selectorEngine = e
+        }
   
         // add and remove listeners to DOM elements
       , listener = W3C_MODEL ? function (element, type, fn, add) {
@@ -838,9 +884,9 @@
       , nativeHandler = function (element, fn, args) {
           var beanDel = fn.__beanDel
             , handler = function (event) {
-            event = fixEvent(event || ((this.ownerDocument || this.document || this).parentWindow || win).event, true)
+            event = fixEvent(event || ((this[ownerDocument] || this.document || this).parentWindow || win).event, true)
             if (beanDel) // delegated event, fix the fix
-              event.currentTarget = beanDel.ft(event.target, element)
+              event.currentTarget = beanDel.ft(event[targetS], element)
             return fn.apply(element, [event].concat(args))
           }
           handler.__beanDel = beanDel
@@ -850,10 +896,10 @@
       , customHandler = function (element, fn, type, condition, args, isNative) {
           var beanDel = fn.__beanDel
             , handler = function (event) {
-            var target = beanDel ? beanDel.ft(event.target, element) : this // deleated event
+            var target = beanDel ? beanDel.ft(event[targetS], element) : this // deleated event
             if (condition ? condition.apply(target, arguments) : W3C_MODEL ? true : event && event.propertyName === '_on' + type || !event) {
               if (event) {
-                event = fixEvent(event || ((this.ownerDocument || this.document || this).parentWindow || win).event, isNative)
+                event = fixEvent(event || ((this[ownerDocument] || this.document || this).parentWindow || win).event, isNative)
                 event.currentTarget = target
               }
               fn.apply(element, event && (!args || args.length === 0) ? arguments : slice.call(arguments, event ? 0 : 1).concat(args))
@@ -878,8 +924,8 @@
   
           for (i = 0, l = handlers.length; i < l; i++) {
             if (handlers[i].inNamespaces(namespaces)) {
-              if ((entry = handlers[i]).eventSupport)
-                listener(entry.target, entry.eventType, entry.handler, false, entry.type)
+              if ((entry = handlers[i])[eventSupport])
+                listener(entry[targetS], entry.eventType, entry.handler, false, entry.type)
               // TODO: this is problematic, we have a registry.get() and registry.del() that
               // both do registry searches so we waste cycles doing this. Needs to be rolled into
               // a single registry.forAll(fn) that removes while finding, but the catch is that
@@ -908,11 +954,13 @@
           entry.handler = entry.isNative ?
             nativeHandler(element, entry.handler, args) :
             customHandler(element, entry.handler, type, false, args, false)
-          if (entry.eventSupport)
-            listener(entry.target, entry.eventType, entry.handler, true, entry.customType)
+          if (entry[eventSupport])
+            listener(entry[targetS], entry.eventType, entry.handler, true, entry.customType)
         }
   
       , del = function (selector, fn, $) {
+              //TODO: findTarget (therefore $) is called twice, once for match and once for
+              // setting e.currentTarget, fix this so it's only needed once
           var findTarget = function (target, root) {
                 var i, array = typeof selector === 'string' ? $(selector, root) : selector
                 for (; target && target !== root; target = target.parentNode) {
@@ -923,9 +971,8 @@
                 }
               }
             , handler = function (e) {
-                var match = findTarget(e.target, this)
-                if (match)
-                  fn.apply(match, arguments)
+                var match = findTarget(e[targetS], this)
+                match && fn.apply(match, arguments)
               }
   
           handler.__beanDel = {
@@ -937,7 +984,7 @@
         }
   
       , remove = function (element, typeSpec, fn) {
-          var k, m, type, namespaces, i
+          var k, type, namespaces, i
             , rm = removeListener
             , isString = typeSpec && typeof typeSpec === 'string'
   
@@ -969,6 +1016,7 @@
           return element
         }
   
+        // 5th argument, $=selector engine, is deprecated and will be removed
       , add = function (element, events, fn, delfn, $) {
           var type, types, i, args
             , originalFn = fn
@@ -982,7 +1030,7 @@
           } else {
             args = arguments.length > 3 ? slice.call(arguments, 3) : []
             types = (isDel ? fn : events).split(' ')
-            isDel && (fn = del(events, (originalFn = delfn), $)) && (args = slice.call(args, 1))
+            isDel && (fn = del(events, (originalFn = delfn), $ || selectorEngine)) && (args = slice.call(args, 1))
             // special case for one()
             this === ONE && (fn = once(remove, element, events, fn, originalFn))
             for (i = types.length; i--;) addListener(element, types[i], fn, originalFn, args)
@@ -1053,6 +1101,7 @@
           , remove: remove
           , clone: clone
           , fire: fire
+          , setSelectorEngine: setSelectorEngine
           , noConflict: function () {
               context[name] = old
               return this
@@ -1084,11 +1133,9 @@
       , integrate = function (method, type, method2) {
           var _args = type ? [type] : []
           return function () {
-            for (var args, i = 0, l = this.length; i < l; i++) {
-              args = [this[i]].concat(_args, Array.prototype.slice.call(arguments, 0))
-              args.length == 4 && args.push($)
-              !arguments.length && method == 'add' && type && (method = 'fire')
-              b[method].apply(this, args)
+            for (var i = 0, l = this.length; i < l; i++) {
+              if (!arguments.length && method == 'add' && type) method = 'fire'
+              b[method].apply(this, [this[i]].concat(_args, Array.prototype.slice.call(arguments, 0)))
             }
             return this
           }
@@ -1126,24 +1173,24 @@
             }
         }
   
-      , shortcuts = [
-            'blur', 'change', 'click', 'dblclick', 'error', 'focus', 'focusin'
-          , 'focusout', 'keydown', 'keypress', 'keyup', 'load', 'mousedown'
-          , 'mouseenter', 'mouseleave', 'mouseout', 'mouseover', 'mouseup', 'mousemove'
-          , 'resize', 'scroll', 'select', 'submit', 'unload'
-        ]
+      , shortcuts =
+           ('blur change click dblclick error focus focusin focusout keydown keypress '
+          + 'keyup load mousedown mouseenter mouseleave mouseout mouseover mouseup '
+          + 'mousemove resize scroll select submit unload').split(' ')
   
     for (var i = shortcuts.length; i--;) {
       methods[shortcuts[i]] = integrate('add', shortcuts[i])
     }
   
+    b.setSelectorEngine($)
+  
     $.ender(methods, true)
   }(ender)
   
 
-}();
+}());
 
-!function () {
+(function () {
 
   var module = { exports: {} }, exports = module.exports;
 
@@ -1152,11 +1199,11 @@
     * https://github.com/ded/bonzo
     * License MIT
     */
-  !function (name, definition) {
-    if (typeof module != 'undefined') module.exports = definition()
-    else if (typeof define == 'function' && define.amd) define(name, definition)
-    else this[name] = definition()
-  }('bonzo', function() {
+  (function (name, definition, context) {
+    if (typeof module != 'undefined' && module.exports) module.exports = definition()
+    else if (typeof context['define'] != 'undefined' && context['define'] == 'function' && context['define']['amd']) define(name, definition)
+    else context[name] = definition()
+  })('bonzo', function() {
     var context = this
       , win = window
       , doc = win.document
@@ -1165,17 +1212,17 @@
       , query = null
       , specialAttributes = /^(checked|value|selected)$/i
       , specialTags = /^(select|fieldset|table|tbody|tfoot|td|tr|colgroup)$/i // tags that we have trouble inserting *into*
-      , table = [ '<table>', '</table>', 1 ]
-      , td = [ '<table><tbody><tr>', '</tr></tbody></table>', 3 ]
-      , option = [ '<select>', '</select>', 1 ]
-      , noscope = [ '_', '', 0, 1 ]
+      , table = ['<table>', '</table>', 1]
+      , td = ['<table><tbody><tr>', '</tr></tbody></table>', 3]
+      , option = ['<select>', '</select>', 1]
+      , noscope = ['_', '', 0, 1]
       , tagMap = { // tags that we have trouble *inserting*
             thead: table, tbody: table, tfoot: table, colgroup: table, caption: table
-          , tr: [ '<table><tbody>', '</tbody></table>', 2 ]
+          , tr: ['<table><tbody>', '</tbody></table>', 2]
           , th: td , td: td
-          , col: [ '<table><colgroup>', '</colgroup></table>', 2 ]
-          , fieldset: [ '<form>', '</form>', 1 ]
-          , legend: [ '<form><fieldset>', '</fieldset></form>', 2 ]
+          , col: ['<table><colgroup>', '</colgroup></table>', 2]
+          , fieldset: ['<form>', '</form>', 1]
+          , legend: ['<form><fieldset>', '</fieldset></form>', 2]
           , option: option, optgroup: option
           , script: noscope, style: noscope, link: noscope, param: noscope, base: noscope
         }
@@ -1210,7 +1257,7 @@
       , trimReplace = /(^\s*|\s*$)/g
       , whitespaceRegex = /\s+/
       , toString = String.prototype.toString
-      , unitless = { lineHeight: 1, zoom: 1, zIndex: 1, opacity: 1 }
+      , unitless = { lineHeight: 1, zoom: 1, zIndex: 1, opacity: 1, boxFlex: 1, WebkitBoxFlex: 1, MozBoxFlex: 1 }
       , trim = String.prototype.trim ?
           function (s) {
             return s.trim()
@@ -1250,13 +1297,13 @@
   
     function data(el) {
       el[getAttribute]('data-node-uid') || el[setAttribute]('data-node-uid', ++uuids)
-      uid = el[getAttribute]('data-node-uid')
+      var uid = el[getAttribute]('data-node-uid')
       return uidMap[uid] || (uidMap[uid] = {})
     }
   
     function clearData(el) {
-      uid = el[getAttribute]('data-node-uid')
-      uid && (delete uidMap[uid])
+      var uid = el[getAttribute]('data-node-uid')
+      if (uid) delete uidMap[uid]
     }
   
     function dataValue(d, f) {
@@ -1469,10 +1516,10 @@
               this.empty().each(function (el) {
                 !text && specialTags.test(el.tagName) ?
                   append(el) :
-                  !function() {
+                  (function () {
                     try { (el[method] = h) }
                     catch(e) { append(el) }
-                  }();
+                  }())
               }) :
             this[0] ? this[0][method] : ''
         }
@@ -1728,6 +1775,11 @@
           while (el = el.offsetParent) {
             top = top + el.offsetTop
             left = left + el.offsetLeft
+  
+            if (el != document.body) {
+              top -= el.scrollTop
+              left -= el.scrollLeft
+            }
           }
   
           return {
@@ -1969,12 +2021,12 @@
       }
   
     return bonzo
-  }); // the only line we care about using a semi-colon. placed here for concatenation tools
+  }, this); // the only line we care about using a semi-colon. placed here for concatenation tools
   
 
   provide("bonzo", module.exports);
 
-  !function ($) {
+  (function ($) {
   
     var b = require('bonzo')
     b.setQueryEngine($)
@@ -2077,7 +2129,7 @@
       }
   
     , children: function () {
-        var i, el, r = []
+        var i, l, el, r = []
         for (i = 0, l = this.length; i < l; i++) {
           if (!(el = b.firstChild(this[i]))) continue;
           r.push(el)
@@ -2100,12 +2152,11 @@
         ? b(this).dim()[type]
         : this.css(type, v)
     }
-  }(ender);
-  
+  }(ender));
 
-}();
+}());
 
-!function () {
+(function () {
 
   var module = { exports: {} }, exports = module.exports;
 
@@ -2177,9 +2228,9 @@
     }, true)
   }(ender);
 
-}();
+}());
 
-!function () {
+(function () {
 
   var module = { exports: {} }, exports = module.exports;
 
@@ -2190,11 +2241,11 @@
     * MIT License
     */
   
-  !function (name, definition) {
-    if (typeof module != 'undefined') module.exports = definition()
-    else if (typeof define == 'function' && typeof define.amd == 'object') define(definition)
-    else this[name] = definition()
-  }('qwery', function () {
+  (function (name, definition, context) {
+    if (typeof module != 'undefined' && module.exports) module.exports = definition()
+    else if (typeof context['define'] != 'undefined' && context['define'] == 'function' && context['define']['amd']) define(name, definition)
+    else context[name] = definition()
+  })('qwery', function () {
     var doc = document
       , html = doc.documentElement
       , byClass = 'getElementsByClassName'
@@ -2550,12 +2601,12 @@
     qwery.pseudos = {}
   
     return qwery
-  })
+  }, this);
   
 
   provide("qwery", module.exports);
 
-  !function (doc, $) {
+  (function ($) {
     var q = require('qwery')
   
     $.pseudos = q.pseudos
@@ -2565,7 +2616,7 @@
       // rather than load-time since technically it's not a dependency and
       // can be loaded in any order
       // hence the lazy function re-definition
-      return ($._select = (function(b) {
+      return ($._select = (function (b) {
         try {
           b = require('bonzo')
           return function (s, r) {
@@ -2602,8 +2653,8 @@
           return false
         }
     }, true)
-  }(document, ender);
+  }(ender));
   
 
-}();
+}());
 
