@@ -25,9 +25,9 @@
 		Mozilla and Webkit support only
 	*/
 	transition = (function () {
-		var st = document.createElement("div").style,
-			transitionEnd = "TransitionEnd",
-			transitionProp = "Transition",
+		var st = document.createElement('div').style,
+			transitionEnd = 'TransitionEnd',
+			transitionProp = 'Transition',
 			support = st.transition !== undefined ||
 				st.WebkitTransition !== undefined ||
 				st.MozTransition !== undefined;
@@ -35,17 +35,17 @@
 		return support && {
 			prop: (function () {
 				if (st.WebkitTransition !== undefined) {
-					transitionProp = "WebkitTransition";
+					transitionProp = 'WebkitTransition';
 				} else if (st.MozTransition !== undefined) {
-					transitionProp = "MozTransition";
+					transitionProp = 'MozTransition';
 				}
 				return transitionProp;
 			}()),
 			end: (function () {
 				if (st.WebkitTransition !== undefined) {
-					transitionEnd = "webkitTransitionEnd";
+					transitionEnd = 'webkitTransitionEnd';
 				} else if (st.MozTransition !== undefined) {
-					transitionEnd = "transitionend";
+					transitionEnd = 'transitionend';
 				}
 				return transitionEnd;
 			}())
@@ -79,7 +79,7 @@
 	}
 
 	function clone(obj) {
-		if (null === obj || "object" !== typeof obj) {
+		if (null === obj || 'object' !== typeof obj) {
 			return obj;
 		}
 		var copy = obj.constructor(),
@@ -128,7 +128,7 @@
 		// css3 setted, if available apply the css
 		if (options.css3transition && transition) {
 			dummy = el[0].offsetWidth; // force reflow; source: bootstrap
-			el[0].style[transition.prop] = "all " + animation.duration + "ms ease-out";
+			el[0].style[transition.prop] = 'all ' + animation.duration + 'ms ease-out';
 
 			// takaritas
 			delete animation.duration;
@@ -138,15 +138,15 @@
 			el.bind(transition.end, function () {
 				// delete transition properties and events
 				el.unbind(transition.end);
-				el[0].style[transition.prop] = "none";
+				el[0].style[transition.prop] = 'none';
 				complete();
 			});
 		} else if (window.ender) {
 			// use morpheus
-			el.animate(extend(animation, {"complete": complete}));
+			el.animate(extend(animation, {'complete': complete}));
 		} else {
 			// use animate from jquery
-			el.animate(animation, animation.duration, "swing", complete);
+			el.animate(animation, animation.duration, 'swing', complete);
 		}
 	}
 
@@ -160,7 +160,7 @@
 	OverlayMask.prototype = {
 		init: function (options) {
 			this.options = {
-				id: "ender-overlay-mask",
+				id: 'ender-overlay-mask',
 				zIndex: 9998,
 				opacity: 0.6,
 				color: "#777"
@@ -168,19 +168,19 @@
 
 			extend(this.options, options || {});
 
-			var $mask = $("#" + this.options.id),
+			var $mask = $('#' + this.options.id),
 				opt = this.options;
 
 			if (! $mask.length) {
-				$mask = $("<div></div>")
-					.attr("id", this.options.id)
+				$mask = $('<div></div>')
+					.attr('id', this.options.id)
 					.css({
-						display: "none",
-						position: "absolute",
+						display: 'none',
+						position: 'absolute',
 						top: 0,
 						left: 0
 					})
-					.appendTo("body");
+					.appendTo('body');
 			}
 
 			this.$mask = $mask;
@@ -210,10 +210,10 @@
 				el: this.$mask,
 				animStartCss: {
 					opacity: 0.01, // ie quirk
-					display: "block"
+					display: 'block'
 				},
 				animation: animObj,
-				fallbackCss: {display: "block", opacity: opt.opacity},
+				fallbackCss: {display: 'block', opacity: opt.opacity},
 				css3transition: opt.css3transition
 			});
 
@@ -235,9 +235,9 @@
 				el: this.$mask,
 				animation: animObj,
 				complete: function () {
-					self.$mask.css({display: "none"});
+					self.$mask.css({display: 'none'});
 				},
-				fallbackCss: {display: "none"},
+				fallbackCss: {display: 'none'},
 				css3transition: opt.css3transition
 			});
 		},
@@ -245,10 +245,23 @@
 		getDocSize: function () {
 			if (window.ender) { // ender
 				return {
-					width: $("body").width(),
+					width: $.doc().width,
 					height: $.doc().height
 				};
-			} else { // jquery
+			} else if (window.Zepto) {
+				// zepto caches the document height..
+				var doc = window.document,
+					html = doc.documentElement,
+					ie = /msie/i.test(navigator.userAgent),
+					vp = {
+						width: ie ? html.clientWidth : self.innerWidth,
+						height: ie ? html.clientHeight : self.innerHeight
+					}
+				return {
+					width: Math.max(doc.body.scrollWidth, html.scrollWidth, vp.width),
+					height: Math.max(doc.body.scrollHeight, html.scrollHeight, vp.height)
+				};
+			} else { // jquery / zepto
 				return {
 					width: $(document).width(),
 					height: $(document).height()
@@ -276,9 +289,9 @@
 		init: function ($el, options) {
 			this.options = {
 				top: 80,
-				position: "absolute",
-				cssClass: "ender-overlay",
-				close: ".close",
+				position: 'absolute',
+				cssClass: 'ender-overlay',
+				close: '.close',
 				trigger: null,
 				zIndex: 9999,
 				showMask: true,
@@ -316,7 +329,7 @@
 
 			this.setOptions(options);
 			this.$overlay = $el.css({
-				display: "none"
+				display: 'none'
 			});
 
 			if (this.options.showMask) {
@@ -324,9 +337,9 @@
 			}
 
 			// prevent multiple event binding
-			if (! this.$overlay.attr("data-overlayloaded")) {
+			if (! this.$overlay.attr('data-overlayloaded')) {
 				this.attachEvents();
-				this.$overlay.attr("data-overlayloaded", 1);
+				this.$overlay.attr('data-overlayloaded', 1);
 			}
 
 			if (this.options.autoOpen) {
@@ -340,35 +353,34 @@
 
 			// Bind open method to trigger's click event
 			if (opt.trigger && $(opt.trigger).length) {
-				$(opt.trigger).click(function (e) {
+				$(opt.trigger).on('click', function (e) {
 					e.preventDefault();
 					self.open();
 				});
 			}
 
-			this.$overlay
-				.delegate(opt.close, 'click', function (e) {
-					e.preventDefault();
-					self.close();
-				});
-
-			// attach event listeners
-			$(document).bind("ender-overlay.close", function () {
+			this.$overlay.on('click', opt.close, function (e) {
+				e.preventDefault();
 				self.close();
 			});
 
-			$(document).bind("ender-overlay.closeOverlay", function () {
+			// attach event listeners
+			$(document).on('ender-overlay.close', function () {
+				self.close();
+			});
+
+			$(document).on('ender-overlay.closeOverlay', function () {
 				self.close(true);
 			});
 
 			if (opt.closeOnEsc) {
-				$(document).keyup(function (e) {
+				$(document).on('keyup', function (e) {
 					self.onKeyUp(e);
 				});
 			}
 
 			if (this.mask && opt.closeOnMaskClick) {
-				this.mask.getMask().click(function () {
+				this.mask.getMask().on('click', function () {
 					self.close();
 				});
 			}
@@ -383,9 +395,9 @@
 			// setup overlay
 			this.$overlay
 				.addClass(opt.cssClass)
-				.appendTo("body");
+				.appendTo('body');
 
-			if (opt.position === "absolute") {
+			if (opt.position === 'absolute') {
 				topPos += scrollTop;
 			}
 
@@ -393,18 +405,18 @@
 			// so we try to find out
 			if (overlayWidth === 0) {
 				this.$overlay.css({
-					display: "block",
-					position: "absolute",
+					display: 'block',
+					position: 'absolute',
 					left: -9999
 				});
 				overlayWidth = this.$overlay.width();
 			}
 
 			this.$overlay.css({
-				display: "none",
+				display: 'none',
 				position: opt.position,
 				top: topPos,
-				left: "50%",
+				left: '50%',
 				zIndex: opt.zIndex,
 				marginLeft: overlayWidth / 2 * -1
 			});
@@ -416,7 +428,7 @@
 				animationIn = opt.animationIn ? clone(opt.animationIn) : false,
 				api = this.getApi();
 
-			if (this.$overlay.css("display") === "block" ||
+			if (this.$overlay.css('display') === 'block' ||
 				opt.onBeforeOpen(api) === false) {
 				return;
 			}
@@ -424,25 +436,25 @@
 			this.setupOverlay();
 
 			if (! opt.allowMultipleDisplay) {
-				$(document).trigger("ender-overlay.closeOverlay");
+				$(document).trigger('ender-overlay.closeOverlay');
 			}
 
 			animate({
 				el: this.$overlay,
-				animStartCss: extend({display: "block"}, opt.startAnimationCss),
+				animStartCss: extend({display: 'block'}, opt.startAnimationCss),
 				animation: animationIn,
 				complete: function () {
 					if (animationIn && animationIn.opacity === 1) {
-						self.$overlay.css({ "filter": "" }); // ie quirk
+						self.$overlay.css({ 'filter': '' }); // ie quirk
 					}
 					self.options.onOpen(api);
 				},
-				fallbackCss: {display: "block", opacity: 1},
+				fallbackCss: {display: 'block', opacity: 1},
 				css3transition: opt.css3transition
 			});
 
 			if (this.mask &&
-				typeof dontOpenMask === "undefined") {
+				typeof dontOpenMask === 'undefined') {
 				this.mask.show();
 			}
 		},
@@ -454,7 +466,7 @@
 				api = this.getApi();
 
 			if (opt.onBeforeClose(api) === false ||
-				this.$overlay.css("display") !== "block") {
+				this.$overlay.css('display') !== 'block') {
 				return;
 			}
 
@@ -462,22 +474,22 @@
 				el: this.$overlay,
 				animation: animationOut,
 				complete: function () {
-					self.$overlay.css({display: "none"});
+					self.$overlay.css({display: 'none'});
 					self.options.onClose(api);
 				},
-				fallbackCss: {display: "none", opacity: 0},
+				fallbackCss: {display: 'none', opacity: 0},
 				css3transition: opt.css3transition
 			});
 
 			if (this.mask &&
-				typeof dontHideMask === "undefined") {
+				typeof dontHideMask === 'undefined') {
 				this.mask.hide();
 			}
 		},
 
 		onKeyUp: function (e) {
 			if (e.keyCode === 27 &&
-				this.$overlay.css("display") !== "none") {
+				this.$overlay.css('display') !== 'none') {
 				this.close();
 			}
 		},
@@ -494,11 +506,11 @@
 			extend(this.options, options || {});
 			var opt = this.options;
 
-			if (opt.animationIn === "none") {
+			if (opt.animationIn === 'none') {
 				opt.animationIn = false;
 			}
 
-			if (opt.animationOut === "none") {
+			if (opt.animationOut === 'none') {
 				opt.animationOut = false;
 			}
 
@@ -522,7 +534,7 @@
 					opt.mask.durationOut = 0;
 				}
 
-				if (typeof opt.mask.css3transition !== "boolean") {
+				if (typeof opt.mask.css3transition !== 'boolean') {
 					opt.mask.css3transition = opt.css3transition;
 				}
 			}
@@ -545,4 +557,4 @@
 		return new Overlay(el, options);
 	};
 
-}(window.ender || window.jQuery);
+}(window.ender || window.jQuery || window.Zepto);
