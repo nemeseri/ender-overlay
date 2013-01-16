@@ -9,7 +9,7 @@ Even though, you can leave Morpheus out if you are fine without animations. Curr
 
 If you want to use ***CSS3 transitions*** instead of JS animations, just set the "css3transition" property to true. It will only work if the animationIn or animationOut property are not "none". Only recent Firefox and Webkit based browsers will use transitions, older browsers will fall back to JS animations (if morpheus is available).
 
-Moreover, it's even compatible with jQuery! So if you want to include it in a jQuery based project, you can do it without any extra work.
+Moreover, it's even compatible with jQuery and Zepto! So if you want to include it in a jQuery/Zepto based project, you can do it without any extra work.
 
 You might be interested in [ender-carousel](https://github.com/nemeseri/ender-carousel), which is a simple carousel plugin for Ender.
 
