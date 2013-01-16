@@ -135,9 +135,9 @@
 
 			el.css(animation);
 			//el.unbind(transition.end);
-			el.bind(transition.end, function () {
+			el.on(transition.end, function () {
 				// delete transition properties and events
-				el.unbind(transition.end);
+				el.off(transition.end);
 				el[0].style[transition.prop] = 'none';
 				complete();
 			});
